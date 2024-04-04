@@ -52,17 +52,17 @@
       </a>
     </li>
     <li>
-      <a id="nav-mark" title="标记" class="hidden">
-        <div class="nav-world-icon"></div>
+      <a id="nav-mark" title="标记">
+        <div class="nav-mark-icon"></div>
       </a>
     </li>
     <li class="right">
       <div id="map-goto">
         <div class="fancy-row slim">
           <label for="map-goto-x">X:</label>
-          <input type="text" class="mini" id="map-goto-x" name="map-goto-x">
+          <input type="text" class="mini" id="map-goto-x" name="map-goto-x" autocomplete="off">
           <label for="map-goto-z">Z:</label>
-          <input type="text" class="mini" id="map-goto-z" name="map-goto-z">
+          <input type="text" class="mini" id="map-goto-z" name="map-goto-z" autocomplete="off">
           <button id="map-goto-go" class="gh-button">定位 </button>
         </div>
       </div>
@@ -377,7 +377,25 @@
   </div>
   <div id="mark" class="hidden">
     <div class="fancy-box">
-      <p>已标记点列表</p>
+      <div id="mark-list-wrapper" class="fancy-box divide-fancy-box">
+        <p>已标记点列表</p>
+        <div id="mark-list">
+        </div>
+      </div>
+      <br>
+      <div class="fancy-box divide-fancy-box mark-add-container">
+        <div class="fancy-inputs-section">
+          <label for="mark-add-x">X:</label>
+          <input type="text" class="mini" id="mark-add-x" autocomplete="off">
+          <label for="mark-add-z">Z:</label>
+          <input type="text" class="mini" id="mark-add-z" autocomplete="off">
+        </div>
+        <div class="fancy-inputs-section">
+          <label for="mark-add-name">名字:</label>
+          <input type="text" class="mini" id="mark-add-name" autocomplete="off">
+          <button id="mark-add-button" class="gh-button">添加标记 </button>
+        </div>
+      </div>
     </div>
   </div>
   <div id="seed-controls">
@@ -409,6 +427,7 @@
   </script>
   <script src="./js/libraries.503f4741.js"></script>
   <script src="./js/inline-worker.503f4741.js"></script>
+  <script src="./js/cb3-libs.503f4741.js"></script>
   <script src="./js/cb3-finder.503f4741.js"></script>
 </body>
 
