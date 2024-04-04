@@ -2144,7 +2144,7 @@ window._enableAnalytics = !1;
 var ChunkApp = {
   config: {
     maxSeeds: 100,
-    distantChunkWidth: 8,
+    distantChunkWidth: 16,
     maxChunkWidth: 80,
     minChunkWidth: 1
   },
@@ -3347,6 +3347,8 @@ $.fn.seedControls = function (a) {
                       DrawGridLine(),
                         DrawPin()
                     }, function () {
+                        PutCoordText()
+                    }, function () {
                       BeginClip(),
                         Border()
                     }, [options.gridStartX + 2, options.gridStartY + 2, options.gridEndX, options.gridEndY])) : (M++,
@@ -3505,7 +3507,7 @@ $.fn.seedControls = function (a) {
                 mapContext.fillText(e, i, k)
               )
           }, DrawPin = function () {
-            PutCoordText();
+
             if (P.pinRect = void 0,
               "undefined" != typeof options.pin) {
               var a = options.pin
@@ -3519,6 +3521,26 @@ $.fn.seedControls = function (a) {
                   mapContext.closePath(),
                   mapContext.fill(),
                   mapContext.fillStyle = "rgb(255,0,0)",
+                  mapContext.beginPath(),
+                  mapContext.moveTo(0, 0),
+                  mapContext.arc(b, l, 5, 0, 2 * Math.PI, !0),
+                  mapContext.closePath(),
+                  mapContext.fill()))
+            }
+          }, DrawMarkPin = function () {
+            if (P.pinRect = void 0,
+              "undefined" != typeof options.pin) {
+              var a = options.pin
+                , b = left + (a[0] - options.startX) * options.chunkWidth;
+              left > b || b > right || (l = top + (a[1] - options.startZ) * options.chunkWidth,
+                top > l || l > bottom || (P.pinRect = [Math.floor(b) - 3, Math.floor(l) - 3, 6, 6],
+                  mapContext.fillStyle = "rgb(255,255,255)",
+                  mapContext.beginPath(),
+                  mapContext.moveTo(0, 0),
+                  mapContext.arc(b, l, 7, 0, 2 * Math.PI, !0),
+                  mapContext.closePath(),
+                  mapContext.fill(),
+                  mapContext.fillStyle = "rgb(255,0,255)",
                   mapContext.beginPath(),
                   mapContext.moveTo(0, 0),
                   mapContext.arc(b, l, 5, 0, 2 * Math.PI, !0),
@@ -4099,10 +4121,10 @@ $.fn.seedControls = function (a) {
   $.fn.topNavigate = function (a) {
     var b = this
       , c = {
-        navWorld: this.find("#nav-world"),
-        navOpr: this.find("#nav-operations"),
-        navTools: this.find("#nav-tools"),
-        navAbouts: this.find("#nav-about"),
+        navWorld: b.find("#nav-world"),
+        navOpr: b.find("#nav-operations"),
+        navTools: b.find("#nav-tools"),
+        navAbouts: b.find("#nav-about"),
         worldMenu: $("body").find("#world-controls"),
         oprMenu: $("body").find("#map-controls"),
         aboutsMenu: $("body").find("#abouts")
@@ -4413,7 +4435,7 @@ var SeedMapTiles = function (a, b) {
               hasNext: function () {
                 return !j
               },
-              renderNextAsync: function (l, n, p, r, s, t, u) {
+              renderNextAsync: function (l, n, p, r, prePoiDraw, postPoiDraw, t, u) {
                 var w = function (c, e) {
                   var f = i(c.tile.x, c.tile.z);
                   if (c.hits.error) {
@@ -4431,13 +4453,14 @@ var SeedMapTiles = function (a, b) {
                       a.forEach(function (a) {
                         w(a, "biomes")
                       }),
+                      prePoiDraw(),
                       a.forEach(function (a) {
                         w(a, "slimeChunks")
                       }),
                       a.forEach(function (a) {
                         w(a, "pois")
                       }),
-                      s(),
+                      postPoiDraw(),
                       b.onMapRepainted(v)
                   };
                 if (j)

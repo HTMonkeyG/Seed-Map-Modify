@@ -556,6 +556,10 @@ ul.topnav li a.active {
   color: white;
 }
 
+.divide-fancy-box {
+  background-color: transparent;
+}
+
 .chunk-finders-tn-checkall-icon_22 {
   background-image: url(../img/select-icon.png);
   background-position: 0 0;

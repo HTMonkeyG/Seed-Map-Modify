@@ -109,7 +109,7 @@ var ext_BiomeName = ext_BiomeNameCN;
 
 
 
-function ext_longToBinary(a){
-  if(!CB3Libs.Long.isLong(a))return !1;
-  
+function ext_longToBinary(a) {
+  if (!CB3Libs.Long.isLong(a)) return !1;
+
 }

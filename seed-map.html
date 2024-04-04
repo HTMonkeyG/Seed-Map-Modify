@@ -51,6 +51,11 @@
         <div class="nav-tools-icon"></div>
       </a>
     </li>
+    <li>
+      <a id="nav-mark" title="标记" class="hidden">
+        <div class="nav-world-icon"></div>
+      </a>
+    </li>
     <li class="right">
       <div id="map-goto">
         <div class="fancy-row slim">
@@ -146,13 +151,13 @@
   </div>
   <div id="map-controls" class="hidden">
     <div class="fancy-box">
-      <div id="map-touch" class="fancy-box">
+      <div id="map-touch" class="fancy-box divide-fancy-box">
         <label for="map-touch-enabled" id="map-touch-enabled-label">
-          <input type="checkbox" name="map-touch-enabled" id="map-touch-enabled" style="appearance:none">允许触控
+          <input type="checkbox" name="map-touch-enabled" id="map-touch-enabled" style="appearance:none">使用触控(鼠标请勿打开)
         </label>
       </div>
       <div class="map-controls-flex">
-        <div id="biome-selection" class="fancy-box">
+        <div id="biome-selection" class="fancy-box divide-fancy-box">
           <label id="biome-checkbox-label">
             <input type="checkbox" id="biome-selection-checkbox" />高亮生物群系
           </label>
@@ -160,7 +165,7 @@
             <input type="hidden" id="biome-selection-select" multiple="multiple" />
           </div>
         </div>
-        <div id="biome-height-select-box" class="fancy-box">
+        <div id="biome-height-select-box" class="fancy-box divide-fancy-box">
           <label for="biome-height-select">生物群系层次: </label>
           <select id="biome-height-select">
             <option value="worldSurface">地表</option>
@@ -171,21 +176,21 @@
       </div>
       <div id="map-controls-bar">
         <div class="map-controls-flex">
-          <div id="map-misc" class="fancy-box">
+          <div id="map-misc" class="fancy-box divide-fancy-box">
             <button data-tippy-content="hello" id="map-save" type="button" class="gh-button">保存地图 </button>
           </div>
-          <div id="map-misc" class="fancy-box">
+          <div id="map-misc" class="fancy-box divide-fancy-box">
             <label id="show-heights-label" class="ctl-button-label">
               <input type="checkbox" id="show-heights-checkbox" class="ctl-button" style="appearance:none">显示地形
             </label>
           </div>
-          <div id="map-misc" class="fancy-box">
+          <div id="map-misc" class="fancy-box divide-fancy-box">
             <label id="show-grid-lines-label" class="ctl-button-label">
               <input type="checkbox" checked="checked" id="show-grid-lines" class="ctl-button"
                 style="appearance:none">显示网格
             </label>
           </div>
-          <div id="map-misc" class="fancy-box">
+          <div id="map-misc" class="fancy-box divide-fancy-box">
             <label id="hide-poi-label" class="ctl-button-label">
               <input type="checkbox" id="hide-poi" class="ctl-button" style="appearance:none">隐藏非高亮区域POI
             </label>
@@ -368,6 +373,11 @@
           </li>
         </ul>
       </footer>
+    </div>
+  </div>
+  <div id="mark" class="hidden">
+    <div class="fancy-box">
+      <p>已标记点列表</p>
     </div>
   </div>
   <div id="seed-controls">
