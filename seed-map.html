@@ -4,431 +4,402 @@
 <!--[if IE 8]><html prefix="og: http://ogp.me/ns#" class="no-js lt-ie9" lang="en"><![endif]-->
 <!--[if gt IE 8]><!-->
 <html prefix="og: http://ogp.me/ns#" class="no-js en" lang="en">
-    <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta name="description" content="An online map viewer that helps you find new Minecraft seeds and locate biomes, structures, slime chunks and other features in your current world.">
-        <meta property="og:site_name" content="Chunk Base"/>
-        <meta property="og:title" content=" Seed Map - Minecraft App "/>
-        <meta property="og:type" content="article"/>
-        <meta property="og:url" content="https://www.chunkbase.com/apps/seed-map"/>
-        <meta property="og:image" content="https://www.chunkbase.com/img/gallery/seed-map_400.png"/>
-        <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="./css/style.a35ee5db.css"/>
-        <link rel="stylesheet" href="./css/app.d236af16.css"/>
-        <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
-        <script src="./js/modernizr.8cbbce6d.js"></script>
-        <script src="./js/extern.00000000.js"></script>
-        <script>
-            window.dataLayer = window.dataLayer || []
-            function gtag() {
-                dataLayer.push(arguments)
-            }
-            !function(t, e) {
-            }(window, document),
-            function() {
-                var t = []
-                  , e = {};
-                window.__cbc = function(n) {
-                    t.push(n),
-                    n(e)
-                }
-                ,
-                window.__cbcof = function(t, e) {
-                    var n = !1;
-                    window.__cbc(function(a) {
-                        !n && t(a) && (n = !0,
-                        e())
-                    })
-                }
-                ,
-                window.__cbcu = function(n) {
-                    e = Object.assign(e, n),
-                    t.forEach(function(t) {
-                        t(e)
-                    })
-                }
-            }(),
-            window.dataLayer = window.dataLayer || [],
-            window.__cbcof(function(t) {
-                return t.gdpr === !1 || t.tcData && t.tcData.vendor.consents[10211] && t.tcData.purpose.consents[27]
-            }, function() {
-                window.gtag_enable_tcf_support = !0,
-                gtag("js", new Date),
-                gtag("config", "G-GDKTKPZPPB", {
-                    store_gac: !1
-                });
-                var t = document.createElement("script");
-                t.type = "text/javascript",
-                t.async = "true",
-                t.src = "https://www.googletagmanager.com/gtag/js?id=G-GDKTKPZPPB";
-                var e = document.getElementsByTagName("script")[0];
-                e.parentNode.insertBefore(t, e)
-            });
-        </script>
-        <title>Seed Map - Minecraft App </title>
-    </head>
-    <body class="">
-        <!--[if lt IE 9]><div class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site. </div><![endif]-->
-        <div id="content">
-            <div id="main-content">
-                <div id="main" class="wide">
-                    <article>
-                        <div class="box">
-                            <header>
-                                <h1 class="boxheader">Seed Map</h1>
-                                <p class="boxinfotop">
-                                    最新版本: <time datetime="2023-06-14">Jun 14, 2023 </time>
-                                    (MC 1.20) 
-                                </p>
-                            </header>
-                            <div class="boxcontent">
-                                <noscript>JavaScript is required for this application! </noscript>
-                                <div id="app" class="">
-                                    <div id="seed-controls">
-                                        <div class="fancy-box">
-                                            <div class="fancy-row">
-                                                <label for="seed" class="fancy-size">种子:</label>
-                                                <div class="fancy-inputs">
-                                                    <input id="seed" name="seed" class="fancy-size" maxlength="32" type="text" placeholder="输入地图种子">
-                                                    <div class="fancy-inputs-section" id="seed-actions">
-                                                        <button id="seed-load" class="gh-button hidden" type="button">从存档加载... </button>
-                                                        <input type="file" class="hidden" id="seed-file">
-                                                        <button id="seed-random" class="gh-button" type="button">随机 </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="fancy-row">
-                                                <label for="platform" class="fancy-size">版本选择:</label>
-                                                <div class="fancy-inputs">
-                                                    <select id="platform">
-                                                        <optgroup label="最新版本">
-                                                            <option value="java_1_20">Java 1.20</option>
-                                                            <option value="java_1_20_lb">Java 1.20 放大化</option>
-                                                            <option value="bedrock_1_20">Bedrock 1.20</option>
-                                                        </optgroup>
-                                                        <optgroup label="Java版">
-                                                            <option value="java_1_20">Java 1.20</option>
-                                                            <option value="java_1_19_3">Java 1.19.3 - 1.19.4</option>
-                                                            <option value="java_1_19">Java 1.19 - 1.19.2</option>
-                                                            <option value="java_1_18">Java 1.18</option>
-                                                            <option value="java_1_17">Java 1.17</option>
-                                                            <option value="java_1_16">Java 1.16</option>
-                                                            <option value="java_1_15">Java 1.15</option>
-                                                            <option value="java_1_14">Java 1.14</option>
-                                                            <option value="java_1_13">Java 1.13</option>
-                                                            <option value="java_1_12">Java 1.12</option>
-                                                            <option value="java_1_11">Java 1.11</option>
-                                                            <option value="java_1_10">Java 1.10</option>
-                                                            <option value="java_1_9">Java 1.9</option>
-                                                            <option value="java_1_8">Java 1.8</option>
-                                                            <option value="java_1_7">Java 1.7</option>
-                                                        </optgroup>
-                                                        <optgroup label="java版 - 放大化生物群系">
-                                                            <option value="java_1_20_lb">Java 1.20 (LB)</option>
-                                                            <option value="java_1_19_3_lb">Java 1.19.3 - 1.19.4 (LB)</option>
-                                                            <option value="java_1_19_lb">Java 1.19 - 1.19.2 (LB)</option>
-                                                            <option value="java_1_18_lb">Java 1.18 (LB)</option>
-                                                            <option value="java_1_17_lb">Java 1.17 (LB)</option>
-                                                            <option value="java_1_16_lb">Java 1.16 (LB)</option>
-                                                            <option value="java_1_15_lb">Java 1.15 (LB)</option>
-                                                            <option value="java_1_14_lb">Java 1.14 (LB)</option>
-                                                            <option value="java_1_13_lb">Java 1.13 (LB)</option>
-                                                            <option value="java_1_12_lb">Java 1.12 (LB)</option>
-                                                            <option value="java_1_11_lb">Java 1.11 (LB)</option>
-                                                            <option value="java_1_10_lb">Java 1.10 (LB)</option>
-                                                            <option value="java_1_9_lb">Java 1.9 (LB)</option>
-                                                            <option value="java_1_8_lb">Java 1.8 (LB)</option>
-                                                            <option value="java_1_7_lb">Java 1.7 (LB)</option>
-                                                        </optgroup>
-                                                        <optgroup label="基岩版">
-                                                            <option value="bedrock_1_20">Bedrock 1.20</option>
-                                                            <option value="bedrock_1_19">Bedrock 1.19</option>
-                                                            <option value="bedrock_1_18">Bedrock 1.18</option>
-                                                            <option value="bedrock_1_17">Bedrock 1.17</option>
-                                                            <option value="bedrock_1_16">Bedrock 1.16</option>
-                                                            <option value="bedrock_1_14">Bedrock 1.14</option>
-                                                        </optgroup>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div id="biome-dimension-selection" class="fancy-row">
-                                                <label for="biome-dimension-select">维度: </label>
-                                                <div class="fancy-inputs">
-                                                    <select id="biome-dimension-select">
-                                                        <option value="overworld">主世界</option>
-                                                        <option value="nether">下界</option>
-                                                        <option value="end">末地</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="seed-footer">
-                                            <div id="seed-dragdrop-hint" class="fancy-description hidden">提示: 可以拖动并放置level.dat在这里! </div>
-                                        </div>
-                                        <div id="seed-dropbox" class="hidden">
-                                            <p class="popup">放下level.dat... </p>
-                                        </div>
-                                        <div id="seed-errors"></div>
-                                        
-                                        <div class="seedmap-layers-wrapper">
-                                        <div class="seedmap-layers-warning">⚠ 放大以查看全部内容</div>
-                                            <div class="seedmap-layers-label">地物 & 结构</div>
-                                            
-                                            <div data-simplebar>
-                                                <div>
-                                                    <div id="seedmap-layers">
-                                                        <button type="button" role="checkbox" title="表层生物群系" data-poi="biomes">
-                                                            <div class="chunk-finders-tn-biome-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">生物群系</span>
-                                                        </button>
-                                                        <button aria-checked="true" type="button" role="checkbox" title="重生点" data-poi="spawn">
-                                                            <div class="chunk-finders-tn-spawn-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">重生点</span>
-                                                        </button>
-                                                        <button aria-checked="true" type="button" role="checkbox" title="史莱姆区块" data-poi="slimeChunk">
-                                                            <div class="chunk-finders-tn-slime-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">史莱姆区块</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="村庄" data-poi="village">
-                                                            <div class="chunk-finders-tn-village2-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">村庄</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="远古城市" data-poi="ancientCity">
-                                                            <div class="chunk-finders-tn-ancient-city-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">远古城市</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="地牢" data-poi="dungeon">
-                                                            <div class="chunk-finders-tn-dungeon-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">地牢</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="要塞" data-poi="stronghold">
-                                                            <div class="chunk-finders-tn-stronghold-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">要塞</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="林地府邸" data-poi="woodlandMansion">
-                                                            <div class="chunk-finders-tn-mansion3-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">林地府邸</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="海底神庙" data-poi="oceanMonument">
-                                                            <div class="chunk-finders-tn-ocean-monument2-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">海底神庙</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="劫掠者前哨站" data-poi="pillagerOutpost">
-                                                            <div class="chunk-finders-tn-pillager-outpost2-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">劫掠者前哨站</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="废弃矿井" data-poi="mineshaft">
-                                                            <div class="chunk-finders-tn-mineshaft2-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">废弃矿井</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="废弃传送门" data-poi="ruinedPortalOverworld">
-                                                            <div class="chunk-finders-tn-ruined-portal-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">废弃传送门</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="丛林神庙" data-poi="jungleTemple">
-                                                            <div class="chunk-finders-tn-jungle-temple-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">丛林神庙</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="沙漠神殿" data-poi="desertTemple">
-                                                            <div class="chunk-finders-tn-desert-temple-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">沙漠神殿</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="女巫小屋" data-poi="witchHut">
-                                                            <div class="chunk-finders-tn-witch-hut2-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">女巫小屋</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="宝藏" data-poi="buriedTreasure">
-                                                            <div class="chunk-finders-tn-buried-treasure-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">宝藏</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="沉船" data-poi="shipwreck">
-                                                            <div class="chunk-finders-tn-shipwreck2-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">沉船</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="雪屋" data-poi="igloo">
-                                                            <div class="chunk-finders-tn-igloo2-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">雪屋</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="海底废墟" data-poi="oceanRuin">
-                                                            <div class="chunk-finders-tn-ocean-ruin-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">海底废墟</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="化石" data-poi="fossil">
-                                                            <div class="chunk-finders-tn-fossil-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">化石</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="洞穴" data-poi="cave">
-                                                            <div class="chunk-finders-tn-cave-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">洞穴</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="峡谷" data-poi="ravine">
-                                                            <div class="chunk-finders-tn-ravine-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">峡谷</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="末地城" data-poi="endCity">
-                                                            <div class="chunk-finders-tn-end-city-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">末地城</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="末地折跃门" data-poi="endGateway">
-                                                            <div class="chunk-finders-tn-end-gateway-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">末地折跃门</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="下界要塞" data-poi="netherFortress">
-                                                            <div class="chunk-finders-tn-nether-fortress2-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">下界要塞</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="堡垒遗迹" data-poi="bastionRemnant">
-                                                            <div class="chunk-finders-tn-piglin-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">堡垒遗迹</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="废弃传送门" data-poi="ruinedPortalNether">
-                                                            <div class="chunk-finders-tn-ruined-portal-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">废弃传送门</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="紫晶洞" data-poi="amethystGeode">
-                                                            <div class="chunk-finders-tn-amethyst-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">紫晶洞</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="附魔金苹果" data-poi="itemOverworld">
-                                                            <div class="chunk-finders-tn-golden-apple-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">附魔金苹果</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="矿脉" data-poi="oreVein">
-                                                            <div class="chunk-finders-tn-ore-vein-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">矿脉</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="沙漠水井" data-poi="desertWell">
-                                                            <div class="chunk-finders-tn-desert-well-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">沙漠水井</span>
-                                                        </button>
-                                                        <button type="button" role="checkbox" title="古迹废墟" data-poi="trailRuin">
-                                                            <div class="chunk-finders-tn-trail-ruin-icon_22" role="img"></div>
-                                                            <span class="seedmap-layers-name">古迹废墟</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="seedmap-checkall">
-                                                        <button class="unstyled" id="seedmap-checkall">
-                                                            <i class="icon-check"></i>
-                                                            全选 
-                                                        </button>
-                                                        <button class="unstyled" id="seedmap-uncheckall">
-                                                            <i class="icon-check-empty"></i>
-                                                            取消全选 
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button id="seedmap-layers-toggle-hor">▼ </button>
-                                        </div>
-                                        <canvas data-tippy-content="" id="map-canvas" width="855" height="540"></canvas>
-                                        <div id="map-controls-wrap">
-                                            <div id="map-controls" class="full-width">
-                                                <div id="map-touch" class="hidden">
-                                                    <label for="map-touch-enabled" id="map-touch-enabled-label">
-                                                        <input type="checkbox" name="map-touch-enabled" id="map-touch-enabled" style="appearance:none">允许触控 </label>
-                                                </div>
-                                                <div id="map-zoom">
-                                                    <div id="map-zoom-slider"></div>
-                                                </div>
-                                                <div class="map-controls-flex">
-                                                    <div id="biome-selection" class="fancy-box">
-                                                        <label id="biome-checkbox-label">
-                                                            <input type="checkbox" id="biome-selection-checkbox"/>高亮生物群系 
-                                                        </label>
-                                                        <div id="biome-selection-select-wrap">
-                                                            <input type="hidden" id="biome-selection-select" multiple="multiple"/>
-                                                        </div>
-                                                    </div>
-                                                    <div id="biome-height-select-box" class="fancy-box">
-                                                        <label for="biome-height-select">生物群系层次: </label>
-                                                        <select id="biome-height-select">
-                                                            <option value="worldSurface">地表</option>
-                                                            <option value="caveDepth">地下</option>
-                                                            <option value="bottom">地底 (Y -51)</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div id="map-controls-bar">
-                                                    <div class="map-controls-flex">
-                                                        <div class="fancy-box" id="map-goto">
-                                                            <div class="fancy-row slim">
-                                                                <label for="map-goto-x">X:</label>
-                                                                <input type="text" class="mini" id="map-goto-x" name="map-goto-x">
-                                                                <label for="map-goto-z">Z:</label>
-                                                                <input type="text" class="mini" id="map-goto-z" name="map-goto-z">
-                                                                <button id="map-goto-go" class="gh-button">定位 </button>
-                                                            </div>
-                                                        </div>
-                                                        <div id="map-misc" class="fancy-box">
-                                                            <button data-tippy-content="hello" id="map-save" type="button" class="gh-button">保存地图 </button>
-                                                        </div>
-                                                        <div id="map-misc" class="fancy-box">
-                                                            <label id="show-heights-label">
-                                                                <input type="checkbox" id="show-heights-checkbox" style="appearance:none">显示地形 
-                                                            </label>
-                                                        </div>
-                                                        <div id="map-misc" class="fancy-box">
-                                                            <label id="show-grid-lines-label">
-                                                                <input type="checkbox" checked="checked" id="show-grid-lines" style="appearance:none">显示网格 
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-                <div class="clearfix"></div>
-            </div>
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="An online map viewer that helps you find new Minecraft seeds and locate biomes, structures, slime chunks and other features in your current world.">
+  <meta name="viewport"
+    content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <link rel="stylesheet" href="./css/style.a35ee5db.css" />
+  <link rel="stylesheet" href="./css/app.d236af16.css" />
+  <link rel="stylesheet" href="./css/extern.12345678.css" />
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
+  <script src="./js/modernizr.8cbbce6d.js"></script>
+  <script src="./js/extern.00000000.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments)
+    }
+    window.dataLayer = window.dataLayer || [];
+  </script>
+  <title>CB3++ # 世界崩坏</title>
+</head>
+
+<body class="">
+  <!--[if lt IE 9]><div class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site. </div><![endif]-->
+  <ul class="topnav">
+    <li>
+      <a id="nav-about" title="关于">
+        <div class="nav-abouts-icon"></div>
+      </a>
+    </li>
+    <li>
+      <a id="nav-world" title="世界">
+        <div class="nav-world-icon"></div>
+      </a>
+    </li>
+    <li>
+      <a id="nav-operations" title="控制">
+        <div class="nav-control-icon"></div>
+      </a>
+    </li>
+    <li>
+      <a id="nav-tools" title="工具" class="hidden">
+        <div class="nav-tools-icon"></div>
+      </a>
+    </li>
+    <li class="right">
+      <div id="map-goto">
+        <div class="fancy-row slim">
+          <label for="map-goto-x">X:</label>
+          <input type="text" class="mini" id="map-goto-x" name="map-goto-x">
+          <label for="map-goto-z">Z:</label>
+          <input type="text" class="mini" id="map-goto-z" name="map-goto-z">
+          <button id="map-goto-go" class="gh-button">定位 </button>
         </div>
-        <footer style="display:none">
-            <p class="copyright">
-                Copyright &copy;2013-2023 chunkbase.com All Rights Reserved. <br>Not an official Minecraft product. Not approved by or associated with Mojang. 
-            </p>
-            <ul class="navhor">
-                <li>
-                    <a title="Site Map" href="/sitemap">Site Map</a>
-                </li>
-                <li>
-                    <a title="Contact" href="/contact">Contact</a>
-                </li>
-                <li>
-                    <a title="Legal Notice" href="/legal-notice">Legal Notice</a>
-                </li>
-                <li>
-                    <a title="Privacy policy" href="/privacy-policy">Privacy</a>
-                </li>
-                <li class="last">
-                    <a title="Terms of Use" href="/terms-of-use">Terms</a>
-                </li>
-            </ul>
-        </footer>
-        <script src="./js/main.febde7ee.js"></script>
-        <script src="./js/mobile.bd5a33b5.js"></script>
-        <script>
-            var disqus_shortname, disqus_shortname = "chunkbase", disqus_identifier = "seed-map", disqus_url = "https://www.chunkbase.com/apps/seed-map";
-        </script>
-        <script src="./js/app.d918cdd1.js"></script>
-        <script type="text/javascript">
-            CB3FinderAppConfig = {
-                "pois": "all",
-                "initiallyHiddenPois": ["stronghold", "dungeon", "itemOverworld", "oreVein", "amethystGeode", "cave"],
-                "dimensions": ["overworld", "nether", "end"],
-                "showBiomeFilter": true,
-                "hideGridLines": true,
-                "showHeightsToggle": true,
-                "showBiomeHeightSelection": true,
-                "filterPoisByZoomLevel": true,
-                "renderImg": true,
-                "chunkWidths": "full"
-            };
-        </script>
-        <script src="./js/cb3-finder.503f4741.js"></script>
-    </body>
+      </div>
+    </li>
+  </ul>
+  <noscript>JavaScript is required for this application! </noscript>
+  <canvas data-tippy-content="" id="map-canvas" width="1000" height="1000"></canvas>
+  <div id="world-controls" class="hidden">
+    <div class="fancy-box">
+      <div class="fancy-row">
+        <label for="seed" class="fancy-size">种子:</label>
+        <div class="fancy-inputs">
+          <input id="seed" name="seed" class="fancy-size" maxlength="32" type="text" placeholder="输入地图种子">
+          <div class="fancy-inputs-section" id="seed-actions">
+            <button id="seed-load" class="gh-button hidden" type="button">从存档加载... </button>
+            <input type="file" class="hidden" id="seed-file">
+            <button id="seed-random" class="gh-button" type="button">随机 </button>
+          </div>
+        </div>
+      </div>
+      <div class="fancy-row">
+        <label for="platform" class="fancy-size">版本选择:</label>
+        <div class="fancy-inputs">
+          <select id="platform">
+            <optgroup label="最新版本">
+              <option value="java_1_20">Java 1.20</option>
+              <option value="java_1_20_lb">Java 1.20 放大化</option>
+              <option value="bedrock_1_20">Bedrock 1.20</option>
+            </optgroup>
+            <optgroup label="Java版">
+              <option value="java_1_20">Java 1.20</option>
+              <option value="java_1_19_3">Java 1.19.3 - 1.19.4</option>
+              <option value="java_1_19">Java 1.19 - 1.19.2</option>
+              <option value="java_1_18">Java 1.18</option>
+              <option value="java_1_17">Java 1.17</option>
+              <option value="java_1_16">Java 1.16</option>
+              <option value="java_1_15">Java 1.15</option>
+              <option value="java_1_14">Java 1.14</option>
+              <option value="java_1_13">Java 1.13</option>
+              <option value="java_1_12">Java 1.12</option>
+              <option value="java_1_11">Java 1.11</option>
+              <option value="java_1_10">Java 1.10</option>
+              <option value="java_1_9">Java 1.9</option>
+              <option value="java_1_8">Java 1.8</option>
+              <option value="java_1_7">Java 1.7</option>
+            </optgroup>
+            <optgroup label="Java版 - 放大化生物群系">
+              <option value="java_1_20_lb">Java 1.20 (LB)</option>
+              <option value="java_1_19_3_lb">Java 1.19.3 - 1.19.4 (LB)</option>
+              <option value="java_1_19_lb">Java 1.19 - 1.19.2 (LB)</option>
+              <option value="java_1_18_lb">Java 1.18 (LB)</option>
+              <option value="java_1_17_lb">Java 1.17 (LB)</option>
+              <option value="java_1_16_lb">Java 1.16 (LB)</option>
+              <option value="java_1_15_lb">Java 1.15 (LB)</option>
+              <option value="java_1_14_lb">Java 1.14 (LB)</option>
+              <option value="java_1_13_lb">Java 1.13 (LB)</option>
+              <option value="java_1_12_lb">Java 1.12 (LB)</option>
+              <option value="java_1_11_lb">Java 1.11 (LB)</option>
+              <option value="java_1_10_lb">Java 1.10 (LB)</option>
+              <option value="java_1_9_lb">Java 1.9 (LB)</option>
+              <option value="java_1_8_lb">Java 1.8 (LB)</option>
+              <option value="java_1_7_lb">Java 1.7 (LB)</option>
+            </optgroup>
+            <optgroup label="基岩版">
+              <option value="bedrock_1_20">Bedrock 1.20</option>
+              <option value="bedrock_1_19">Bedrock 1.19</option>
+              <option value="bedrock_1_18">Bedrock 1.18</option>
+              <option value="bedrock_1_17">Bedrock 1.17</option>
+              <option value="bedrock_1_16">Bedrock 1.16</option>
+              <option value="bedrock_1_14">Bedrock 1.14</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <div id="biome-dimension-selection" class="fancy-row">
+        <label for="biome-dimension-select">维度: </label>
+        <div class="fancy-inputs">
+          <select id="biome-dimension-select">
+            <option value="overworld">主世界</option>
+            <option value="nether">下界</option>
+            <option value="end">末地</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="map-controls" class="hidden">
+    <div class="fancy-box">
+      <div id="map-touch" class="fancy-box">
+        <label for="map-touch-enabled" id="map-touch-enabled-label">
+          <input type="checkbox" name="map-touch-enabled" id="map-touch-enabled" style="appearance:none">允许触控
+        </label>
+      </div>
+      <div class="map-controls-flex">
+        <div id="biome-selection" class="fancy-box">
+          <label id="biome-checkbox-label">
+            <input type="checkbox" id="biome-selection-checkbox" />高亮生物群系
+          </label>
+          <div id="biome-selection-select-wrap">
+            <input type="hidden" id="biome-selection-select" multiple="multiple" />
+          </div>
+        </div>
+        <div id="biome-height-select-box" class="fancy-box">
+          <label for="biome-height-select">生物群系层次: </label>
+          <select id="biome-height-select">
+            <option value="worldSurface">地表</option>
+            <option value="caveDepth">地下</option>
+            <option value="bottom">地底 (Y -51)</option>
+          </select>
+        </div>
+      </div>
+      <div id="map-controls-bar">
+        <div class="map-controls-flex">
+          <div id="map-misc" class="fancy-box">
+            <button data-tippy-content="hello" id="map-save" type="button" class="gh-button">保存地图 </button>
+          </div>
+          <div id="map-misc" class="fancy-box">
+            <label id="show-heights-label" class="ctl-button-label">
+              <input type="checkbox" id="show-heights-checkbox" class="ctl-button" style="appearance:none">显示地形
+            </label>
+          </div>
+          <div id="map-misc" class="fancy-box">
+            <label id="show-grid-lines-label" class="ctl-button-label">
+              <input type="checkbox" checked="checked" id="show-grid-lines" class="ctl-button"
+                style="appearance:none">显示网格
+            </label>
+          </div>
+          <div id="map-misc" class="fancy-box">
+            <label id="hide-poi-label" class="ctl-button-label">
+              <input type="checkbox" id="hide-poi" class="ctl-button" style="appearance:none">隐藏非高亮区域POI
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="poi-selector">
+    <div class="seedmap-layers-wrapper">
+      <div class="seedmap-layers-warning">⚠ 放大以查看全部内容</div>
+      <div class="seedmap-layers-label">地物 &结构</div>
+      <div data-simplebar>
+        <div>
+          <div id="seedmap-layers">
+            <button class="unstyled" id="seedmap-checkall" title="全选" data-poi="checkAll">
+              <div class="chunk-finders-tn-checkall-icon_22" role="img"></div>
+            </button>
+            <button class="unstyled" id="seedmap-uncheckall" title="取消选择" data-poi="unCheckAll">
+              <div class="chunk-finders-tn-uncheckall-icon_22" role="img"></div>
+            </button>
+            <button type="button" role="checkbox" title="表层生物群系" data-poi="biomes">
+              <div class="chunk-finders-tn-biome-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">生物群系</span>
+            </button>
+            <button aria-checked="true" type="button" role="checkbox" title="重生点" data-poi="spawn">
+              <div class="chunk-finders-tn-spawn-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">重生点</span>
+            </button>
+            <button aria-checked="true" type="button" role="checkbox" title="史莱姆区块" data-poi="slimeChunk">
+              <div class="chunk-finders-tn-slime-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">史莱姆区块</span>
+            </button>
+            <button type="button" role="checkbox" title="村庄" data-poi="village">
+              <div class="chunk-finders-tn-village2-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">村庄</span>
+            </button>
+            <button type="button" role="checkbox" title="远古城市" data-poi="ancientCity">
+              <div class="chunk-finders-tn-ancient-city-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">远古城市</span>
+            </button>
+            <button type="button" role="checkbox" title="地牢" data-poi="dungeon">
+              <div class="chunk-finders-tn-dungeon-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">地牢</span>
+            </button>
+            <button type="button" role="checkbox" title="要塞" data-poi="stronghold">
+              <div class="chunk-finders-tn-stronghold-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">要塞</span>
+            </button>
+            <button type="button" role="checkbox" title="林地府邸" data-poi="woodlandMansion">
+              <div class="chunk-finders-tn-mansion3-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">林地府邸</span>
+            </button>
+            <button type="button" role="checkbox" title="海底神庙" data-poi="oceanMonument">
+              <div class="chunk-finders-tn-ocean-monument2-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">海底神庙</span>
+            </button>
+            <button type="button" role="checkbox" title="劫掠者前哨站" data-poi="pillagerOutpost">
+              <div class="chunk-finders-tn-pillager-outpost2-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">劫掠者前哨站</span>
+            </button>
+            <button type="button" role="checkbox" title="废弃矿井" data-poi="mineshaft">
+              <div class="chunk-finders-tn-mineshaft2-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">废弃矿井</span>
+            </button>
+            <button type="button" role="checkbox" title="废弃传送门" data-poi="ruinedPortalOverworld">
+              <div class="chunk-finders-tn-ruined-portal-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">废弃传送门</span>
+            </button>
+            <button type="button" role="checkbox" title="丛林神庙" data-poi="jungleTemple">
+              <div class="chunk-finders-tn-jungle-temple-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">丛林神庙</span>
+            </button>
+            <button type="button" role="checkbox" title="沙漠神殿" data-poi="desertTemple">
+              <div class="chunk-finders-tn-desert-temple-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">沙漠神殿</span>
+            </button>
+            <button type="button" role="checkbox" title="女巫小屋" data-poi="witchHut">
+              <div class="chunk-finders-tn-witch-hut2-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">女巫小屋</span>
+            </button>
+            <button type="button" role="checkbox" title="宝藏" data-poi="buriedTreasure">
+              <div class="chunk-finders-tn-buried-treasure-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">宝藏</span>
+            </button>
+            <button type="button" role="checkbox" title="沉船" data-poi="shipwreck">
+              <div class="chunk-finders-tn-shipwreck2-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">沉船</span>
+            </button>
+            <button type="button" role="checkbox" title="雪屋" data-poi="igloo">
+              <div class="chunk-finders-tn-igloo2-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">雪屋</span>
+            </button>
+            <button type="button" role="checkbox" title="海底废墟" data-poi="oceanRuin">
+              <div class="chunk-finders-tn-ocean-ruin-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">海底废墟</span>
+            </button>
+            <button type="button" role="checkbox" title="化石" data-poi="fossil">
+              <div class="chunk-finders-tn-fossil-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">化石</span>
+            </button>
+            <button type="button" role="checkbox" title="洞穴" data-poi="cave">
+              <div class="chunk-finders-tn-cave-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">洞穴</span>
+            </button>
+            <button type="button" role="checkbox" title="峡谷" data-poi="ravine">
+              <div class="chunk-finders-tn-ravine-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">峡谷</span>
+            </button>
+            <button type="button" role="checkbox" title="末地城" data-poi="endCity">
+              <div class="chunk-finders-tn-end-city-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">末地城</span>
+            </button>
+            <button type="button" role="checkbox" title="末地折跃门" data-poi="endGateway">
+              <div class="chunk-finders-tn-end-gateway-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">末地折跃门</span>
+            </button>
+            <button type="button" role="checkbox" title="下界要塞" data-poi="netherFortress">
+              <div class="chunk-finders-tn-nether-fortress2-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">下界要塞</span>
+            </button>
+            <button type="button" role="checkbox" title="堡垒遗迹" data-poi="bastionRemnant">
+              <div class="chunk-finders-tn-piglin-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">堡垒遗迹</span>
+            </button>
+            <button type="button" role="checkbox" title="废弃传送门" data-poi="ruinedPortalNether">
+              <div class="chunk-finders-tn-ruined-portal-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">废弃传送门</span>
+            </button>
+            <button type="button" role="checkbox" title="紫晶洞" data-poi="amethystGeode">
+              <div class="chunk-finders-tn-amethyst-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">紫晶洞</span>
+            </button>
+            <button type="button" role="checkbox" title="附魔金苹果" data-poi="itemOverworld">
+              <div class="chunk-finders-tn-golden-apple-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">附魔金苹果</span>
+            </button>
+            <button type="button" role="checkbox" title="矿脉" data-poi="oreVein">
+              <div class="chunk-finders-tn-ore-vein-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">矿脉</span>
+            </button>
+            <button type="button" role="checkbox" title="沙漠水井" data-poi="desertWell">
+              <div class="chunk-finders-tn-desert-well-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">沙漠水井</span>
+            </button>
+            <button type="button" role="checkbox" title="古迹废墟" data-poi="trailRuin">
+              <div class="chunk-finders-tn-trail-ruin-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">古迹废墟</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button id="seedmap-layers-toggle-hor" class="hidden">▼ </button>
+    </div>
+  </div>
+  <div id="abouts" class="hidden">
+    <div class="fancy-box">
+      <h3>CB3++ 世界崩坏</h3>
+      <p>基于Chunkbase - Seed Map修改而成<br>
+        汉化 & 修改 by HTMonkeyG</p>
+      <p>最新版本: <time datetime="2023-06-14">Jun 14, 2023 </time>(MC 1.20) </p>
+      <footer>
+        <p>Copyright &copy;2013-2023 chunkbase.com All Rights Reserved. <br>Not an official Minecraft product. Not
+          approved by or associated with Mojang. </p>
+        <ul>
+          <li>
+            <a title="Site Map" href="https://chunkbase.com/sitemap">Site Map</a>
+          </li>
+          <li>
+            <a title="Contact" href="https://chunkbase.com/contact">Contact</a>
+          </li>
+          <li>
+            <a title="Legal Notice" href="https://chunkbase.com/legal-notice">Legal Notice</a>
+          </li>
+          <li>
+            <a title="Privacy policy" href="https://chunkbase.com/privacy-policy">Privacy</a>
+          </li>
+          <li class="last">
+            <a title="Terms of Use" href="https://chunkbase.com/terms-of-use">Terms</a>
+          </li>
+        </ul>
+      </footer>
+    </div>
+  </div>
+  <div id="seed-controls">
+    <div id="seed-footer">
+      <div id="seed-dragdrop-hint" class="fancy-description hidden">提示: 可以拖动并放置level.dat在这里! </div>
+    </div>
+    <div id="seed-dropbox" class="hidden">
+      <p class="popup">放下level.dat... </p>
+    </div>
+    <div id="seed-errors"></div>
+    <div id="map-controls-wrap"></div>
+  </div>
+  <script src="./js/main.febde7ee.js"></script>
+  <script src="./js/mobile.bd5a33b5.js"></script>
+  <script src="./js/app.d918cdd1.js"></script>
+  <script type="text/javascript">
+    CB3FinderAppConfig = {
+      pois: "all",
+      initiallyHiddenPois: ["stronghold", "dungeon", "itemOverworld", "oreVein", "amethystGeode", "cave"],
+      dimensions: ["overworld", "nether", "end"],
+      showBiomeFilter: true,
+      hideGridLines: true,
+      showHeightsToggle: true,
+      showBiomeHeightSelection: true,
+      filterPoisByZoomLevel: true,
+      renderImg: true,
+      chunkWidths: "full"
+    };
+  </script>
+  <script src="./js/libraries.503f4741.js"></script>
+  <script src="./js/inline-worker.503f4741.js"></script>
+  <script src="./js/cb3-finder.503f4741.js"></script>
+</body>
+
 </html>
