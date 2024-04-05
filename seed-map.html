@@ -14,6 +14,7 @@
     content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <link rel="stylesheet" href="./css/style.a35ee5db.css" />
   <link rel="stylesheet" href="./css/app.d236af16.css" />
+  <link rel="stylesheet" href="./css/simplebar.css" />
   <link rel="stylesheet" href="./css/extern.12345678.css" />
   <link rel="icon" type="image/png" sizes="16x16" href="img/favicon.png">
   <script src="./js/modernizr.8cbbce6d.js"></script>
@@ -379,7 +380,11 @@
     <div class="fancy-box">
       <div id="mark-list-wrapper" class="fancy-box divide-fancy-box">
         <p>已标记点列表</p>
-        <div id="mark-list">
+        <div data-simplebar>
+          <div>
+            <div id="mark-list">
+            </div>
+          </div>
         </div>
       </div>
       <br>
@@ -426,6 +431,7 @@
     };
   </script>
   <script src="./js/libraries.503f4741.js"></script>
+  <script src="./js/simplebar.min.js"></script>
   <script src="./js/inline-worker.503f4741.js"></script>
   <script src="./js/cb3-libs.503f4741.js"></script>
   <script src="./js/cb3-finder.503f4741.js"></script>

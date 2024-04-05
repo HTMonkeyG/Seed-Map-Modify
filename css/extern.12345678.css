@@ -775,24 +775,33 @@ input.fancy-size[type=text] {
   width: 90%;
   margin: auto;
   margin-top: 25px;
-  padding: 0;
+  padding: 3px;
   position: relative;
+  max-height: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+#mark-list-wrapper [data-simplebar] {
+  flex: auto;
+  max-height: 100px
 }
 
 #mark-list-wrapper p {
   position: absolute;
   top: -30px;
-  left: 10px
+  left: 10px;
 }
 
 #mark-list {
   text-align: left;
-  width: 100%;
-  max-height: 100px;
   margin: auto;
-  overflow-y: scroll;
   padding: 2px 0px 2px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
+
 
 #mark-list input {
   width: 40%;
@@ -836,7 +845,7 @@ input.fancy-size[type=text] {
   background-color: rgba(117, 82, 57, 0.75);
 }
 
-.mark-node .mark-node-icon{
+.mark-node .mark-node-icon {
   margin: 0 3px 0 3px
 }
 

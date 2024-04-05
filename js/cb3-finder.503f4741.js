@@ -2243,7 +2243,7 @@ $.fn.chunkMap = function (a) {
       }, 1500)
   }
   function addListNode(hash, data, renamable) {
-    var nodes = b.find("#mark-list").children();
+    var nodes = c.list.children();
     for (let i = 0; i < nodes.length; i++) {
       if (nodes[i].getAttribute("mark-hash") === hash) return !1;
     }
@@ -2279,7 +2279,7 @@ $.fn.chunkMap = function (a) {
     return !0
   }
   function rmListNode(hash) {
-    var nodes = b.find("#mark-list").children();
+    var nodes = c.list.children();
     for (let i = 0; i < nodes.length; i++) {
       if (nodes[i].getAttribute("mark-hash") === hash) {
         nodes[i].remove();
@@ -2289,7 +2289,7 @@ $.fn.chunkMap = function (a) {
     return !1
   }
   function clearListNode() {
-    var nodes = b.find("#mark-list").children();
+    var nodes = c.list.children();
     for (let i = 0; i < nodes.length; i++) {
       nodes[i].remove();
     }
@@ -2300,6 +2300,10 @@ $.fn.chunkMap = function (a) {
     HTPois && Object.keys(HTPois).forEach(function (a) {
       addListNode('htCustomize§' + a, { text: HTPois[a].name, coord: HTPois[a].coords }, !0)
     });
+    try {
+      var a = window.SimpleBar && window.SimpleBar.instances.get(c.list.get(0));
+      a && a.recalculate()
+    } catch (b) { }
   }
   function addMark(b, e) {
     e = e === !0;
@@ -2322,12 +2326,12 @@ $.fn.chunkMap = function (a) {
       (k > 34359738352 || -34359738368 > k) && (i = !0)
     } else
       i = !0;
-    if ("undefined" === typeof n)
+    if ("undefined" === typeof n || n.length > 32)
       m = !0;
     h && !e && flashRed(c.addX);
     i && !e && flashRed(c.addZ);
     m && !e && flashRed(c.addName);
-    h || i || (
+    h || i || m || (
       o = HTPoiConfig.createPoi({ x: f, z: g }, n),
       c.addX[0].value = '',
       c.addZ[0].value = '',
