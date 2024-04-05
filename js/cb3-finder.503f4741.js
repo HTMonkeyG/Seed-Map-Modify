@@ -1070,7 +1070,8 @@ $.fn.seedControls = function (a) {
     setTimeout(function () {
       c.gotoButton.trigger("click", !0)
     }, 0)
-}, $.fn.chunkMap = function (a) {
+};
+$.fn.chunkMap = function (a) {
   function b() {
     window._enableAnalytics && window.gtag && t && (window.gtag("event", "CB_ChunkApp_Usage", {
       platform: Object.keys(ChunkApp.Platform).find(function (a) {
@@ -1088,7 +1089,7 @@ $.fn.seedControls = function (a) {
     }),
       t = !1)
   }
-  function c(b) {
+  function resizeCanvas(isInit) {
     var width = document.body.clientWidth
       , height = document.documentElement.clientHeight || document.body.clientHeight
       , m = width;
@@ -1116,20 +1117,23 @@ $.fn.seedControls = function (a) {
       bottom = e - H,
       left = E,
       top = F,
-      b && x.setCenter(CB3Libs.Long.ZERO, CB3Libs.Long.ZERO),
+      isInit && x.setCenter(CB3Libs.Long.ZERO, CB3Libs.Long.ZERO),
       a.triggerHandler("mapdimensionschanged", [[m, p]]),
-      w.redraw()
+      MapRenderer.redraw()
   }
+
   var d, e, right, bottom, left, top, k = this, l = $("body")
     , m = ChunkApp.Platform.java
     , n = !a.initialHideSecondary
     , o = !a.initialHideGridLines
     , p = !1, q = 1, mapDisp = k.get(0).getContext("2d");
+
   mapDisp.imageSmoothingEnabled = !1,
     mapDisp.mozImageSmoothingEnabled = !1,
     mapDisp.webkitImageSmoothingEnabled = !1,
     mapDisp.msImageSmoothingEnabled = !1,
     a.loadingBackground && k.css("background-color", "rgb(" + a.loadingBackground + ")");
+
   var mapText = {
     chunkLoad: "加载区块中...",
     chunkLoadShort: "加载中...",
@@ -1138,13 +1142,13 @@ $.fn.seedControls = function (a) {
     forLabel: "版本"
   }
     , t = !1;
-  setTimeout(function () {
-    t = !0
-  }, 9e4);
+
+  setTimeout(function () { t = !0 }, 9e4);
+
   var options = {
     seed: CB3Libs.Long.ZERO,
     seedString: void 0,
-    chunkWidth: 48,  // Pixels per chunk
+    chunkWidth: 0.5,  // Pixels per chunk
     distantView: !1,
     startX: -6,
     startZ: -4,
@@ -1155,612 +1159,576 @@ $.fn.seedControls = function (a) {
     gridStartY: top,
     gridEndY: bottom + 1,
     pin: void 0
-  }
-    , v = {
-      setSeed: function (a, b, c) {
-        options.seed.equals(a) || (
-          options.seed = a,
-          options.seedString = b,
-          options.seedDisplay = c
-        )
-      },
-      limitInt32: function (a) {
-        return a > 2147483647 ? 2147483647 : -2147483648 > a ? -2147483648 : a
-      },
-      nearInteger: function (a) {
-        var b = a % 1;
-        return -.999 > b || b > 0 && .001 > b ? Math.floor(a) : b > .999 || 0 > b && b > -.001 ? Math.ceil(a) : a
-      },
-      formatNr: function (a) {
-        return a += "",
-          "de" == getLocale() ? a.replace(".", ",").replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.") : a.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-      }
+  }, v = {
+    setSeed: function (a, b, c) {
+      options.seed.equals(a) || (
+        options.seed = a,
+        options.seedString = b,
+        options.seedDisplay = c
+      )
+    },
+    limitInt32: function (a) {
+      return a > 2147483647 ? 2147483647 : -2147483648 > a ? -2147483648 : a
+    },
+    nearInteger: function (a) {
+      var b = a % 1;
+      return -.999 > b || b > 0 && .001 > b ? Math.floor(a) : b > .999 || 0 > b && b > -.001 ? Math.ceil(a) : a
+    },
+    formatNr: function (a) {
+      return a += "",
+        "de" == getLocale() ? a.replace(".", ",").replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.") : a.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
     }
-    , w = function () {
-      var c, l = 0, borderColor = "#332B28", t = "#f0cccc", w = "208,227,240", isClip = !1, y = a.drawAll, z = {
-        formatNr: v.formatNr,
-        chunkXToScreen: function (a) {
-          return left + Math.round((a - options.startX) * options.chunkWidth)
-        },
-        chunkZToScreen: function (a) {
-          return top + Math.round((a - options.startZ) * options.chunkWidth)
-        },
-        getFirstChunkX: function () {
-          return Math.floor(options.startX)
-        },
-        getFirstChunkZ: function () {
-          return Math.floor(options.startZ)
-        },
-        getFirstChunkXToFill: function () {
-          var a = z.getFirstChunkX()
-            , b = a + 1
-            , c = z.chunkXToScreen(a)
-            , d = z.chunkXToScreen(b);
-          return c = Math.max(c, left),
-            3 > d - c ? b : a
-        },
-        getFirstChunkZToFill: function () {
-          var a = z.getFirstChunkZ()
-            , b = a + 1
-            , c = z.chunkZToScreen(a)
-            , d = z.chunkZToScreen(b);
-          return c = Math.max(c, top),
-            3 > d - c ? b : a
-        },
-        getLastChunkXToFill: function () {
-          var a = z.getFirstChunkXToFill();
-          return a + Math.floor((right - z.chunkXToScreen(a)) / options.chunkWidth)
-        },
-        getLastChunkZToFill: function () {
-          var a = z.getFirstChunkZToFill();
-          return a + Math.floor((bottom - z.chunkZToScreen(a)) / options.chunkWidth)
-        },
-        getScreenFirstX: function () {
-          return (Math.floor(options.startX) - options.startX) * options.chunkWidth + left
-        },
-        getScreenFirstY: function () {
-          return (Math.floor(options.startZ) - options.startZ) * options.chunkWidth + top
-        },
-        getInScreenFirstX: function (a) {
-          for (var b = z.getScreenFirstX(); left - (a ? 1 : 0) >= b;)
-            b += options.chunkWidth;
-          return b
-        },
-        getInScreenFirstY: function (a) {
-          for (var b = z.getScreenFirstY(); top - (a ? 1 : 0) >= b;)
-            b += options.chunkWidth;
-          return b
-        },
-        getInScreenFirstX16: function (a) {
-          var b = options.interval;
-          b = Math.ceil(options.startX / b) * b,
-            b = (b - options.startX) * options.chunkWidth + left;
-          return b
-        },
-        getInScreenFirstY16: function (a) {
-          var b = options.interval;
-          b = Math.ceil(options.startZ / b) * b,
-            b = (b - options.startZ) * options.chunkWidth + top;
-          return b
-        },
-        getInScreenFirstRegionX: function (a) {
-          for (var b = z.getScreenFirstX(), c = Math.floor(options.startX); left - (a ? 1 : 0) >= b || c % 32 !== 0;)
-            b += options.chunkWidth,
-              c += 1;
-          return b
-        },
-        getInScreenFirstRegionY: function (a) {
-          for (var b = z.getScreenFirstY(), c = Math.floor(options.startZ); top - (a ? 1 : 0) >= b || c % 32 !== 0;)
-            b += options.chunkWidth,
-              c += 1;
-          return b
-        },
-        getInScreenFirstRegionX16: function (a) {
-          for (var b = z.getScreenFirstX(), c = Math.floor(options.startX); left - (a ? 1 : 0) >= b || c % 32 !== 0;)
-            b += options.chunkWidth,
-              c += 1;
-          return b
-        },
-        getInScreenFirstRegionY16: function (a) {
-          for (var b = z.getScreenFirstY(), c = Math.floor(options.startZ); top - (a ? 1 : 0) >= b || c % 32 !== 0;)
-            b += options.chunkWidth,
-              c += 1;
-          return b
-        },
-        getFirstCoordinateX: function () {
-          return 16 * Math.ceil(options.startX)
-        },
-        getFirstCoordinateX16: function () {
-          var b = options.interval;
-          b = Math.ceil(options.startX / b) * b;
-          return 16 * b
-        },
-        getLastCoordinateX: function () {
-          for (var a = z.getFirstCoordinateX(), b = z.getInScreenFirstX(!0); right >= b;)
-            b += options.chunkWidth,
-              a += 16;
-          return a - 16
-        },
-        getFirstCoordinateZ: function () {
-          return 16 * Math.ceil(options.startZ)
-        },
-        getFirstCoordinateZ16: function () {
-          var b = options.interval;
-          b = Math.ceil(options.startZ / b) * b;
-          return 16 * b
-        },
-        getLastCoordinateZ: function () {
-          for (var a = z.getFirstCoordinateZ(), b = z.getInScreenFirstY(!0); bottom >= b;)
-            b += options.chunkWidth,
-              a += 16;
-          return a - 16
-        }
-      }, A = function () {
-        var b = 0
-          , d = 0
-          , e = 0
-          , l = 0
-          , o = 0
-          , v = 0
-          , x = 0
-          , A = 0
-          , E = 0
-          , F = 0
-          , H = []
-          , I = !1
-          , J = 0
-          , L = 0
-          , M = 0
-          , O = a.secondaryRange || 0
-          , Q = !1
-          , R = null
-          , S = {};
-        S.mapChanged = function (f) {
-          if ("undefined" != typeof options.seed) {
-            a.triggerHandler("mapDrawingStarted", [options, m]);
-            var g = f === !0 || y;
-            if (L = L + 1 | 0,
-              M = 0,
-              e = z.getFirstChunkXToFill(),
-              l = z.getFirstChunkZToFill(),
-              o = z.getLastChunkXToFill(),
-              v = z.getLastChunkZToFill(),
-              "undefined" != typeof m.boundaries && (e = Math.max(e, m.boundaries.minX),
-                l = Math.max(l, m.boundaries.minZ),
-                o = Math.min(o, m.boundaries.maxX),
-                v = Math.min(v, m.boundaries.maxZ)),
-              x = e - O,
-              A = l - O,
-              E = o + O,
-              F = v + O,
-              b = x,
-              d = A,
-              H = [],
-              R = null,
-              Q = options.distantView && a.distantViewDeferredRender || !options.distantView && a.deferredRender) {
-              var h = function (a, b) {
-                var c = z.chunkXToScreen(a) + 1
-                  , d = z.chunkZToScreen(b) + 1;
-                return [c, d]
-              };
-              R = a.getRenderer(x, A, E - x, F - A, options.chunkWidth, h)
-            }
-            if (f || (PutLoadText(),
-              p || (k.attr("aria-busy", "true"),
-                p = !0)),
-              !I || g) {
-              I = !0;
-              var i = (new Date).getTime() - c;
-              10 > i || g ? $(void 0, 90 - i, g, f) : window.postMessage("drawChunks", "*")
-            }
-          }
-        }
-          ;
-        var PutLoadText = function () {
-          EndClip();
-          mapDisp.font = "12px sans-serif";
-          mapDisp.textAlign = "end";
-          mapDisp.textBaseline = "middle";
-          mapDisp.fillStyle = "white";
-          mapDisp.fillText(mapText.chunkLoadShort, right - 5, 16);
-          BeginClip()
-        }
-          , ClearLoadText = function () {
-            EndClip();
-            mapDisp.fillStyle = borderColor;
-            mapDisp.fillRect(right - 55, 0, 60, 32);
-            BeginClip()
-          }
-          , V = function (b, c, d, e) {
-            if (W(b, c)) {
-              var j = a.primaryColorRGB
-                , k = a.secondaryColorRGB;
-              "string" == typeof e && (j = e,
-                k = e);
-              var l = z.chunkXToScreen(b) + 1
-                , m = z.chunkZToScreen(c) + 1
-                , n = Math.min(z.chunkXToScreen(b + 1) - 1, right + 1)
-                , o = Math.min(z.chunkZToScreen(c + 1) - 1, bottom + 1);
-              l = Math.max(l, left + 2),
-                m = Math.max(m, top + 2),
-                mapDisp.fillStyle = 1 > d ? "rgba(" + k + "," + d + ")" : "rgb(" + j + ")",
-                BeginClip(),
-                options.distantView ? (mapDisp.beginPath(),
-                  mapDisp.arc((l + n) / 2, (m + o) / 2, 4, 0, 2 * Math.PI, !1),
-                  mapDisp.fill()) : mapDisp.fillRect(l, m, n - l, o - m)
-            }
-          }
-          , W = function (a, b) {
-            return a >= e && b >= l && o >= a && v >= b
-          }
-          , X = function (a, b) {
-            return a -= e,
-              b -= l,
-              a * (v - l + 1) + b
-          }
-          , Y = function (a, b) {
-            if (W(a, b)) {
-              var c = X(a, b);
-              H[c] = 1
-            }
-          }
-          , Z = function (a, b) {
-            if (!W(a, b))
-              return !1;
-            var c = X(a, b);
-            return 1 === H[c]
-          }
-          , $ = function (c, e, f, g) {
-            function h() {
-              (!a.async || 1 > M && I === !1) && (a.drawChunkBordersPostRender || DrawGridLine(),
-                EndClip(),
-                DrawPin(),
-                g || (P.clearFooter(),
-                  DetailTextOnPin(),
-                  ClearLoadText(),
-                  p && (k.attr("aria-busy", "false"),
-                    p = !1)))
-            }
-            if ("undefined" != typeof c) {
-              if (c.source != window || "drawChunks" != c.data)
-                return;
-              c.stopPropagation()
-            }
-            "undefined" == typeof e && (e = 10),
-              f = f === !0,
-              J = (new Date).getTime();
-            for (var i = L; (new Date).getTime() - J < e || f;) {
-              if (Q) {
-                if (!R.hasNext())
-                  return I = !1,
-                    void h()
-              } else if (b > E && (d++,
-                b = x,
-                d > F))
-                return I = !1,
-                  void h();
-              if (a.async)
-                Q ? (M++,
-                  R.renderNextAsync(mapDisp, function (b, c, d, e, f, g) {
-                    if (L !== i)
-                      return !1;
-                    if (BeginClip(),
-                      g)
-                      mapDisp.fillStyle = t,
-                        mapDisp.fillRect(b, c, d, e);
-                    else if (f && a.loadingBackground) {
-                      var h = mapDisp.globalCompositeOperation;
-                      mapDisp.globalCompositeOperation = "destination-over",
-                        mapDisp.fillStyle = borderColor,
-                        mapDisp.fillRect(b, c, d, e),
-                        mapDisp.globalCompositeOperation = h
-                    }
-                    return !0
-                  }, function () {
-                    M--,
-                      L === i && h()
-                  }, function (a, b, c) {
-                    L === i && V(a, b, 1, c)
-                  }, function () {
-                    DrawGridLine(),
-                      DrawPin()
-                  }, function () {
-                    PutCoordText()
-                  }, function () {
-                    BeginClip(),
-                      Border()
-                  }, [options.gridStartX + 2, options.gridStartY + 2, options.gridEndX, options.gridEndY])) : (M++,
-                    a.checkChunkAsync(options.seed, b, d, m, function (b, c, d) {
-                      L === i && (M--,
-                        b ? V(c, d, 1, b) : a.loadingBackground && V(c, d, 1, w),
-                        h())
-                    }),
-                    true);
-              else if (Q)
-                BeginClip(),
-                  R.renderNext(mapDisp, function (a, b, c) {
-                    V(a, b, 1, c)
-                  });
-              else {
-                var j = a.checkChunk(options.seed, b, d, m);
-                if (j) {
-                  if (V(b, d, 1, j),
-                    n && O > 0) {
-                    Y(b, d);
-                    var l = a.getSurroundings(b, d);
-                    if ("undefined" != typeof l)
-                      for (var o = 0; o < l.length; o++) {
-                        var s = l[o];
-                        Z(s.x, s.z) || s.p > 0 && V(s.x, s.z, s.p)
-                      }
-                  }
-                } else
-                  a.loadingBackground && V(b, d, 1, w);
-                b++
-              }
-            }
-            window.postMessage("drawChunks", "*")
-          };
-        return window.addEventListener ? window.addEventListener("message", $, !0) : y = !0,
-          S
-      }(), BeginClip = function () {  // Start clip area
-        isClip || (
-          isClip = !0,
-          mapDisp.save(),
-          mapDisp.beginPath(),
-          mapDisp.rect(
-            options.gridStartX + 2, options.gridStartY + 2,
-            options.gridEndX - options.gridStartX - 5,
-            options.gridEndY - options.gridStartY - 4
-          ),
-          mapDisp.clip()
-        )
-      }, EndClip = function () {    // End clip area
-        isClip && (
-          isClip = !1,
-          mapDisp.restore()
-        )
-      }, Border = function () {    // Fill border with specify color, clear map area 
-        L = !1,
-          mapDisp.fillStyle = borderColor,
-          mapDisp.fillRect(0, 0, d, e),
-          a.loadingBackground && (
-            BeginClip(),  // Contains B and C function
-            mapDisp.clearRect(left, top, right - left, bottom - top),
-            EndClip()
-          )
-      }, ClearMap = function () {    // Clear entire screen
-        mapDisp.fillStyle = borderColor;
-        mapDisp.fillRect(0, 0, d, e)
-      }, Grid = function (color, lineWidth, c, d, e) {  // Draw grid line actually
-        var j, k;
-        for (mapDisp.strokeStyle = color,
-          mapDisp.lineWidth = lineWidth,
-          mapDisp.beginPath(),
-          j = c; right + .5 >= j;)
-          mapDisp.moveTo(Math.round(j) + .5, Math.round(top) + 2),
-            mapDisp.lineTo(Math.round(j) + .5, Math.round(bottom) + 1),
-            j += e;
-        for (mapDisp.stroke(),
-          mapDisp.beginPath(),
-          k = d; bottom + .5 >= k;)
-          mapDisp.moveTo(Math.round(left) + 2, Math.round(k) + .5),
-            mapDisp.lineTo(Math.round(right) + 1, Math.round(k) + .5),
-            k += e;
-        mapDisp.stroke()
-      }, DrawGridLine = function () {  // Draw grid line caller
-        if (o) {
-          var a = options.chunkWidth, b = options.interval;
-          options.distantView || Grid("#888", 1, z.getInScreenFirstX16(!1) - b * a, z.getInScreenFirstY16(!1) - b * a, a);
-          Grid("#88C", options.distantView ? 1 : 2, z.getInScreenFirstX16(!0) - b * a, z.getInScreenFirstY16(!0) - b * a, b * a);
-        }
-      }, PutCoordText = function () {  //  Coordinate text
-        var b, c, e = left + .5, k = top + .5, p = options.interval;
-        mapDisp.strokeStyle = "#444",
-          mapDisp.lineWidth = "2",
-          mapDisp.beginPath(),
-          mapDisp.moveTo(e, bottom + 1),
-          mapDisp.lineTo(e, k),
-          mapDisp.lineTo(right, k),
-          mapDisp.lineTo(right, bottom + 1),
-          mapDisp.lineTo(e, bottom + 1),
-          mapDisp.stroke(),
-          mapDisp.font = "10px sans-serif";
-        b = z.getInScreenFirstX16(!0),
-          c = top + 16,
-          mapDisp.textAlign = "center",
-          mapDisp.textBaseline = "alphabetic",
-          mapDisp.fillStyle = "white",
-          BeginClip();
-        for (var q = z.getFirstCoordinateX16(); right >= b;) {
-          mapDisp.fillText(z.formatNr(q.toFixed(0)), b, c);
-          b += options.chunkWidth * p;
-          q += 16 * p;
-        }
-        b = left + 4;
-        c = z.getInScreenFirstY16(!0);
-        mapDisp.textAlign = "start";
-        q = z.getFirstCoordinateZ16();
-        if (bottom >= c) {
-          mapDisp.textBaseline = "middle";
-          c > top + 28 && mapDisp.fillText(z.formatNr(q.toFixed(0)), b, c);
-          c += p * options.chunkWidth;
-          q += 16 * p;
-          for (; bottom >= c;) {
-            mapDisp.fillText(z.formatNr(q.toFixed(0)), b, c);
-            c += p * options.chunkWidth;
-            q += 16 * p;
-          }
-        }
-        mapDisp.drawImage(a.compassImage, right - 45, bottom - 55);
-        EndClip();
+  }, MapRenderer = function () {
+    var c, l = 0, borderColor = "#332B28", t = "#f0cccc", w = "208,227,240", isClip = !1, y = a.drawAll, z = {
+      formatNr: v.formatNr,
+      chunkXToScreen: function (a) { return left + Math.round((a - options.startX) * options.chunkWidth) },
+      chunkZToScreen: function (a) { return top + Math.round((a - options.startZ) * options.chunkWidth) },
+      getFirstChunkX: function () { return Math.floor(options.startX) },
+      getFirstChunkZ: function () { return Math.floor(options.startZ) },
+      getFirstChunkXToFill: function () {
+        var a = z.getFirstChunkX()
+          , b = a + 1
+          , c = z.chunkXToScreen(a)
+          , d = z.chunkXToScreen(b);
+        return c = Math.max(c, left),
+          3 > d - c ? b : a
       },
-        PutSeedText = function () {  //  Seed text
-          var b, c;
-          mapDisp.textAlign = "start",
-            mapDisp.font = "11px sans-serif",
-            mapDisp.fillStyle = "white",
-            c = 11,
-            b = left;
-          var t = ", " + mapText.forLabel + " " + m.label
-            , v = options.seedDisplay || options.seed;
-          "string" == typeof a.header ? mapDisp.fillText(a.header, b, c + 8) : "undefined" == typeof options.seedString ? mapDisp.fillText("种子: " + v.toString() + t, b, c + 8) : (mapDisp.fillText("种子: ", b, c + 8),
-            mapDisp.font = "10px sans-serif",
-            mapDisp.fillText(options.seedString + t, b + 35, c),
-            mapDisp.fillText(v.toString(), b + 35, c + 16))
-        }
-        , PutDetailText = function (a, b, c, d, e) {
-          L = !0,
-            mapDisp.font = "11px sans-serif",
-            mapDisp.textAlign = "end",
-            mapDisp.fillStyle = "white";
-          var i = right - 5
-            , k = bottom + 15;
-          mapDisp.fillText("X: " + z.formatNr(a.toFixed(1)) + "   Z: " + z.formatNr(b.toFixed(1)), i, k),
-            k += 14,
-            mapDisp.fillText("区块 (" + z.formatNr(Math.floor(c / 16)) + " / " + z.formatNr(Math.floor(d / 16)) + ") " + mapText.from + " (" + z.formatNr(c) + " / " + z.formatNr(d) + ") " + mapText.to + " (" + z.formatNr(c + 15) + " / " + z.formatNr(d + 15) + ")", i, k),
-            k += 14,
-            e && (
-              mapDisp.font = "11px sans-serif",
-              mapDisp.fillText(e, i, k)
-            )
-        }, DrawPin = function () {
-
-          if (P.pinRect = void 0,
-            "undefined" != typeof options.pin) {
-            var a = options.pin
-              , b = left + (a[0] - options.startX) * options.chunkWidth;
-            left > b || b > right || (l = top + (a[1] - options.startZ) * options.chunkWidth,
-              top > l || l > bottom || (P.pinRect = [Math.floor(b) - 3, Math.floor(l) - 3, 6, 6],
-                mapDisp.fillStyle = "rgb(255,255,255)",
-                mapDisp.beginPath(),
-                mapDisp.moveTo(0, 0),
-                mapDisp.arc(b, l, 7, 0, 2 * Math.PI, !0),
-                mapDisp.closePath(),
-                mapDisp.fill(),
-                mapDisp.fillStyle = "rgb(255,0,0)",
-                mapDisp.beginPath(),
-                mapDisp.moveTo(0, 0),
-                mapDisp.arc(b, l, 5, 0, 2 * Math.PI, !0),
-                mapDisp.closePath(),
-                mapDisp.fill()))
-          }
-        }, DrawMarkPin = function () {
-          if (P.pinRect = void 0,
-            "undefined" != typeof options.pin) {
-            var a = options.pin
-              , b = left + (a[0] - options.startX) * options.chunkWidth;
-            left > b || b > right || (l = top + (a[1] - options.startZ) * options.chunkWidth,
-              top > l || l > bottom || (P.pinRect = [Math.floor(b) - 3, Math.floor(l) - 3, 6, 6],
-                mapDisp.fillStyle = "rgb(255,255,255)",
-                mapDisp.beginPath(),
-                mapDisp.moveTo(0, 0),
-                mapDisp.arc(b, l, 7, 0, 2 * Math.PI, !0),
-                mapDisp.closePath(),
-                mapDisp.fill(),
-                mapDisp.fillStyle = "rgb(255,0,255)",
-                mapDisp.beginPath(),
-                mapDisp.moveTo(0, 0),
-                mapDisp.arc(b, l, 5, 0, 2 * Math.PI, !0),
-                mapDisp.closePath(),
-                mapDisp.fill()))
-          }
-        }, L = !1, M = null, DetailTextOnPin = function () {
-          if (!L && "undefined" != typeof options.pin) {
-            var b = options.pin[0]
-              , c = options.pin[1]
-              , d = 16 * b
-              , e = 16 * c
-              , f = null;
-            a.getHoverText && (f = a.getHoverText({
-              x: Math.floor(d),
-              z: Math.floor(e),
-              chunkX: b,
-              chunkZ: c,
-              platform: m
-            })),
-              PutDetailText(d, e, 16 * Math.floor(b), 16 * Math.floor(c), f)
-          }
-        }, DelayPutText = function () {
-          null !== M && clearTimeout(M),
-            M = setTimeout(DetailTextOnPin, 800)
-        }, P = {};
-      P.pinRect = void 0;
-      P.initialDraw = function () {
-        P.redraw()
-      };
-      P.clearFooter = function () {
-        L = !1,
-          mapDisp.fillStyle = borderColor,
-          mapDisp.fillRect(0, bottom + 1, right, e - bottom - 1),
-          DelayPutText()
-      };
-      P.redrawFooter = function (a, b, c, d, e) {
-        EndClip(),
-          P.clearFooter(),
-          PutDetailText(a, b, c, d, e)
-      };
-      P.setXBoundaries = function () { };
-      var Q = function () {
-        if ("undefined" == typeof m.boundaries)
-          return options.gridStartX = left,
-            options.gridStartY = top,
-            options.gridEndX = right + 1,
-            void (options.gridEndY = bottom + 1);
-        var a = z.getInScreenFirstX(!0)
-          , b = Math.ceil(options.startX)
-          , c = b + Math.floor((right - z.getScreenFirstX()) / options.chunkWidth)
-          , d = m.boundaries.minX
-          , e = m.boundaries.maxX;
-        d + 1 > c || b - 1 > e ? (options.gridStartX = left,
-          options.gridEndX = left) : (options.gridStartX = d >= b ? a + options.chunkWidth * (d - b) - 2 : left,
-            options.gridEndX = c >= e ? a + options.chunkWidth * (e - b) + 1 : right + 1);
-        var j = z.getInScreenFirstY(!0)
-          , k = Math.ceil(options.startZ)
-          , l = k + Math.floor((bottom - z.getScreenFirstY()) / options.chunkWidth)
-          , n = m.boundaries.minZ
-          , o = m.boundaries.maxZ;
-        n + 1 > l || k - 1 > o ? (options.gridStartY = top,
-          options.gridEndY = top) : (options.gridStartY = n >= k ? j + options.chunkWidth * (n - k) - 2 : top,
-            options.gridEndY = l >= o ? j + options.chunkWidth * (o - k) + 1 : bottom + 1)
-      };
-      return P.redraw = function () {
-        b(),
-          c = (new Date).getTime(),
-          Q(),
-          EndClip(),
-          Border(),
-          PutSeedText(),
-          PutCoordText(),
-          BeginClip(),  // Start clip area, restrict drawing operation after.
-          DrawGridLine(),
-          A.mapChanged(!1),
-          EndClip(),  // Remove clip area, cancelled restriction.
-          DrawPin(),
-          DelayPutText()
+      getFirstChunkZToFill: function () {
+        var a = z.getFirstChunkZ()
+          , b = a + 1
+          , c = z.chunkZToScreen(a)
+          , d = z.chunkZToScreen(b);
+        return c = Math.max(c, top),
+          3 > d - c ? b : a
+      },
+      getLastChunkXToFill: function () {
+        var a = z.getFirstChunkXToFill();
+        return a + Math.floor((right - z.chunkXToScreen(a)) / options.chunkWidth)
+      },
+      getLastChunkZToFill: function () {
+        var a = z.getFirstChunkZToFill();
+        return a + Math.floor((bottom - z.chunkZToScreen(a)) / options.chunkWidth)
+      },
+      getScreenFirstX: function () {
+        return (Math.floor(options.startX) - options.startX) * options.chunkWidth + left
+      },
+      getScreenFirstY: function () {
+        return (Math.floor(options.startZ) - options.startZ) * options.chunkWidth + top
+      },
+      getInScreenFirstX: function (a) {
+        for (var b = z.getScreenFirstX(); left - (a ? 1 : 0) >= b;)
+          b += options.chunkWidth;
+        return b
+      },
+      getInScreenFirstY: function (a) {
+        for (var b = z.getScreenFirstY(); top - (a ? 1 : 0) >= b;)
+          b += options.chunkWidth;
+        return b
+      },
+      getInScreenFirstX16: function (a) {
+        var b = options.interval;
+        b = Math.ceil(options.startX / b) * b,
+          b = (b - options.startX) * options.chunkWidth + left;
+        return b
+      },
+      getInScreenFirstY16: function (a) {
+        var b = options.interval;
+        b = Math.ceil(options.startZ / b) * b,
+          b = (b - options.startZ) * options.chunkWidth + top;
+        return b
+      },
+      getInScreenFirstRegionX: function (a) {
+        for (var b = z.getScreenFirstX(), c = Math.floor(options.startX); left - (a ? 1 : 0) >= b || c % 32 !== 0;)
+          b += options.chunkWidth,
+            c += 1;
+        return b
+      },
+      getInScreenFirstRegionY: function (a) {
+        for (var b = z.getScreenFirstY(), c = Math.floor(options.startZ); top - (a ? 1 : 0) >= b || c % 32 !== 0;)
+          b += options.chunkWidth,
+            c += 1;
+        return b
+      },
+      getInScreenFirstRegionX16: function (a) {
+        for (var b = z.getScreenFirstX(), c = Math.floor(options.startX); left - (a ? 1 : 0) >= b || c % 32 !== 0;)
+          b += options.chunkWidth,
+            c += 1;
+        return b
+      },
+      getInScreenFirstRegionY16: function (a) {
+        for (var b = z.getScreenFirstY(), c = Math.floor(options.startZ); top - (a ? 1 : 0) >= b || c % 32 !== 0;)
+          b += options.chunkWidth,
+            c += 1;
+        return b
+      },
+      getFirstCoordinateX: function () {
+        return 16 * Math.ceil(options.startX)
+      },
+      getFirstCoordinateX16: function () {
+        var b = options.interval;
+        b = Math.ceil(options.startX / b) * b;
+        return 16 * b
+      },
+      getLastCoordinateX: function () {
+        for (var a = z.getFirstCoordinateX(), b = z.getInScreenFirstX(!0); right >= b;)
+          b += options.chunkWidth,
+            a += 16;
+        return a - 16
+      },
+      getFirstCoordinateZ: function () {
+        return 16 * Math.ceil(options.startZ)
+      },
+      getFirstCoordinateZ16: function () {
+        var b = options.interval;
+        b = Math.ceil(options.startZ / b) * b;
+        return 16 * b
+      },
+      getLastCoordinateZ: function () {
+        for (var a = z.getFirstCoordinateZ(), b = z.getInScreenFirstY(!0); bottom >= b;)
+          b += options.chunkWidth,
+            a += 16;
+        return a - 16
       }
-        ,
-        P.drawImage = function () {
-          Q(),
-            EndClip(),
-            Border(),
-            PutSeedText(),
-            PutCoordText(),
+    };
+    var A = function () {
+      var b = 0
+        , d = 0
+        , e = 0
+        , l = 0
+        , o = 0
+        , v = 0
+        , x = 0
+        , A = 0
+        , E = 0
+        , F = 0
+        , H = []
+        , I = !1
+        , J = 0
+        , L = 0
+        , M = 0
+        , O = a.secondaryRange || 0
+        , R = null
+        , S = {};
+      S.mapChanged = function (f) {
+        if ("undefined" != typeof options.seed) {
+          a.triggerHandler("mapDrawingStarted", [options, m]);
+          var g = f === !0 || y;
+          L = L + 1 | 0,
+            M = 0,
+            e = z.getFirstChunkXToFill(),
+            l = z.getFirstChunkZToFill(),
+            o = z.getLastChunkXToFill(),
+            v = z.getLastChunkZToFill(),
+            "undefined" != typeof m.boundaries && (e = Math.max(e, m.boundaries.minX),
+              l = Math.max(l, m.boundaries.minZ),
+              o = Math.min(o, m.boundaries.maxX),
+              v = Math.min(v, m.boundaries.maxZ)),
+            x = e - O,
+            A = l - O,
+            E = o + O,
+            F = v + O,
+            b = x,
+            d = A,
+            H = [],
+            R = null;
+          R = a.getRenderer(x, A, E - x, F - A, options.chunkWidth, function (a, b) {
+            var c = z.chunkXToScreen(a) + 1
+              , d = z.chunkZToScreen(b) + 1;
+            return [c, d]
+          });
+          if (f || (PutLoadText(),
+            p || (k.attr("aria-busy", "true"),
+              p = !0)),
+            !I || g) {
+            I = !0;
+            var i = (new Date).getTime() - c;
+            10 > i || g ? $(void 0, 90 - i, g, f) : window.postMessage("drawChunks", "*")
+          }
+        }
+      }
+
+      function PutLoadText() {
+        EndClip();
+        mapDisp.font = "12px sans-serif";
+        mapDisp.textAlign = "end";
+        mapDisp.textBaseline = "middle";
+        mapDisp.fillStyle = "white";
+        mapDisp.fillText(mapText.chunkLoadShort, right - 5, 16);
+        BeginClip()
+      }
+      function ClearLoadText() {
+        EndClip();
+        mapDisp.fillStyle = borderColor;
+        mapDisp.fillRect(right - 55, 0, 60, 32);
+        BeginClip()
+      }
+      function V(b, c, d, e) {
+        if (W(b, c)) {
+          var j = a.primaryColorRGB
+            , k = a.secondaryColorRGB;
+          "string" == typeof e && (j = e,
+            k = e);
+          var l = z.chunkXToScreen(b) + 1
+            , m = z.chunkZToScreen(c) + 1
+            , n = Math.min(z.chunkXToScreen(b + 1) - 1, right + 1)
+            , o = Math.min(z.chunkZToScreen(c + 1) - 1, bottom + 1);
+          l = Math.max(l, left + 2),
+            m = Math.max(m, top + 2),
+            mapDisp.fillStyle = 1 > d ? "rgba(" + k + "," + d + ")" : "rgb(" + j + ")",
             BeginClip(),
-            DrawGridLine(),
-            A.mapChanged(!0),
+            options.distantView ? (mapDisp.beginPath(),
+              mapDisp.arc((l + n) / 2, (m + o) / 2, 4, 0, 2 * Math.PI, !1),
+              mapDisp.fill()) : mapDisp.fillRect(l, m, n - l, o - m)
+        }
+      }
+      function W(a, b) {
+        return a >= e && b >= l && o >= a && v >= b
+      }
+      function X(a, b) {
+        return a -= e,
+          b -= l,
+          a * (v - l + 1) + b
+      }
+      function Y(a, b) {
+        if (W(a, b)) {
+          var c = X(a, b);
+          H[c] = 1
+        }
+      }
+      function Z(a, b) {
+        if (!W(a, b))
+          return !1;
+        var c = X(a, b);
+        return 1 === H[c]
+      }
+      function $(c, e, f, g) {
+        function h() {
+          (!a.async || 1 > M && I === !1) && (a.drawChunkBordersPostRender || DrawGridLine(),
             EndClip(),
             DrawPin(),
-            DetailTextOnPin()
+            g || (P.clearFooter(),
+              DetailTextOnPin(),
+              ClearLoadText(),
+              p && (k.attr("aria-busy", "false"),
+                p = !1)))
         }
-        ,
-        P.clearAll = function () {
-          mapDisp.fillStyle = borderColor,
-            mapDisp.fillRect(0, 0, d, e)
+        if ("undefined" != typeof c) {
+          if (c.source != window || "drawChunks" != c.data)
+            return;
+          c.stopPropagation()
         }
-        ,
-        P
-    }()
+        "undefined" == typeof e && (e = 10),
+          f = f === !0,
+          J = (new Date).getTime();
+        for (var i = L; (new Date).getTime() - J < e || f;) {
+          if (!R.hasNext())
+            return I = !1,
+              void h();
+          if (a.async)
+            M++,
+              R.renderNextAsync(mapDisp, function (b, c, d, e, f, g) {
+                if (L !== i)
+                  return !1;
+                if (BeginClip(),
+                  g)
+                  mapDisp.fillStyle = t,
+                    mapDisp.fillRect(b, c, d, e);
+                else if (f && a.loadingBackground) {
+                  var h = mapDisp.globalCompositeOperation;
+                  mapDisp.globalCompositeOperation = "destination-over",
+                    mapDisp.fillStyle = borderColor,
+                    mapDisp.fillRect(b, c, d, e),
+                    mapDisp.globalCompositeOperation = h
+                }
+                return !0
+              }, function () {
+                M--,
+                  L === i && h()
+              }, function (a, b, c) {
+                L === i && V(a, b, 1, c)
+              }, function () {
+                DrawGridLine(),
+                  DrawPin()
+              }, function () {
+                PutCoordText()
+              }, function () {
+                BeginClip(),
+                  Border()
+              }, [options.gridStartX + 2, options.gridStartY + 2, options.gridEndX, options.gridEndY])
+          else {
+            var j = a.checkChunk(options.seed, b, d, m);
+            if (j) {
+              if (V(b, d, 1, j),
+                n && O > 0) {
+                Y(b, d);
+                var l = a.getSurroundings(b, d);
+                if ("undefined" != typeof l)
+                  for (var o = 0; o < l.length; o++) {
+                    var s = l[o];
+                    Z(s.x, s.z) || s.p > 0 && V(s.x, s.z, s.p)
+                  }
+              }
+            } else
+              a.loadingBackground && V(b, d, 1, w);
+            b++
+          }
+        }
+        window.postMessage("drawChunks", "*")
+      };
+      return window.addEventListener ? window.addEventListener("message", $, !0) : y = !0,
+        S
+    }();
+
+    function BeginClip() {  // Start clip area
+      isClip || (
+        isClip = !0,
+        mapDisp.save(),
+        mapDisp.beginPath(),
+        mapDisp.rect(
+          options.gridStartX + 2, options.gridStartY + 2,
+          options.gridEndX - options.gridStartX - 5,
+          options.gridEndY - options.gridStartY - 4
+        ),
+        mapDisp.clip()
+      )
+    }
+    function EndClip() {    // End clip area
+      isClip && (
+        isClip = !1,
+        mapDisp.restore()
+      )
+    }
+    /** Fill border with specify color, clear map area */
+    function Border() {
+      L = !1,
+        mapDisp.fillStyle = borderColor,
+        mapDisp.fillRect(0, 0, d, e),
+        a.loadingBackground && (
+          BeginClip(),  // Contains B and C function
+          mapDisp.clearRect(left, top, right - left, bottom - top),
+          EndClip()
+        )
+    }
+    /** Clear entire canvas */
+    function ClearMap() {
+      mapDisp.fillStyle = borderColor;
+      mapDisp.fillRect(0, 0, d, e)
+    }
+    /** Draw a grid with given params */
+    function Grid(color, lineWidth, c, d, e) {
+      var j, k;
+      for (mapDisp.strokeStyle = color,
+        mapDisp.lineWidth = lineWidth,
+        mapDisp.beginPath(),
+        j = c; right + .5 >= j;)
+        mapDisp.moveTo(Math.round(j) + .5, Math.round(top) + 2),
+          mapDisp.lineTo(Math.round(j) + .5, Math.round(bottom) + 1),
+          j += e;
+      for (mapDisp.stroke(),
+        mapDisp.beginPath(),
+        k = d; bottom + .5 >= k;)
+        mapDisp.moveTo(Math.round(left) + 2, Math.round(k) + .5),
+          mapDisp.lineTo(Math.round(right) + 1, Math.round(k) + .5),
+          k += e;
+      mapDisp.stroke()
+    }
+    /** Draw grid lines */
+    function DrawGridLine() {
+      if (o) {
+        var a = options.chunkWidth, b = options.interval;
+        options.distantView || Grid("#888", 1, z.getInScreenFirstX16(!1) - b * a, z.getInScreenFirstY16(!1) - b * a, a);
+        Grid("#88C", options.distantView ? 1 : 2, z.getInScreenFirstX16(!0) - b * a, z.getInScreenFirstY16(!0) - b * a, b * a);
+      }
+    }
+    /** Put scale division */
+    function PutCoordText() {
+      var b, c, e = left + .5, k = top + .5, p = options.interval;
+      mapDisp.strokeStyle = "#444",
+        mapDisp.lineWidth = "2",
+        mapDisp.beginPath(),
+        mapDisp.moveTo(e, bottom + 1),
+        mapDisp.lineTo(e, k),
+        mapDisp.lineTo(right, k),
+        mapDisp.lineTo(right, bottom + 1),
+        mapDisp.lineTo(e, bottom + 1),
+        mapDisp.stroke(),
+        mapDisp.font = "10px sans-serif";
+      b = z.getInScreenFirstX16(!0),
+        c = top + 16,
+        mapDisp.textAlign = "center",
+        mapDisp.textBaseline = "alphabetic",
+        mapDisp.fillStyle = "white",
+        BeginClip();
+      for (var q = z.getFirstCoordinateX16(); right >= b;) {
+        mapDisp.fillText(z.formatNr(q.toFixed(0)), b, c);
+        b += options.chunkWidth * p;
+        q += 16 * p;
+      }
+      b = left + 4;
+      c = z.getInScreenFirstY16(!0);
+      mapDisp.textAlign = "start";
+      q = z.getFirstCoordinateZ16();
+      if (bottom >= c) {
+        mapDisp.textBaseline = "middle";
+        c > top + 28 && mapDisp.fillText(z.formatNr(q.toFixed(0)), b, c);
+        c += p * options.chunkWidth;
+        q += 16 * p;
+        for (; bottom >= c;) {
+          mapDisp.fillText(z.formatNr(q.toFixed(0)), b, c);
+          c += p * options.chunkWidth;
+          q += 16 * p;
+        }
+      }
+      mapDisp.drawImage(a.compassImage, right - 45, bottom - 55);
+      EndClip();
+    }
+    /** Put seed text on top-left of canvas */
+    function PutSeedText() {
+      var b, c;
+      mapDisp.textAlign = "start",
+        mapDisp.font = "11px sans-serif",
+        mapDisp.fillStyle = "white",
+        c = 11,
+        b = left;
+      var t = ", " + mapText.forLabel + " " + m.label
+        , v = options.seedDisplay || options.seed;
+      "string" == typeof a.header ? mapDisp.fillText(a.header, b, c + 8) : "undefined" == typeof options.seedString ? mapDisp.fillText("种子: " + v.toString() + t, b, c + 8) : (mapDisp.fillText("种子: ", b, c + 8),
+        mapDisp.font = "10px sans-serif",
+        mapDisp.fillText(options.seedString + t, b + 35, c),
+        mapDisp.fillText(v.toString(), b + 35, c + 16))
+    }
+    /** Put detailed text of pointer on bottom-right of canvas */
+    function PutDetailText(posX, posZ, chunkX, chunkZ, attachText) {
+      L = !0,
+        mapDisp.font = "11px sans-serif",
+        mapDisp.textAlign = "end",
+        mapDisp.fillStyle = "white";
+      var i = right - 5
+        , k = bottom + 15;
+      mapDisp.fillText(`X: ${z.formatNr(posX.toFixed(1))}  Z: ${z.formatNr(posZ.toFixed(1))}`, i, k);
+      k += 14;
+      mapDisp.fillText(`区块 (${z.formatNr(Math.floor(chunkX / 16))} / ${z.formatNr(Math.floor(chunkZ / 16))} ${mapText.from} (${z.formatNr(chunkX)} / ${z.formatNr(chunkZ)} ) ${mapText.to} (${z.formatNr(chunkX + 15)} / ${z.formatNr(chunkZ + 15)})`, i, k);
+      k += 14;
+      attachText && (
+        mapDisp.font = "11px sans-serif",
+        mapDisp.fillText(attachText, i, k)
+      )
+    }
+    /** Draw the pin on canvas */
+    function DrawPin() {
+      if (P.pinRect = void 0,
+        "undefined" != typeof options.pin) {
+        var a = options.pin
+          , b = left + (a[0] - options.startX) * options.chunkWidth;
+        left > b || b > right || (l = top + (a[1] - options.startZ) * options.chunkWidth,
+          top > l || l > bottom || (P.pinRect = [Math.floor(b) - 3, Math.floor(l) - 3, 6, 6],
+            mapDisp.fillStyle = "rgb(255,255,255)",
+            mapDisp.beginPath(),
+            mapDisp.moveTo(0, 0),
+            mapDisp.arc(b, l, 7, 0, 2 * Math.PI, !0),
+            mapDisp.closePath(),
+            mapDisp.fill(),
+            mapDisp.fillStyle = "rgb(255,0,0)",
+            mapDisp.beginPath(),
+            mapDisp.moveTo(0, 0),
+            mapDisp.arc(b, l, 5, 0, 2 * Math.PI, !0),
+            mapDisp.closePath(),
+            mapDisp.fill()))
+      }
+    }
+    /** Put detailed text when pointer is out */
+    function DetailTextOnPin() {
+      if (!L && "undefined" != typeof options.pin) {
+        var b = options.pin[0]
+          , c = options.pin[1]
+          , d = 16 * b
+          , e = 16 * c
+          , f = null;
+        a.getHoverText && (f = a.getHoverText({
+          x: Math.floor(d),
+          z: Math.floor(e),
+          chunkX: b,
+          chunkZ: c,
+          platform: m
+        })),
+          PutDetailText(d, e, 16 * Math.floor(b), 16 * Math.floor(c), f)
+      }
+    }
+    function DelayPutText() {
+      null !== M && clearTimeout(M),
+        M = setTimeout(DetailTextOnPin, 800)
+    }
+    /** Calculate grid params */
+    function Q() {
+      if ("undefined" == typeof m.boundaries)
+        return options.gridStartX = left,
+          options.gridStartY = top,
+          options.gridEndX = right + 1,
+          void (options.gridEndY = bottom + 1);
+      var a = z.getInScreenFirstX(!0)
+        , b = Math.ceil(options.startX)
+        , c = b + Math.floor((right - z.getScreenFirstX()) / options.chunkWidth)
+        , d = m.boundaries.minX
+        , e = m.boundaries.maxX;
+      d + 1 > c || b - 1 > e ? (options.gridStartX = left,
+        options.gridEndX = left) : (options.gridStartX = d >= b ? a + options.chunkWidth * (d - b) - 2 : left,
+          options.gridEndX = c >= e ? a + options.chunkWidth * (e - b) + 1 : right + 1);
+      var j = z.getInScreenFirstY(!0)
+        , k = Math.ceil(options.startZ)
+        , l = k + Math.floor((bottom - z.getScreenFirstY()) / options.chunkWidth)
+        , n = m.boundaries.minZ
+        , o = m.boundaries.maxZ;
+      n + 1 > l || k - 1 > o ? (options.gridStartY = top,
+        options.gridEndY = top) : (options.gridStartY = n >= k ? j + options.chunkWidth * (n - k) - 2 : top,
+          options.gridEndY = l >= o ? j + options.chunkWidth * (o - k) + 1 : bottom + 1)
+    };
+    var L = !1, M = null, P = {
+      pinRect: void 0,
+      initialDraw: function () { P.redraw() },
+      clearFooter: function () {
+        L = !1;
+        mapDisp.fillStyle = borderColor;
+        mapDisp.fillRect(0, bottom + 1, right, e - bottom - 1);
+        DelayPutText()
+      },
+      redrawFooter: function (a, b, c, d, e) {
+        EndClip();
+        P.clearFooter();
+        PutDetailText(a, b, c, d, e)
+      },
+      setXBoundaries: function () { },
+      clearAll: function () { mapDisp.fillStyle = borderColor; mapDisp.fillRect(0, 0, d, e) },
+      redraw: function () {
+        b();
+        c = (new Date).getTime();
+        Q();
+        EndClip();
+        Border();
+        PutSeedText();
+        PutCoordText();
+        BeginClip();  // Start clip area, restrict drawing operation after.
+        DrawGridLine();
+        A.mapChanged(!1);
+        EndClip();  // Remove clip area, cancelled restriction.
+        DrawPin();
+        DelayPutText()
+      },
+      drawImage: function () {
+        Q();
+        EndClip();
+        Border();
+        PutSeedText();
+        PutCoordText();
+        BeginClip();
+        DrawGridLine();
+        A.mapChanged(!0);
+        EndClip();
+        DrawPin();
+        DetailTextOnPin()
+      }
+    };
+    return P
+  }()
     , x = {
       setX: function (a) {
         a !== options.startX && (a = v.limitInt32(a),
@@ -1771,7 +1739,7 @@ $.fn.seedControls = function (a) {
         a !== options.startZ && (a = v.limitInt32(a),
           a = v.nearInteger(a),
           options.startZ = a,
-          w.setXBoundaries())
+          MapRenderer.setXBoundaries())
       },
       getChunkFromCoords: function (a, b) {
         return [(a.toNumber() + .5) / 16, (b.toNumber() + .5) / 16]
@@ -1833,8 +1801,8 @@ $.fn.seedControls = function (a) {
       setPinAtCanvas: function (b, c) {
         var d = x.getChunkFromScreen(b, c);
         if ("undefined" != typeof d) {
-          if ("undefined" != typeof w.pinRect) {
-            var e = w.pinRect
+          if ("undefined" != typeof MapRenderer.pinRect) {
+            var e = MapRenderer.pinRect
               , f = e[0]
               , g = e[0] + e[2]
               , h = e[1]
@@ -1876,12 +1844,11 @@ $.fn.seedControls = function (a) {
         d = Math.max(Math.min(d, e[1]), e[0]);
         var f = y.toChunkWidth(d);
         options.distantView = f < ChunkApp.config.distantChunkWidth;
-        var g = f / options.chunkWidth,
-          t1;
+        var g = f / options.chunkWidth, t1;
         options.chunkWidth = f,
           t1 = Math.log10(1 / options.chunkWidth * options.intervalFactor),
           options.interval = Math.ceil(t1),
-          (Math.frac(t1) >= 0 && Math.frac(t1) <= 0.3) ? options.interval = Math.pow(10, options.interval - 1) * 2 :
+          (Math.frac(t1) > 0 && Math.frac(t1) <= 0.3) ? options.interval = Math.pow(10, options.interval - 1) * 2 :
             (Math.frac(t1) > 0.3 && Math.frac(t1) <= 0.699) ? options.interval = Math.pow(10, options.interval - 1) * 5 :
               options.interval = Math.pow(10, options.interval),
           y.zoomFactor = d,
@@ -1933,12 +1900,12 @@ $.fn.seedControls = function (a) {
     , A = {
       setSeed: function (a, b, c, d) {
         v.setSeed(b, c, d),
-          w.redraw()
+          MapRenderer.redraw()
       },
       goTo: function (a, b, c) {
         x.setCenter(b, c),
           x.setPin(b, c),
-          w.redraw()
+          MapRenderer.redraw()
       },
       setZoomPercent: function (a, b) {
         var c = y.getMinMaxZoom()
@@ -1946,7 +1913,7 @@ $.fn.seedControls = function (a) {
           , e = left + (right - left) / 2
           , j = top + (bottom - top) / 2;
         y.setZoom(e, j, d),
-          w.redraw()
+          MapRenderer.redraw()
       },
       sendMap: function () {
         function b() {
@@ -1960,7 +1927,7 @@ $.fn.seedControls = function (a) {
             a[0].click(),
             a.remove()
         }
-        w.drawImage();
+        MapRenderer.drawImage();
         var d = k.get(0).toDataURL("image/png")
           , e = options.seedString || options.seed || "empty";
         if (e = (a.shortName || "chunkbase") + "_" + e,
@@ -1972,8 +1939,8 @@ $.fn.seedControls = function (a) {
           }
         else
           b();
-        w.clearAll(),
-          w.redraw()
+        MapRenderer.clearAll(),
+          MapRenderer.redraw()
       },
       touchSet: function (a, b) {
         window.gtag && window._enableAnalytics && window.gtag("event", "CB_ChunkApp_SetTouchEnabled", {
@@ -1988,19 +1955,19 @@ $.fn.seedControls = function (a) {
           }) || "N/A"
         }),
           m = b,
-          w.redraw()
+          MapRenderer.redraw()
       },
       setSecondary: function (a, b) {
         n = !b,
-          w.redraw()
+          MapRenderer.redraw()
       },
       setGridLines: function (a, b) {
         o = b,
-          w.redraw()
+          MapRenderer.redraw()
       },
       setHidePoi: function (a, b) {
         hidePoi = b,
-          w.redraw()
+          MapRenderer.redraw()
       },
       dimensionChanged: function (b, c, d) {
         var e = q;
@@ -2019,7 +1986,7 @@ $.fn.seedControls = function (a) {
           a.triggerHandler("applydimensionchanged", [c])
       },
       redrawMap: function () {
-        w.redraw()
+        MapRenderer.redraw()
       }
     }
     , B = {
@@ -2037,7 +2004,7 @@ $.fn.seedControls = function (a) {
             c = !0) : 37 == b ? (B.left(),
               c = !0) : 39 == b && (B.right(),
                 c = !0),
-          c ? (w.redraw(),
+          c ? (MapRenderer.redraw(),
             !1) : void 0
       },
       up: function () {
@@ -2062,7 +2029,7 @@ $.fn.seedControls = function (a) {
             a.preventDefault();
             var g = options.chunkWidth;
             y.shiftZoom(e, f, -d),
-              options.chunkWidth !== g && w.redraw()
+              options.chunkWidth !== g && MapRenderer.redraw()
           }
         }
       },
@@ -2071,7 +2038,7 @@ $.fn.seedControls = function (a) {
           , d = b.pageY - this.offsetTop
           , e = x.getCoordsFromScreen(c, d);
         if ("undefined" == typeof e)
-          return void w.clearFooter();
+          return void MapRenderer.clearFooter();
         var f = e[0] / 16
           , g = e[1] / 16
           , h = null;
@@ -2081,12 +2048,12 @@ $.fn.seedControls = function (a) {
           chunkX: f,
           chunkZ: g
         })),
-          w.redrawFooter(e[0], e[1], 16 * Math.floor(f), 16 * Math.floor(g), h),
+          MapRenderer.redrawFooter(e[0], e[1], 16 * Math.floor(f), 16 * Math.floor(g), h),
           a.isClickable && (k.get(0).style.cursor = a.isClickable(c, d) ? "pointer" : "default")
       },
       mouseLeft: function () {
         B.off(),
-          w.clearFooter()
+          MapRenderer.clearFooter()
       },
       mouseEntered: function () {
         B.on()
@@ -2094,7 +2061,7 @@ $.fn.seedControls = function (a) {
       dragging: function (a) {
         var b = a.pageX
           , c = a.pageY;
-        z.drag(b, c) && w.redraw()
+        z.drag(b, c) && MapRenderer.redraw()
       },
       clicked: function (b) {
         if (a.onChunkClick) {
@@ -2105,7 +2072,7 @@ $.fn.seedControls = function (a) {
             return;
           var f = Math.floor(e[0] / 16)
             , g = Math.floor(e[1] / 16);
-          a.onChunkClick(f, g) && w.redraw()
+          a.onChunkClick(f, g) && MapRenderer.redraw()
         }
         if (a.onCanvasClick) {
           var c = b.pageX - k.offset().left
@@ -2156,7 +2123,7 @@ $.fn.seedControls = function (a) {
               C.touch.lastDragYLeftOver = e - g,
               0 !== d && 0 !== e && (x.moveX(-f),
                 x.moveY(-g),
-                w.redraw())
+                MapRenderer.redraw())
           }
         },
         dragEnd: function () {
@@ -2180,7 +2147,7 @@ $.fn.seedControls = function (a) {
                 , e = a.gesture.scale;
               y.setZoom(b, c, y.zoomFactor + (e - C.touch.lastScale) / 1.5),
                 C.touch.lastScale = e,
-                options.chunkWidth !== d && w.redraw()
+                options.chunkWidth !== d && MapRenderer.redraw()
             }
           }
         }
@@ -2189,7 +2156,7 @@ $.fn.seedControls = function (a) {
         return a -= c.offsetLeft,
           b -= c.offsetTop,
           x.isInsideMap(a, b) ? (x.setPinAtCanvas(a, b),
-            w.redraw(),
+            MapRenderer.redraw(),
             !0) : !1
       }
     };
@@ -2227,12 +2194,12 @@ $.fn.seedControls = function (a) {
     x.setCenter(CB3Libs.Long.ZERO, CB3Libs.Long.ZERO);
   var E, F, G, H;
   $(window).resize(function () {
-    c(!1)
+    resizeCanvas(!1)
   }),
-    c(!0),
+    resizeCanvas(!0),
     a.triggerHandler("canvasinit", [k.get(0)]),
     a.on("uiloaded", function () {
-      c()
+      resizeCanvas()
     })
 }, $.fn.topNavigate = function (a) {
   var b = this
@@ -2396,62 +2363,6 @@ String.prototype.hashCode = function () {
   }
   return a
 }
-  ,
-  /*! Copyright (c) 2011 Brandon Aaron (http://brandonaaron.net)
-  * Licensed under the MIT License (LICENSE.txt).
-  *
-  * Thanks to: Andrew Cobby (@andrewcobby http://github.com/cobbweb)
-  * - Refactored for jQuery 1.7+ only
-  * - Use MozMousePixelScroll for new Gecko browsers
-  * Thanks to: http://adomas.org/javascript-mouse-wheel/ for some pointers.
-  * Thanks to: Mathias Bank(http://www.mathias-bank.de) for a scope bug fix.
-  * Thanks to: Seamus Leahy for adding deltaX and deltaY
-  *
-  * Version: 2.0.0
-  *
-  * Requires jQuery: 1.7+
-  */
-  function (a, b) {
-    function c(e) {
-      var f = e || window.event
-        , g = [].slice.call(arguments, 1)
-        , h = 0
-        , i = 0
-        , j = 0;
-      return e = a.event.fix(f),
-        e.type = "mousewheel",
-        f.wheelDelta && (h = f.wheelDelta / 120),
-        f.detail && (f.type == d[2] ? (this.removeEventListener(d[0], c, !1),
-          h = -f.detail / 42) : h = -f.detail / 3),
-        j = h,
-        f.axis !== b && f.axis === f.HORIZONTAL_AXIS && (j = 0,
-          i = -1 * h),
-        f.wheelDeltaY !== b && (j = f.wheelDeltaY / 120),
-        f.wheelDeltaX !== b && (i = -1 * f.wheelDeltaX / 120),
-        g.unshift(e, h, i, j),
-        (a.event.dispatch || a.event.handle).apply(this, g)
-    }
-    var d = ["DOMMouseScroll", "mousewheel", "MozMousePixelScroll"];
-    if (a.event.fixHooks)
-      for (var e = d.length; e;)
-        a.event.fixHooks[d[--e]] = a.event.mouseHooks;
-    a.event.special.mousewheel = {
-      setup: function () {
-        if (this.addEventListener)
-          for (var a = d.length; a;)
-            this.addEventListener(d[--a], c, !1);
-        else
-          this.onmousewheel = c
-      },
-      teardown: function () {
-        if (this.removeEventListener)
-          for (var a = d.length; a;)
-            this.removeEventListener(d[--a], c, !1);
-        else
-          this.onmousewheel = null
-      }
-    }
-  }(jQuery);
 
 var SeedMapTiles = function (a, b) {
   function c(a) {
@@ -3172,7 +3083,6 @@ SeedMapTiles.calcTileParams = function (a) {
 
 var HTParams = function () {
   var params = { platform: {}, seed: "0" };
-
   return {
     onInit: function (e) {
       e.on("applydimensionchanged", function (a, b) {
@@ -4352,7 +4262,7 @@ var CB3TooltipManager = function () {
                 if (sectionData.biomeFilter && (sectionData.biomeFilter.indexOf(getBiomeInChunk(pos[0], pos[2])) != -1))
                   CTX.drawImage(f, p, q, n, o),
                     CB3TooltipManager.onPoiDrawn(poiName, b, pos, e, p, q, n, o, k);
-                else if (!sectionData.biomeFilter || !sectionData.biomes || !l.hidePoi)
+                else if (!sectionData.biomeFilter || !sectionData.biomes || !l.hidePoi || sectionData.biomeScale > 2)
                   CTX.drawImage(f, p, q, n, o),
                     CB3TooltipManager.onPoiDrawn(poiName, b, pos, e, p, q, n, o, k);
                 CTX.globalAlpha = 1;
