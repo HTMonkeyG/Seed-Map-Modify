@@ -1175,8 +1175,7 @@ $.fn.chunkMap = function (a) {
       return -.999 > b || b > 0 && .001 > b ? Math.floor(a) : b > .999 || 0 > b && b > -.001 ? Math.ceil(a) : a
     },
     formatNr: function (a) {
-      return a += "",
-        "de" == getLocale() ? a.replace(".", ",").replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.") : a.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+      return a += "", a.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
     }
   }, MapRenderer = function () {
     var c, l = 0, borderColor = "#332B28", t = "#f0cccc", w = "208,227,240", isClip = !1, y = a.drawAll, z = {
@@ -3145,6 +3144,7 @@ var HTParams = function () {
     rmPoi: function (hash) {
       var paramHash = getParamHash();
       delete pois[paramHash][hash];
+      if(!Object.keys(pois[paramHash]).length) delete pois[paramHash]; 
       window.localStorage.setItem("HT_MAP_DATA", JSON.stringify(pois));
     },
     getPoisInRegion: function (tile) {
@@ -3926,10 +3926,10 @@ var CB3TooltipManager = function () {
     onInit: function (a, b) {
       h = tippy(a, {
         duration: 0,
-        arrow: !0,
+        arrow: !1,
         hideOnClick: !1,
         interactive: !0,
-        theme: "light center-align",
+        theme: "sign",
         trigger: "manual",
         allowHTML: !0
       }),

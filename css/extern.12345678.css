@@ -969,7 +969,7 @@ input.fancy-size[type=text] {
   background: rgba(193, 136, 94, 0.30)
 }
 
-.tippy-box {
+.tippy-box[data-theme~=sign] {
   text-align: center;
   color: #000;
   box-shadow: 0 0 20px 4px rgba(154, 161, 177, .15), 0 4px 80px -8px rgba(36, 40, 47, .25), 0 4px 4px -2px rgba(91, 94, 105, .15);
@@ -985,10 +985,7 @@ input.fancy-size[type=text] {
   transition-property: transform, visibility, opacity;
 }
 
-.tippy-content {
-  position: relative;
-  padding: 5px 9px;
-  z-index: 1;
+.tippy-box[data-theme~=sign] .tippy-content {
   color: black;
   font-weight: bold
 }
