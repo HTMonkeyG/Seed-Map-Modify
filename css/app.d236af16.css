@@ -1858,7 +1858,7 @@ input[type=submit].btn.btn-mini {
 .select2-results .select2-no-results,
 .select2-results .select2-searching,
 .select2-results .select2-selection-limit {
-  background: #f4f4f4;
+  /*background: #f4f4f4;*/
   display: list-item
 }
 
@@ -1937,7 +1937,7 @@ input[type=submit].btn.btn-mini {
   margin: 1px 0;
   font-family: sans-serif;
   font-size: 100%;
-  color: #666;
+  color: #fff;
   outline: 0;
   border: 0;
   -webkit-box-shadow: none;
