@@ -1,5 +1,15 @@
 "use strict";
-Math.frac = function (a) { return a - Math.trunc(a) }
+Math.frac = function (a) { return a - Math.trunc(a) };
+function __CB__debounce(a, b) {
+  var c;
+  return function () {
+    clearTimeout(c);
+    var d = arguments;
+    c = setTimeout(function () {
+      a.apply(this, d)
+    }, b || 1)
+  }
+}
 function memoizeQuickLRU(a, b) {
   var c = new QuickLRU(b)
     , d = function () {
@@ -3144,7 +3154,7 @@ var HTParams = function () {
     rmPoi: function (hash) {
       var paramHash = getParamHash();
       delete pois[paramHash][hash];
-      if(!Object.keys(pois[paramHash]).length) delete pois[paramHash]; 
+      if (!Object.keys(pois[paramHash]).length) delete pois[paramHash][hash];
       window.localStorage.setItem("HT_MAP_DATA", JSON.stringify(pois));
     },
     getPoisInRegion: function (tile) {

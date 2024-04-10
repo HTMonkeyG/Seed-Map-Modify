@@ -76,7 +76,8 @@
       <div class="fancy-row">
         <label for="seed" class="fancy-size">种子:</label>
         <div class="fancy-inputs">
-          <input id="seed" name="seed" class="fancy-size" maxlength="32" type="text" placeholder="输入地图种子" autocomplete="off">
+          <input id="seed" name="seed" class="fancy-size" maxlength="32" type="text" placeholder="输入地图种子"
+            autocomplete="off">
           <div class="fancy-inputs-section" id="seed-actions">
             <button id="seed-load" class="gh-button hidden" type="button">从存档加载... </button>
             <input type="file" class="hidden" id="seed-file">
@@ -413,11 +414,15 @@
     <div id="seed-errors"></div>
     <div id="map-controls-wrap"></div>
   </div>
-  <script src="./js/jquery-3.7.1.min.js"></script>
+  <script src="./js/libs/jquery-3.7.1.min.js"></script>
+  <script src="./js/libs/jquery-ui.min.js"></script>
+  <script src="./js/libs/select2.min.js"></script>
+  <script src="./js/libs/popper.min.js"></script>
+  <script src="./js/libs/tippy-bundle.umd.min.js"></script>
+  <script src="./js/libs/gunzip.min.js"></script>
+  <script src="./js/libs/jquery.ba-hashchange.min.js"></script>
   <script src="./js/main.febde7ee.js"></script>
   <script src="./js/mobile.bd5a33b5.js"></script>
-  <script src="./js/popper.min.js"></script>
-  <script src="./js/tippy-bundle.umd.min.js"></script>
   <script src="./js/app.d918cdd1.js"></script>
   <script type="text/javascript">
     CB3FinderAppConfig = {
@@ -432,10 +437,16 @@
       renderImg: true,
       chunkWidths: "full"
     };
+    window.zlib = {
+      gunzip: function (a, b) {
+        var c = new window.Zlib.Gunzip(a);
+        b(null, c.decompress())
+      }
+    }
   </script>
-  <script src="./js/libraries.503f4741.js"></script>
-  <script src="./js/simplebar.min.js"></script>
-  <script src="./js/inline-worker.503f4741.js"></script>
+  <script src="./js/libs/libraries.503f4741.js"></script>
+  <script src="./js/libs/simplebar.min.js"></script>
+  <script src="./js/inline-worker-min.503f4741.js"></script>
   <script src="./js/cb3-libs.503f4741.js"></script>
   <script src="./js/cb3-finder.503f4741.js"></script>
 </body>
