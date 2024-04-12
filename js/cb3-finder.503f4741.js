@@ -1081,6 +1081,7 @@ $.fn.seedControls = function (a) {
       c.gotoButton.trigger("click", !0)
     }, 0)
 };
+
 $.fn.chunkMap = function (a) {
   function b() {
     window._enableAnalytics && window.gtag && t && (window.gtag("event", "CB_ChunkApp_Usage", {
@@ -1179,6 +1180,9 @@ $.fn.chunkMap = function (a) {
     },
     limitInt32: function (a) {
       return a > 2147483647 ? 2147483647 : -2147483648 > a ? -2147483648 : a
+    },
+    clamp: function (a, b, c) {
+      return a > c ? c : b > a ? b : a
     },
     nearInteger: function (a) {
       var b = a % 1;
@@ -1741,11 +1745,13 @@ $.fn.chunkMap = function (a) {
     , x = {
       setX: function (a) {
         a !== options.startX && (a = v.limitInt32(a),
+          a = v.clamp(a, -2.5e6, 2.5e6),
           a = v.nearInteger(a),
           options.startX = a)
       },
       setZ: function (a) {
         a !== options.startZ && (a = v.limitInt32(a),
+          a = v.clamp(a, -2.5e6, 2.5e6),
           a = v.nearInteger(a),
           options.startZ = a,
           MapRenderer.setXBoundaries())
@@ -1805,7 +1811,8 @@ $.fn.chunkMap = function (a) {
         }
       },
       setPin: function (a, b) {
-        options.pin = x.getChunkFromCoords(a, b)
+        var c = x.getChunkFromCoords(a, b);
+        options.pin = [v.clamp(c[0], -2.5e6, 2.5e6), v.clamp(c[1], -2.5e6, 2.5e6)]
       },
       setPinAtCanvas: function (b, c) {
         var d = x.getChunkFromScreen(b, c);
@@ -2187,7 +2194,13 @@ $.fn.chunkMap = function (a) {
     a.on("dimensionchanged", A.dimensionChanged),
     "undefined" != typeof Hammer) {
     {
-      Hammer(k.get(0)).on("hold", C.touch.hold).on("pinch", C.touch.pinch).on("transformend", C.touch.transformEnd).on("drag", C.touch.drag).on("dragend", C.touch.dragEnd).on("doubletap", C.touch.doubletap)
+      Hammer(k.get(0))
+        .on("hold", C.touch.hold)
+        .on("pinch", C.touch.pinch)
+        .on("transformend", C.touch.transformEnd)
+        .on("drag", C.touch.drag)
+        .on("dragend", C.touch.dragEnd)
+        .on("doubletap", C.touch.doubletap)
     }
     k.on("doubleclick", C.touch.doubletap),
       a.on("touchset", A.touchSet);
@@ -2210,7 +2223,8 @@ $.fn.chunkMap = function (a) {
     a.on("uiloaded", function () {
       resizeCanvas()
     })
-}, $.fn.topNavigate = function (a) {
+};
+$.fn.topNavigate = function (a) {
   var b = this
     , c = {
       nav: [b.find("#nav-world"), b.find("#nav-operations"), b.find("#nav-about"), b.find("#nav-mark")],
@@ -2231,7 +2245,8 @@ $.fn.chunkMap = function (a) {
     };
   for (let i = 0; i < c.nav.length; i++)
     c.nav[i].on("click", function () { d.showMenu(i) });
-}, $.fn.markMenu = function (a) {
+};
+$.fn.markMenu = function (a) {
   var b = this
     , c = {
       list: b.find("#mark-list"),
@@ -2355,7 +2370,7 @@ $.fn.chunkMap = function (a) {
   }
 
   a.on("paramschanged", function () {
-    params = HTParams.getParams();
+    params = SeedMapTiles.getParams();
     updateListNode()
   });
   a.on("applycustomizepoi", function () {
@@ -2397,6 +2412,7 @@ var SeedMapTiles = function (a, b) {
       function i(c, d) {
         LRUCache.clear(),
           b.onParamsChanged(c, d),
+          a.triggerHandler("paramschanged"),
           a.getHoverText && a.getHoverText.clear(),
           y = [],
           s = [],
@@ -2542,7 +2558,7 @@ var SeedMapTiles = function (a, b) {
         , z = 0;
       l();
       var A = $('<span>Failed to load region. <button style="text-decoration: underline" class="retry-now unstyled-button">Try again</button></span>');
-      return A.find(".retry-now").click(function () {
+      A.find(".retry-now").click(function () {
         s.forEach(function (a) {
           LRUCache.delete(a)
         }),
@@ -2550,8 +2566,8 @@ var SeedMapTiles = function (a, b) {
           a.getHoverText && a.getHoverText.clear(),
           a.triggerHandler("hideerror", [d]),
           a.triggerHandler("redrawmap", [])
-      }),
-      {
+      });
+      return {
         getParams: function () {
           return v
         },
@@ -2637,6 +2653,7 @@ var SeedMapTiles = function (a, b) {
         }
       }
     }();
+  SeedMapTiles.getParams = function () { return JSON.parse(JSON.stringify(i.getParams())) };
   return a.getRenderer = i.getRenderer,
     a.on("seedchange", function (b, c, d, e) {
       i.setParams({
@@ -2729,7 +2746,9 @@ SeedMapTiles.calcTileParams = function (a) {
     size: 8,
     scale: .25
   }
-}, $.fn.dimensionSelection = function (a) {
+};
+
+$.fn.dimensionSelection = function (a) {
   var b = $(this);
   if (!(b.length < 1)) {
     var c = {
@@ -2773,7 +2792,8 @@ SeedMapTiles.calcTileParams = function (a) {
       }),
       f.onChange()
   }
-}, $.fn.biomeSelection = function (a) {
+};
+$.fn.biomeSelection = function (a) {
   var b = $(this);
   if (!(b.length < 1)) {
     var c = CB3Libs.Dimension.Overworld
@@ -2792,6 +2812,7 @@ SeedMapTiles.calcTileParams = function (a) {
           if (!e.isFilterActive())
             return !1;
           var a = d.select.select2("val");
+          //var a = d.select.val();
           return a.length < 1 ? !1 : a.map(function (a) {
             return +a
           })
@@ -2806,6 +2827,7 @@ SeedMapTiles.calcTileParams = function (a) {
         onFilterChanged: function () {
           var a = e.isFilterActive();
           d.select.select2("enable", a),
+          //d.select.prop("disabled", !a),
             f.triggerBiomeFilterEvent()
         },
         onBiomesChanged: function () {
@@ -2818,6 +2840,7 @@ SeedMapTiles.calcTileParams = function (a) {
         dimensionChanged: function (a) {
           a !== c && (c = a,
             d.select.select2("val", []),
+            //d.select.val([]).trigger("change"),
             d.select.select2("updateResults"))
         }
       };
@@ -3094,31 +3117,10 @@ SeedMapTiles.calcTileParams = function (a) {
   }
 };
 
-var HTParams = function () {
-  var params = { platform: {}, seed: "0" };
-  return {
-    onInit: function (e) {
-      e.on("applydimensionchanged", function (a, b) {
-        Object.assign(params, { dimension: b });
-        e.triggerHandler("paramschanged")
-      });
-      e.on("platformchange", function (a, b) {
-        Object.assign(params, { platform: b });
-        e.triggerHandler("paramschanged")
-      });
-      e.on("seedapply", function (b, c, d) {
-        Object.assign(params, { seed: c.toString() });
-        e.triggerHandler("paramschanged")
-      });
-    },
-    getParams: function () {
-      return params
-    }
-  }
-}(), HTPoiConfig = function () {
+var HTPoiConfig = function () {
   var pois = {}, redraw = null, app = null;
   function getParamHash() {
-    var params = HTParams.getParams();
+    var params = SeedMapTiles.getParams();
     return params.platform.label + '/' + params.seed + '/' + params.dimension
   }
   function t() {
@@ -3132,7 +3134,7 @@ var HTParams = function () {
 
   return {
     createPoi: function (pos, name, dim) {
-      var params = HTParams.getParams()
+      var params = SeedMapTiles.getParams()
         , paramHash = params.platform.label + '/' + params.seed + '/' + (dim ? dim : params.dimension)
         , posHash = Math.floor(pos.x) + '/' + Math.floor(pos.z);
 
@@ -4444,8 +4446,7 @@ $(document).ready(function () {
             $("#biome-height-select").biomHeightSelect(a),
             $(".topnav").topNavigate(a),
             $("#mark").markMenu(a),
-            HTPoiConfig.onInit(a),
-            HTParams.onInit(a)
+            HTPoiConfig.onInit(a);
         }))
     })
   }();
