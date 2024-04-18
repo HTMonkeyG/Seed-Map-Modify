@@ -1169,7 +1169,8 @@ $.fn.chunkMap = function (a) {
     gridEndX: right + 1,
     gridStartY: top,
     gridEndY: bottom + 1,
-    pin: void 0
+    pin: void 0,
+    selectMode: !1
   }, v = {
     setSeed: function (a, b, c) {
       options.seed.equals(a) || (
@@ -1375,6 +1376,13 @@ $.fn.chunkMap = function (a) {
         mapDisp.fillRect(right - 55, 0, 60, 32);
         BeginClip()
       }
+      /**
+       * Draw poi with no icon
+       * @param {Number} b - x
+       * @param {Number} c - z
+       * @param {Number} d - Use rgb
+       * @param {String} e - Color
+       */
       function V(b, c, d, e) {
         if (W(b, c)) {
           var j = a.primaryColorRGB
@@ -1387,7 +1395,7 @@ $.fn.chunkMap = function (a) {
             , o = Math.min(z.chunkZToScreen(c + 1) - 1, bottom + 1);
           l = Math.max(l, left + 2),
             m = Math.max(m, top + 2),
-            mapDisp.fillStyle = 1 > d ? "rgba(" + k + "," + d + ")" : "rgb(" + j + ")",
+            mapDisp.fillStyle = !d ? "rgba(" + k + "," + d + ")" : "rgb(" + j + ")",
             BeginClip(),
             options.distantView ? (mapDisp.beginPath(),
               mapDisp.arc((l + n) / 2, (m + o) / 2, 4, 0, 2 * Math.PI, !1),
@@ -1556,7 +1564,7 @@ $.fn.chunkMap = function (a) {
     /** Put scale division */
     function PutCoordText() {
       var b, c, e = left + .5, k = top + .5, p = options.interval;
-      mapDisp.strokeStyle = "#444",
+      mapDisp.strokeStyle = options.selectMode ? "#0F0" : "#444",
         mapDisp.lineWidth = "2",
         mapDisp.beginPath(),
         mapDisp.moveTo(e, bottom + 1),
@@ -1701,7 +1709,7 @@ $.fn.chunkMap = function (a) {
       clearFooter: function () {
         L = !1;
         mapDisp.fillStyle = borderColor;
-        mapDisp.fillRect(0, bottom + 1, right, e - bottom - 1);
+        mapDisp.fillRect(0, bottom + 2, right, e - bottom - 1);
         DelayPutText()
       },
       redrawFooter: function (a, b, c, d, e) {
@@ -1914,10 +1922,11 @@ $.fn.chunkMap = function (a) {
       }
     }
     , A = {
-      setSeed: function (a, b, c, d) {
-        v.setSeed(b, c, d),
-          MapRenderer.redraw()
-      },
+      setSeed: function (a, b, c, d) { v.setSeed(b, c, d), MapRenderer.redraw() },
+      setSecondary: function (a, b) { n = !b, MapRenderer.redraw() },
+      setGridLines: function (a, b) { o = b, MapRenderer.redraw() },
+      setHidePoi: function (a, b) { hidePoi = b, MapRenderer.redraw() },
+      setSelectMode: function (a, b) { options.selectMode = b, MapRenderer.redraw() },
       goTo: function (a, b, c) {
         x.setCenter(b, c),
           x.setPin(b, c),
@@ -1971,18 +1980,6 @@ $.fn.chunkMap = function (a) {
           }) || "N/A"
         }),
           m = b,
-          MapRenderer.redraw()
-      },
-      setSecondary: function (a, b) {
-        n = !b,
-          MapRenderer.redraw()
-      },
-      setGridLines: function (a, b) {
-        o = b,
-          MapRenderer.redraw()
-      },
-      setHidePoi: function (a, b) {
-        hidePoi = b,
           MapRenderer.redraw()
       },
       dimensionChanged: function (b, c, d) {
@@ -2189,6 +2186,7 @@ $.fn.chunkMap = function (a) {
     a.on("platformchange", A.setPlatform),
     a.on("secondarychange", A.setSecondary),
     a.on("gridlineschange", A.setGridLines),
+    a.on("selectmodechanged", A.setSelectMode),
     a.on("hidepoichange", A.setHidePoi),
     a.on("redrawmap", A.redrawMap),
     a.on("dimensionchanged", A.dimensionChanged),
@@ -2224,161 +2222,6 @@ $.fn.chunkMap = function (a) {
       resizeCanvas()
     })
 };
-$.fn.topNavigate = function (a) {
-  var b = this
-    , c = {
-      nav: [b.find("#nav-world"), b.find("#nav-operations"), b.find("#nav-about"), b.find("#nav-mark")],
-      menu: [$("body").find("#world-controls"), $("body").find("#map-controls"), $("body").find("#abouts"), $("body").find("#mark")]
-    }
-    , d = {
-      showMenu: function (id) {
-        c.menu[id].hasClass("hidden") ? (
-          c.menu[id].removeClass("hidden"), c.nav[id].addClass("active")) : (
-          c.menu[id].addClass("hidden"), c.nav[id].removeClass("active"));
-        for (let i = 0; i < c.nav.length; i++)
-          i != id && d.hideMenu(i);
-      },
-      hideMenu: function (id) {
-        c.menu[id].addClass("hidden"),
-          c.nav[id].removeClass("active")
-      }
-    };
-  for (let i = 0; i < c.nav.length; i++)
-    c.nav[i].on("click", function () { d.showMenu(i) });
-};
-$.fn.markMenu = function (a) {
-  var b = this
-    , c = {
-      list: b.find("#mark-list"),
-      addX: $("body").find("#mark-add-x"),
-      addZ: $("body").find("#mark-add-z"),
-      addName: $("body").find("#mark-add-name"),
-      addButton: $("body").find("#mark-add-button")
-    }, params = {};
-
-  function encodeText(a) {
-    return a += "",
-      a.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-  }
-  function flashRed(a) {
-    a.addClass("errorflash"),
-      setTimeout(function () {
-        a.removeClass("errorflash")
-      }, 1500)
-  }
-  function addListNode(hash, data, renamable) {
-    var nodes = c.list.children();
-    for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].getAttribute("mark-hash") === hash) return !1;
-    }
-    var t0 = document.createElement("div")
-      , t1 = document.createElement("input")
-      , t2 = document.createElement("img")
-      , t3 = document.createElement("img")
-      , f = "X: " + encodeText(data.coord[0]);
-    null != data.coord[1] && (f += " Y: " + encodeText(data.coord[1]));
-    f += " Z: " + encodeText(data.coord[2]);
-    t0.setAttribute("mark-hash", hash);
-    t0.className = "mark-node";
-    t1.className = "mini";
-    t1.value = data.text;
-    t2.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAACXBIWXMAAAsTAAALEwEAmpwYAAAKTWlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVN3WJP3Fj7f92UPVkLY8LGXbIEAIiOsCMgQWaIQkgBhhBASQMWFiApWFBURnEhVxILVCkidiOKgKLhnQYqIWotVXDjuH9yntX167+3t+9f7vOec5/zOec8PgBESJpHmomoAOVKFPDrYH49PSMTJvYACFUjgBCAQ5svCZwXFAADwA3l4fnSwP/wBr28AAgBw1S4kEsfh/4O6UCZXACCRAOAiEucLAZBSAMguVMgUAMgYALBTs2QKAJQAAGx5fEIiAKoNAOz0ST4FANipk9wXANiiHKkIAI0BAJkoRyQCQLsAYFWBUiwCwMIAoKxAIi4EwK4BgFm2MkcCgL0FAHaOWJAPQGAAgJlCLMwAIDgCAEMeE80DIEwDoDDSv+CpX3CFuEgBAMDLlc2XS9IzFLiV0Bp38vDg4iHiwmyxQmEXKRBmCeQinJebIxNI5wNMzgwAABr50cH+OD+Q5+bk4eZm52zv9MWi/mvwbyI+IfHf/ryMAgQAEE7P79pf5eXWA3DHAbB1v2upWwDaVgBo3/ldM9sJoFoK0Hr5i3k4/EAenqFQyDwdHAoLC+0lYqG9MOOLPv8z4W/gi372/EAe/tt68ABxmkCZrcCjg/1xYW52rlKO58sEQjFu9+cj/seFf/2OKdHiNLFcLBWK8ViJuFAiTcd5uVKRRCHJleIS6X8y8R+W/QmTdw0ArIZPwE62B7XLbMB+7gECiw5Y0nYAQH7zLYwaC5EAEGc0Mnn3AACTv/mPQCsBAM2XpOMAALzoGFyolBdMxggAAESggSqwQQcMwRSswA6cwR28wBcCYQZEQAwkwDwQQgbkgBwKoRiWQRlUwDrYBLWwAxqgEZrhELTBMTgN5+ASXIHrcBcGYBiewhi8hgkEQcgIE2EhOogRYo7YIs4IF5mOBCJhSDSSgKQg6YgUUSLFyHKkAqlCapFdSCPyLXIUOY1cQPqQ28ggMor8irxHMZSBslED1AJ1QLmoHxqKxqBz0XQ0D12AlqJr0Rq0Hj2AtqKn0UvodXQAfYqOY4DRMQ5mjNlhXIyHRWCJWBomxxZj5Vg1Vo81Yx1YN3YVG8CeYe8IJAKLgBPsCF6EEMJsgpCQR1hMWEOoJewjtBK6CFcJg4Qxwicik6hPtCV6EvnEeGI6sZBYRqwm7iEeIZ4lXicOE1+TSCQOyZLkTgohJZAySQtJa0jbSC2kU6Q+0hBpnEwm65Btyd7kCLKArCCXkbeQD5BPkvvJw+S3FDrFiOJMCaIkUqSUEko1ZT/lBKWfMkKZoKpRzame1AiqiDqfWkltoHZQL1OHqRM0dZolzZsWQ8ukLaPV0JppZ2n3aC/pdLoJ3YMeRZfQl9Jr6Afp5+mD9HcMDYYNg8dIYigZaxl7GacYtxkvmUymBdOXmchUMNcyG5lnmA+Yb1VYKvYqfBWRyhKVOpVWlX6V56pUVXNVP9V5qgtUq1UPq15WfaZGVbNQ46kJ1Bar1akdVbupNq7OUndSj1DPUV+jvl/9gvpjDbKGhUaghkijVGO3xhmNIRbGMmXxWELWclYD6yxrmE1iW7L57Ex2Bfsbdi97TFNDc6pmrGaRZp3mcc0BDsax4PA52ZxKziHODc57LQMtPy2x1mqtZq1+rTfaetq+2mLtcu0W7eva73VwnUCdLJ31Om0693UJuja6UbqFutt1z+o+02PreekJ9cr1Dund0Uf1bfSj9Rfq79bv0R83MDQINpAZbDE4Y/DMkGPoa5hpuNHwhOGoEctoupHEaKPRSaMnuCbuh2fjNXgXPmasbxxirDTeZdxrPGFiaTLbpMSkxeS+Kc2Ua5pmutG003TMzMgs3KzYrMnsjjnVnGueYb7ZvNv8jYWlRZzFSos2i8eW2pZ8ywWWTZb3rJhWPlZ5VvVW16xJ1lzrLOtt1ldsUBtXmwybOpvLtqitm63Edptt3xTiFI8p0in1U27aMez87ArsmuwG7Tn2YfYl9m32zx3MHBId1jt0O3xydHXMdmxwvOuk4TTDqcSpw+lXZxtnoXOd8zUXpkuQyxKXdpcXU22niqdun3rLleUa7rrStdP1o5u7m9yt2W3U3cw9xX2r+00umxvJXcM970H08PdY4nHM452nm6fC85DnL152Xlle+70eT7OcJp7WMG3I28Rb4L3Le2A6Pj1l+s7pAz7GPgKfep+Hvqa+It89viN+1n6Zfgf8nvs7+sv9j/i/4XnyFvFOBWABwQHlAb2BGoGzA2sDHwSZBKUHNQWNBbsGLww+FUIMCQ1ZH3KTb8AX8hv5YzPcZyya0RXKCJ0VWhv6MMwmTB7WEY6GzwjfEH5vpvlM6cy2CIjgR2yIuB9pGZkX+X0UKSoyqi7qUbRTdHF09yzWrORZ+2e9jvGPqYy5O9tqtnJ2Z6xqbFJsY+ybuIC4qriBeIf4RfGXEnQTJAntieTE2MQ9ieNzAudsmjOc5JpUlnRjruXcorkX5unOy553PFk1WZB8OIWYEpeyP+WDIEJQLxhP5aduTR0T8oSbhU9FvqKNolGxt7hKPJLmnVaV9jjdO31D+miGT0Z1xjMJT1IreZEZkrkj801WRNberM/ZcdktOZSclJyjUg1plrQr1zC3KLdPZisrkw3keeZtyhuTh8r35CP5c/PbFWyFTNGjtFKuUA4WTC+oK3hbGFt4uEi9SFrUM99m/ur5IwuCFny9kLBQuLCz2Lh4WfHgIr9FuxYji1MXdy4xXVK6ZHhp8NJ9y2jLspb9UOJYUlXyannc8o5Sg9KlpUMrglc0lamUycturvRauWMVYZVkVe9ql9VbVn8qF5VfrHCsqK74sEa45uJXTl/VfPV5bdra3kq3yu3rSOuk626s91m/r0q9akHV0IbwDa0b8Y3lG19tSt50oXpq9Y7NtM3KzQM1YTXtW8y2rNvyoTaj9nqdf13LVv2tq7e+2Sba1r/dd3vzDoMdFTve75TsvLUreFdrvUV99W7S7oLdjxpiG7q/5n7duEd3T8Wej3ulewf2Re/ranRvbNyvv7+yCW1SNo0eSDpw5ZuAb9qb7Zp3tXBaKg7CQeXBJ9+mfHvjUOihzsPcw83fmX+39QjrSHkr0jq/dawto22gPaG97+iMo50dXh1Hvrf/fu8x42N1xzWPV56gnSg98fnkgpPjp2Snnp1OPz3Umdx590z8mWtdUV29Z0PPnj8XdO5Mt1/3yfPe549d8Lxw9CL3Ytslt0utPa49R35w/eFIr1tv62X3y+1XPK509E3rO9Hv03/6asDVc9f41y5dn3m978bsG7duJt0cuCW69fh29u0XdwruTNxdeo94r/y+2v3qB/oP6n+0/rFlwG3g+GDAYM/DWQ/vDgmHnv6U/9OH4dJHzEfVI0YjjY+dHx8bDRq98mTOk+GnsqcTz8p+Vv9563Or59/94vtLz1j82PAL+YvPv655qfNy76uprzrHI8cfvM55PfGm/K3O233vuO+638e9H5ko/ED+UPPR+mPHp9BP9z7nfP78L/eE8/sl0p8zAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAACSSURBVHja3JXBDoAwCEOp2f//8vPi4qIR2NwOynkUWppOgK2oLftQEpKYDrxs42bzj22cZha5wjmY27sNgpqZ4en9OLUBferGwygZvThB6qTQGiWiDJhdKAOt7W6SAFrmiuLoyBtnpTQ20FQfR6GDMzDSWCOgoRQHGx1Xj3zdlxXZNOs+Xr1BHZD9cX4Ym6O1DwCCxkAuwQ8h2AAAAABJRU5ErkJggg==";
-    t3.src = "data:image/png;base64,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";
-    t2.className = t3.className = "mark-node-icon";
-    t2.onclick = function () {
-      a.triggerHandler('goto', [CB3Libs.Long.fromNumber(data.coord[0]), CB3Libs.Long.fromNumber(data.coord[2])])
-    };
-    t3.onclick = function () {
-      HTPoiConfig.rmPoi(hash.split("§")[1]);
-      HTPoiConfig.updatePoi();
-    };
-    renamable ? (t1.onchange = function () {
-      HTPoiConfig.changePoi(hash.split("§")[1], t1.value)
-    }) : t1.setAttribute("readonly", !0);
-    t0.appendChild(t2);
-    t0.appendChild(t1);
-    t0.appendChild(t3);
-    t0.appendChild(document.createTextNode(f));
-    c.list[0].appendChild(t0);
-    return !0
-  }
-  function rmListNode(hash) {
-    var nodes = c.list.children();
-    for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].getAttribute("mark-hash") === hash) {
-        nodes[i].remove();
-        return !0
-      }
-    }
-    return !1
-  }
-  function clearListNode() {
-    var nodes = c.list.children();
-    for (let i = 0; i < nodes.length; i++) {
-      nodes[i].remove();
-    }
-  }
-  function updateListNode() {
-    clearListNode();
-    var HTPois = HTPoiConfig.getAllPoi();
-    HTPois && Object.keys(HTPois).forEach(function (a) {
-      addListNode('htCustomize§' + a, { text: HTPois[a].name, coord: HTPois[a].coords }, !0)
-    });
-    try {
-      var a = window.SimpleBar && window.SimpleBar.instances.get(c.list.get(0));
-      a && a.recalculate()
-    } catch (b) { }
-  }
-  function addMark(b, e) {
-    e = e === !0;
-    var f = c.addX.val()
-      , g = c.addZ.val()
-      , n = c.addName.val()
-      , h = !1
-      , i = !1
-      , m = !1
-      , o = !1;
-    if (f = appHelpers.toLong(f),
-      g = appHelpers.toLong(g),
-      "undefined" != typeof f) {
-      var j = f.toNumber();
-      (j > 34359738352 || -34359738368 > j) && (h = !0)
-    } else
-      h = !0;
-    if ("undefined" != typeof g) {
-      var k = g.toNumber();
-      (k > 34359738352 || -34359738368 > k) && (i = !0)
-    } else
-      i = !0;
-    if ("undefined" === typeof n || n.length > 32)
-      m = !0;
-    h && !e && flashRed(c.addX);
-    i && !e && flashRed(c.addZ);
-    m && !e && flashRed(c.addName);
-    h || i || m || (
-      o = HTPoiConfig.createPoi({ x: f, z: g }, n),
-      c.addX[0].value = '',
-      c.addZ[0].value = '',
-      c.addName[0].value = ''
-    )
-    !o && !e && (
-      flashRed(c.addName)
-      , flashRed(c.addX)
-      , flashRed(c.addZ)
-    );
-    o && HTPoiConfig.updatePoi()
-  }
-
-  a.on("paramschanged", function () {
-    params = SeedMapTiles.getParams();
-    updateListNode()
-  });
-  a.on("applycustomizepoi", function () {
-    updateListNode()
-  });
-
-  c.addButton.click(addMark)
-};
 
 String.prototype.hashCode = function () {
   var a = 0;
@@ -2406,7 +2249,6 @@ var SeedMapTiles = function (a, b) {
   var d = "CHUNK_ASYNC_TILE_LOAD_ERROR"
     , e = 0
     , f = 5
-    , g = b.loadTile
     , h = b.nrParallel
     , i = function () {
       function i(c, d) {
@@ -2419,9 +2261,12 @@ var SeedMapTiles = function (a, b) {
           t = {},
           u = {}
       }
+      /**
+       * Calculate tile coords
+       */
       function j(a, b) {
-        var c = v.tileSize
-          , d = v.tileScale;
+        var c = params.tileSize
+          , d = params.tileScale;
         return {
           x: Math.floor(a / c) * c,
           z: Math.floor(b / c) * c,
@@ -2431,7 +2276,7 @@ var SeedMapTiles = function (a, b) {
         }
       }
       function k(a, b, c, d) {
-        for (var e = v.tileSize, f = v.tileScale, g = Math.floor(a / e), h = Math.floor(b / e), i = Math.floor((a + c + 1) / e), j = Math.floor((b + d + 1) / e), k = [], l = h; j >= l; l++)
+        for (var e = params.tileSize, f = params.tileScale, g = Math.floor(a / e), h = Math.floor(b / e), i = Math.floor((a + c + 1) / e), j = Math.floor((b + d + 1) / e), k = [], l = h; j >= l; l++)
           for (var m = g; i >= m; m++)
             k.push({
               x: m * e,
@@ -2442,23 +2287,25 @@ var SeedMapTiles = function (a, b) {
             });
         return k
       }
-      function l() {
-        for (; h > z && y.length > 0;) {
-          var a = y.shift();
-          m(a)
-        }
-      }
+      function l() { for (; h > z && y.length > 0;) m(y.shift()) }
       function m(a) {
-        return a.beforeLoad() ? (z += 1,
-          void g(a.params, a.tile, function (b) {
-            z -= 1,
-              setTimeout(l, 0),
-              a.cb(b)
-          })) : void l()
+        a.beforeLoad() ? (z += 1,
+          b.loadTile(a.params, a.tile, function (b) {
+            z -= 1;
+            setTimeout(l, 0);
+            a.cb(b)
+          })
+        ) : l()
       }
+      /**
+       * Push a request into queue
+       * @param {*} a - Tile coords
+       * @param {*} b -
+       * @param {*} c - Callback
+       */
       function n(a, b, c) {
         y.push({
-          params: v,
+          params: params,
           tile: a,
           beforeLoad: b,
           cb: c
@@ -2467,41 +2314,50 @@ var SeedMapTiles = function (a, b) {
       }
       function o(a, c, d, g) {
         var h = chunkHash(a);
-        return LRUCache.has(h) ? void g(null, LRUCache.get(h)) : t[h] ? (t[h] = g,
-          void (u[h] = d)) : (t[h] = g,
-            u[h] = d,
-            void n(a, function () {
-              return u[h] ? u[h]() ? (delete u[h],
+        if (LRUCache.has(h))
+          g(null, LRUCache.get(h))
+        else if (t[h])
+          t[h] = g, u[h] = d
+        else {
+          t[h] = g;
+          u[h] = d;
+          n(a, function () {
+            return u[h] ? u[h]() ? (delete u[h],
+              delete t[h],
+              !1) : !0 : !1
+          }, function (d) {
+            if (!c()) {
+              var g = null;
+              t[h] && (g = t[h],
                 delete t[h],
-                !1) : !0 : !1
-            }, function (d) {
-              if (!c()) {
-                var g = null;
-                t[h] && (g = t[h],
-                  delete t[h],
-                  delete u[h]);
-                var i = d && {
-                  tile: a,
-                  hits: d.error ? d : b.processTile(d, a)
-                };
-                if (LRUCache.set(h, i),
-                  i.hits.error && (s.push(h),
-                    window.gtag && f > e)) {
-                  e += 1;
-                  var j = 1 === e && i.hits.errorStack && Math.random() < .01
-                    , k = i.hits.errorStr + " (" + e + ") (" + (navigator.hardwareConcurrency || 0) + ")";
-                  j && (k += " (" + i.hits.errorStack + ")"),
-                    window.gtag("event", "CB_ChunkApp_ChunkLoadError", {
-                      errorMsg: k
-                    })
-                }
-                g && g(i)
+                delete u[h]);
+              var i = d && {
+                tile: a,
+                hits: d.error ? d : b.processTile(d, a)
+              };
+              LRUCache.set(h, i);
+              if (i.hits.error && (s.push(h), window.gtag && f > e)) {
+                e += 1;
+                var j = 1 === e && i.hits.errorStack && Math.random() < .01
+                  , k = i.hits.errorStr + " (" + e + ") (" + (navigator.hardwareConcurrency || 0) + ")";
+                j && (k += " (" + i.hits.errorStack + ")");
+                window.gtag("event", "CB_ChunkApp_ChunkLoadError", { errorMsg: k })
               }
-            }))
+              g && g(i)
+            }
+          })
+        }
       }
-      function chunkHash(a) {
-        return a.x + "-" + a.z
-      }
+      function chunkHash(a) { return a.x + "-" + a.z }
+      /**
+       * Find tiles preloaded
+       * @param {*} a 
+       * @param {*} b 
+       * @param {*} c 
+       * @param {*} d 
+       * @param {*} e 
+       * @returns {Array} 0 is data found in cache, 1 is the other
+       */
       function q(a, b, c, d, e) {
         var f = k(a, b, c, d, e)
           , g = []
@@ -2512,13 +2368,11 @@ var SeedMapTiles = function (a, b) {
         }),
           [h, g]
       }
-      var LRUCache = new QuickLRU({
-        maxSize: 2048
-      })
+      var LRUCache = new QuickLRU({ maxSize: 2048 })
         , s = []
         , t = {}
         , u = {}
-        , v = Object.assign({
+        , params = Object.assign({
           seed: "0",
           platform: b.defaultPlatform,
           tileSize: 8,
@@ -2534,14 +2388,14 @@ var SeedMapTiles = function (a, b) {
         , w = null;
       if (b.getHoverText) {
         var x = function (a) {
-          return v.tileScale >= 1 ? a : Math.floor(a / v.tileScale) * v.tileScale
+          return params.tileScale >= 1 ? a : Math.floor(a / params.tileScale) * params.tileScale
         };
         a.getHoverText = memoizeQuickLRU(function (a) {
           var c = x(a.chunkX)
             , d = x(a.chunkZ)
             , e = chunkHash(j(c, d))
             , f = LRUCache.get(e);
-          return f ? b.getHoverText(c, d, f, v) : void 0
+          return f ? b.getHoverText(c, d, f, params) : void 0
         }, {
           maxSize: 100,
           hash: function (a) {
@@ -2550,9 +2404,8 @@ var SeedMapTiles = function (a, b) {
         })
       }
       a.onCanvasClick = function (a, c) {
-        b.onCanvasClick && b.onCanvasClick(a, c, v)
-      }
-        ,
+        b.onCanvasClick && b.onCanvasClick(a, c, params)
+      },
         a.isClickable = b.isClickable;
       var y = []
         , z = 0;
@@ -2568,33 +2421,37 @@ var SeedMapTiles = function (a, b) {
           a.triggerHandler("redrawmap", [])
       });
       return {
-        getParams: function () {
-          return v
-        },
+        getParams: function () { return params },
         setParams: function (a) {
           var b = Object.keys(a).filter(function (b) {
-            return v[b] !== a[b]
+            return params[b] !== a[b]
           });
-          b.length < 1 || (v = Object.assign({}, v, a),
-            i(v, b))
+          b.length < 1 || (params = Object.assign({}, params, a),
+            i(params, b))
         },
-        flushCache: function () {
-          LRUCache.clear();
-        },
+        flushCache: function () { LRUCache.clear() },
         getRenderer: function (c, e, f, g, h, i) {
           var j = !1
             , k = !1;
           w && w.onCancel();
-          var l = v
-            , m = function () {
-              return l !== v
-            }
+          /** Detect whether params changed */
+          function m() { return l !== params }
+          var l = params
             , n = {
-              hasNext: function () {
-                return !j
-              },
+              hasNext: function () { return !j },
+              /**
+               * Render a region
+               * @param {CanvasRenderingContext2D} l - Map canvas
+               * @param {Function} n 
+               * @param {Function} p - Complete drawing
+               * @param {Function} r - Draw poi with no icon
+               * @param {Function} prePoiDraw - Things to do before draw pois
+               * @param {Function} postPoiDraw - Things to do after draw pois
+               * @param {Function} t 
+               * @param {Array} u - Map area pos in canvas
+               */
               renderNextAsync: function (l, n, p, r, prePoiDraw, postPoiDraw, t, u) {
-                var doPaintTile = function (c, e) {
+                function doPaintTile(c, e) {
                   var f = i(c.tile.x, c.tile.z);
                   if (c.hits.error) {
                     if (!n(f[0], f[1], c.tile.xL * h, c.tile.zL * h, !0, !0))
@@ -2603,9 +2460,10 @@ var SeedMapTiles = function (a, b) {
                   } else {
                     if (!n(f[0], f[1], c.tile.xL * h, c.tile.zL * h, !0, !1))
                       return;
-                    b.paintTile(l, e, c.tile, c.hits, r, h, i, u, v)
+                    b.paintTile(l, e, c.tile, c.hits, r, h, i, u, params)
                   }
-                }, renderAll = function (a) {
+                }
+                function renderAll(a) {
                   b.beforeMapRepaint();
                   a.forEach(function (a) {
                     doPaintTile(a, "biomes")
@@ -2618,11 +2476,10 @@ var SeedMapTiles = function (a, b) {
                     doPaintTile(a, "pois")
                   });
                   postPoiDraw();
-                  b.onMapRepainted(v)
-                };
+                  b.onMapRepainted(params)
+                }
 
-                if (j)
-                  throw new Error;
+                if (j) throw new Error;
                 j = !0;
                 var y = q(c, e, f, g)
                   , z = y[0]
@@ -2635,8 +2492,7 @@ var SeedMapTiles = function (a, b) {
                   o(a, m, function () {
                     return m() || k
                   }, function (a) {
-                    if (C -= 1,
-                      a && !k) {
+                    if (C -= 1, a && !k) {
                       t();
                       var b = q(c, e, f, g)[0];
                       renderAll(b)
@@ -2645,9 +2501,7 @@ var SeedMapTiles = function (a, b) {
                   })
                 })
               },
-              onCancel: function () {
-                k = !0
-              }
+              onCancel: function () { k = !0 }
             };
           return w = n, n
         }
@@ -2714,12 +2568,9 @@ var SeedMapTiles = function (a, b) {
         tileScale: e
       })
     }),
-    a.on("mapdimensionschanged", function (a, c) {
-      b.onMapDimensionsChanged(c[0], c[1])
-    }),
-    a.on("canvasinit", function (a, c) {
-      b.init(c, i.getParams())
-    }),
+    a.on("mapdimensionschanged", function (a, c) { b.onMapDimensionsChanged(c[0], c[1]) }),
+    a.on("selectmodechanged", function (a, c) { b.setSelectMode(c), HTSelectManager.clearSelection() }),
+    a.on("canvasinit", function (a, c) { b.init(c, i.getParams()) }),
     a
 };
 
@@ -2827,7 +2678,7 @@ $.fn.biomeSelection = function (a) {
         onFilterChanged: function () {
           var a = e.isFilterActive();
           d.select.select2("enable", a),
-          //d.select.prop("disabled", !a),
+            //d.select.prop("disabled", !a),
             f.triggerBiomeFilterEvent()
         },
         onBiomesChanged: function () {
@@ -2889,7 +2740,8 @@ $.fn.biomeSelection = function (a) {
       }),
       g.onFilterChanged()
   }
-}, $.fn.seedMapLayers = function (a) {
+};
+$.fn.seedMapLayers = function (a) {
   var b = $(this);
   if (!(b.length < 1)) {
     var c = {
@@ -3014,7 +2866,8 @@ $.fn.biomeSelection = function (a) {
       g.refreshZoomWarning(),
       h.notifyPoiChange()
   }
-}, $.fn.biomHeightSelect = function (a) {
+};
+$.fn.biomHeightSelect = function (a) {
   var b = $(this);
   if (!(b.length < 1)) {
     var c = a.initialDimension
@@ -3053,7 +2906,8 @@ $.fn.biomeSelection = function (a) {
       g.maybeUpdateEnabledState(),
       h.triggerUpdate()
   }
-}, $.fn.heightsToggle = function (a) {
+};
+$.fn.heightsToggle = function (a) {
   var b = $(this);
   if (!(b.length < 1)) {
     var c = {
@@ -3103,95 +2957,7 @@ $.fn.biomeSelection = function (a) {
       h.updateEnabledState(),
       i.triggerUpdate()
   }
-}, $.fn.hidePoiToggle = function (a) {
-  var b = $(this);
-  if (!(b.length < 1)) {
-    var c = {
-      container: b,
-      checkbox: b.find("#hide-poi"),
-      select: $("body").find("#biome-selection-checkbox")
-    };
-    c.checkbox.change(function () {
-      a.triggerHandler("hidepoichanged", { checkbox: c.checkbox.is(":checked"), select: c.select.is(":checked") })
-    })
-  }
 };
-
-var HTPoiConfig = function () {
-  var pois = {}, redraw = null, app = null;
-  function getParamHash() {
-    var params = SeedMapTiles.getParams();
-    return params.platform.label + '/' + params.seed + '/' + params.dimension
-  }
-  function t() {
-    app && app.triggerHandler("applycustomizepoi")
-  }
-  try {
-    pois = JSON.parse(window.localStorage.getItem("HT_MAP_DATA")) || {};
-  } catch (g) {
-    window.gtag && window._enableAnalytics && window.gtag("event", "CB_ChunkApp_UserDataLoadError")
-  }
-
-  return {
-    createPoi: function (pos, name, dim) {
-      var params = SeedMapTiles.getParams()
-        , paramHash = params.platform.label + '/' + params.seed + '/' + (dim ? dim : params.dimension)
-        , posHash = Math.floor(pos.x) + '/' + Math.floor(pos.z);
-
-      if (pois[paramHash] && pois[paramHash][posHash]) return !1;
-      pois[paramHash] || (pois[paramHash] = {});
-      pois[paramHash][posHash] = { name: name, coords: [Math.floor(pos.x), null, Math.floor(pos.z)] };
-      window.localStorage.setItem("HT_MAP_DATA", JSON.stringify(pois));
-      redraw && redraw();
-      return !0
-    },
-    changePoi: function (hash, name) {
-      var paramHash = getParamHash();
-      if (!pois[paramHash] || !pois[paramHash][hash]) return !1;
-      pois[paramHash][hash] = { name: name };
-      window.localStorage.setItem("HT_MAP_DATA", JSON.stringify(pois));
-      t();
-      return !0
-    },
-    rmPoi: function (hash) {
-      var paramHash = getParamHash();
-      delete pois[paramHash][hash];
-      if (!Object.keys(pois[paramHash]).length) delete pois[paramHash][hash];
-      window.localStorage.setItem("HT_MAP_DATA", JSON.stringify(pois));
-    },
-    getPoisInRegion: function (tile) {
-      var paramHash = getParamHash()
-        , b = [];
-      if (!pois[paramHash]) return b;
-      Object.keys(pois[paramHash]).forEach(function (a) {
-        var c = a.split('/');
-        c[0] = Number(c[0]) / 16;
-        c[1] = Number(c[1]) / 16;
-        if (tile.x <= c[0] && c[0] < (tile.x + tile.xL)
-          && tile.z <= c[1] && c[1] < (tile.z + tile.zL))
-          b.push([Math.floor(c[0]), Math.floor(c[1]), { data: pois[paramHash][a], chunkPos: c }])
-      });
-      return b
-    },
-    getAllPoi: function () {
-      return pois[getParamHash()]
-    },
-    getToolTipText: function (a) {
-      return a[2].data.name
-    },
-    getHoverText: function (a) {
-      return a[2].data.name
-    },
-    getCoords: function (a) {
-      return [a[2].chunkPos[0] * 16, null, a[2].chunkPos[1] * 16]
-    },
-    updatePoi: t,
-    onInit: function (e) {
-      app = e;
-      redraw = function () { e.triggerHandler("redrawmap") };
-    }
-  }
-}();
 
 var CB3PoiConfig = function () {
   function a(a) {
@@ -3830,11 +3596,8 @@ window.__forcedVersion = 77,
   window.__analytics_biomeRequests = 0;
 
 var CB3TooltipManager = function () {
-  function a(a) {
-    return a += "",
-      a.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-  }
-  function b(b, c) {
+  function a(a) { return a += "", a.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") }
+  function createContent(b, c) {
     var e = CB3PoiConfig[b.type].getTooltipText(b.item, c.platform.cb3World)
       , f = "X: " + a(b.coords[0]);
 
@@ -3847,22 +3610,30 @@ var CB3TooltipManager = function () {
     l.classList.add("poi-complete-checkbox");
     i.appendChild(l);
     i.appendChild(document.createTextNode(e));
-    return l.type = "checkbox",
-      l.checked = CB3MapUserDataManager.isPoiMarked(c.platform, c.seed, b.type, CB3PoiConfig[b.type].getHash(b.item)),
-      l.addEventListener("change", function (a) {
-        a.target.checked ? CB3MapUserDataManager.markPoi(c.platform, c.seed, b.type, CB3PoiConfig[b.type].getHash(b.item), e, b.coords) : CB3MapUserDataManager.unmarkPoi(c.platform, c.seed, b.type, CB3PoiConfig[b.type].getHash(b.item)),
-          updateMap()
-      }),
-      h.appendChild(i),
-      h.appendChild(document.createTextNode(f)),
-      h
+    l.type = "checkbox";
+    l.checked = selectMode ?
+      HTSelectManager.isPoiSelected(b.type, CB3PoiConfig[b.type].getHash(b.item))
+      : CB3MapUserDataManager.isPoiMarked(c.platform, c.seed, b.type, CB3PoiConfig[b.type].getHash(b.item));
+    l.addEventListener("change", function (a) {
+      selectMode ?
+        a.target.checked ?
+          HTSelectManager.selectPoi(b.type, CB3PoiConfig[b.type].getHash(b.item), e, b.coords)
+          : HTSelectManager.unselectPoi(b.type, CB3PoiConfig[b.type].getHash(b.item))
+        : a.target.checked ?
+          CB3MapUserDataManager.markPoi(c.platform, c.seed, b.type, CB3PoiConfig[b.type].getHash(b.item), e, b.coords)
+          : CB3MapUserDataManager.unmarkPoi(c.platform, c.seed, b.type, CB3PoiConfig[b.type].getHash(b.item));
+      updateMap()
+    });
+    h.appendChild(i);
+    h.appendChild(document.createTextNode(f));
+    return h
   }
   function c(a) {
-    var c = g.getPoiData(i);
-    if (i && null != c) {
+    var c = g.getPoiData(savedPoi);
+    if (savedPoi && null != c) {
       var d = h.reference
         , e = c.rect
-        , f = b(c, a);
+        , f = createContent(c, a);
       h.setProps({
         content: f,
         getReferenceClientRect: function () {
@@ -3904,18 +3675,20 @@ var CB3TooltipManager = function () {
           b.width = c,
           b.height = d
       },
-      getPoiData: function (a) {
-        return d[a]
-      },
+      getPoiData: function (a) { return d[a] },
       getPoiIdAt: function (a, b) {
         var d = g.getImageData(Math.round(a), Math.round(b), 1, 1).data
           , e = d[0] >> f | d[1] >> f << 8 - f | d[2] >> f << 16 - 2 * f
           , h = c[e];
         return h
       },
+      /**
+       * Add a poi to cache
+       * @param {String} a - Poi hash
+       * @param {Object} b - Poi data
+       */
       addPoi: function (a, b) {
-        var h = e;
-        e += 1;
+        var h = e++;
         var i = Math.pow(2, 8 - f) - 1
           , j = (h & i) << f
           , k = (h >> 8 - f & i) << f
@@ -3930,11 +3703,8 @@ var CB3TooltipManager = function () {
         }
       }
     }
-  }(), h = null, i = null, j = document.createElement("template");
-  j.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" /></svg>';
-  var k = document.createElement("template");
-  return k.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>',
-  {
+  }(), h = null, savedPoi = null, selectMode = !1;
+  return {
     onInit: function (a, b) {
       h = tippy(a, {
         duration: 0,
@@ -3948,46 +3718,46 @@ var CB3TooltipManager = function () {
         updateMap = b
     },
     onCanvasClick: function (a, b, d) {
-      var e = g.getPoiIdAt(a, b);
-      if (null == e && null == i)
+      var clickPoi = g.getPoiIdAt(a, b);
+      if (null == clickPoi && null == savedPoi)
         return {
           hit: !1,
           handled: !1
         };
-      if (i = e === i ? null : e,
-        e && window._enableAnalytics && window.gtag) {
-        var f = g.getPoiData(i);
+      savedPoi = clickPoi === savedPoi ? null : clickPoi;
+      if (clickPoi && window._enableAnalytics && window.gtag) {
+        var f = g.getPoiData(savedPoi);
         f && f.type && window.gtag("event", "CB_ChunkApp_SelectPoi", {
           poi: f.type
         })
       }
       return c(d),
       {
-        hit: null != e,
+        hit: null != clickPoi,
         handled: !0
       }
     },
-    testCanvasHit: function (a, b) {
-      return null != g.getPoiIdAt(a, b)
-    },
-    onMapDimensionsChanged: function (a, b) {
-      g.updateDimensions(a, b)
-    },
-    onParamsChanged: function () {
-      g.clear()
-    },
-    beforeMapRepaint: function () {
-      g.clear()
-    },
-    onMapRepainted: function (a) {
-      h && c(a)
-    },
-    isClickable: function (a, b) {
-      return null != g.getPoiIdAt(a, b)
-    },
-    isSelected: function (a) {
-      return a === i
-    },
+    testCanvasHit: function (a, b) { return null != g.getPoiIdAt(a, b) },
+    onMapDimensionsChanged: function (a, b) { g.updateDimensions(a, b) },
+    onParamsChanged: function () { g.clear() },
+    beforeMapRepaint: function () { g.clear() },
+    onMapRepainted: function (a) { h && c(a) },
+    setSelectMode: function (a) { selectMode = a },
+    isSelectMode: function () { return selectMode },
+    isClickable: function (a, b) { return null != g.getPoiIdAt(a, b) },
+    isSelected: function (a) { return a === savedPoi },
+    /**
+     * Add a poi when it is drawn on canvas
+     * @param {String} a - Poi name
+     * @param {String} b - Poi hash
+     * @param {*} c - Pos in blocks
+     * @param {*} d - Pos in chunks
+     * @param {Number} f - Icon top-left x in screen
+     * @param {Number} h - Icon top-left y in screen
+     * @param {Number} i - Icon width
+     * @param {Number} j - Icon Height
+     * @param {Array} k - Map area pos in canvas
+     */
     onPoiDrawn: function (a, b, c, d, f, h, i, j, k) {
       var l = f + i
         , m = h + j
@@ -4012,14 +3782,12 @@ var CB3TooltipManager = function () {
     }
   }
 }(), CB3MapUserDataManager = function () {
-  function a(a, b) {
-    return a.label + "/" + b.toString()
-  }
+  function a(a, b) { return a.label + "/" + b.toString() }
   function b(b, c, d) {
     var f = a(b, c);
-    markData[f] || (markData[f] = {}),
-      markData[f][d] || (markData[f][d] = {})
+    markData[f] || (markData[f] = {})
   }
+  function k(a, b) { return a + ";" + b }
   function updateUserData() {
     try {
       window.localStorage.setItem(d, JSON.stringify(markData))
@@ -4027,15 +3795,11 @@ var CB3TooltipManager = function () {
       window.gtag && window._enableAnalytics && window.gtag("event", "CB_ChunkApp_UserDataUpdateError")
     }
   }
-  var d = "CB3_MAP_DATA"
-    , markData = {}
-    , f = 0;
+  var d = "CB3_MAP_DATA", markData = {}, f = 0;
   try {
     markData = JSON.parse(window.localStorage.getItem(d)) || {},
       Object.keys(markData).forEach(function (a) {
-        Object.keys(markData[a]).forEach(function (b) {
-          f += Object.keys(markData[a][b]).length
-        })
+        f += Object.keys(markData[a]).length
       })
   } catch (g) {
     window.gtag && window._enableAnalytics && window.gtag("event", "CB_ChunkApp_UserDataLoadError")
@@ -4043,19 +3807,19 @@ var CB3TooltipManager = function () {
   var h = {
     isPoiMarked: function (b, c, d, f) {
       var g = a(b, c);
-      return markData[g] && markData[g][d] && markData[g][d][f]
+      return markData[g] && markData[g][k(d, f)]
     },
     markPoi: function (d, g, h, i, t, u) {
       b(d, g, h);
       var j = a(d, g);
-      markData[j][h][i] = { state: !0, text: t, coord: u },
+      markData[j][k(h, i)] = { state: !0, text: t, coord: u },
         updateUserData(),
         f += 1
     },
     unmarkPoi: function (d, g, h, i) {
       b(d, g, h);
       var j = a(d, g);
-      delete markData[j][h][i],
+      delete markData[j][k(h, i)],
         updateUserData(),
         f -= 1;
     },
@@ -4131,11 +3895,11 @@ var CB3TooltipManager = function () {
   }, f[b.chunkWidths]);
   var h = null != navigator.hardwareConcurrency && navigator.hardwareConcurrency > 1 ? navigator.hardwareConcurrency - 1 : 1;
   h = Math.min(h, 6);
-  for (var i = [], j = 0; h > j; j++)
-    i[j] = new Worker(window.URL.createObjectURL(inlineWorker_k9bk8));
-  CB3SharedTaskManagerMain.init(i);
+  for (var workers = [], j = 0; h > j; j++)
+    workers[j] = new Worker(window.URL.createObjectURL(inlineWorker_k9bk8));
+  CB3SharedTaskManagerMain.init(workers);
   var k = [];
-  i.forEach(function (a, b) {
+  workers.forEach(function (a, b) {
     a.addEventListener("message", function (a) {
       "check" === a.data.type && k[b](a.data.results)
     }, !1)
@@ -4166,6 +3930,7 @@ var CB3TooltipManager = function () {
       -1 !== d.indexOf("tileSize") && a(b)
     },
     onMapDimensionsChanged: CB3TooltipManager.onMapDimensionsChanged,
+    setSelectMode: CB3TooltipManager.setSelectMode,
     isClickable: CB3TooltipManager.isClickable,
     getHoverText: function (a, c, d, e) {
       if (d.hits.biomes) {
@@ -4201,19 +3966,24 @@ var CB3TooltipManager = function () {
         return null
       }
     },
+    /**
+     * Send request to workers to load tiles
+     * @param {*} a - Params
+     * @param {*} c - Tile coords
+     * @param {Function} d - Data handler
+     */
     loadTile: function (a, c, d) {
-      for (var e = null, f = 0; f < i.length; f++)
+      for (var e = null, f = 0; f < workers.length; f++)
         if (!k[f]) {
           e = f;
           break
         }
       if (null == e)
-        throw new Error("loadTile: Only " + i.length + " requests allowed at a time");
+        throw new Error("loadTile: Only " + workers.length + " requests allowed at a time");
       k[e] = function (a) {
         k[e] = null,
           d(a)
-      }
-        ;
+      };
       var g = Object.assign({}, a, {
         pois: a.pois.filter(function (b) {
           return CB3PoiConfig[b].dimension === a.dimension
@@ -4225,90 +3995,105 @@ var CB3TooltipManager = function () {
         var h = 64;
         window.__analytics_biomeRequests += a.tileSize * a.tileSize / (h * h)
       }
-      i[e].postMessage({
+      workers[e].postMessage({
         type: "check",
         params: g,
         tile: c
       })
     },
-    paintTile: function (CTX, c, f, sectionData, h, i, j, k, l) {
+    /**
+     * Paint tile to map canvas
+     * @param {*} CTX - Map canvas context
+     * @param {"biomes"|"slimeChunks"|"pois"} c - Operation type
+     * @param {*} f - Tile scale
+     * @param {*} tileData - Tile data
+     * @param {Function} h - Draw poi with no icon
+     * @param {Number} i - Chunk width
+     * @param {Function} j 
+     * @param {Array} k - Display area pos in canvas
+     * @param {*} l - Params
+     */
+    paintTile: function (CTX, c, f, tileData, h, i, j, k, l) {
       function getBiomeInChunk(px, py) {
-        // Variable names like PosX, ChunkPosX, InChunkPosX
-        var fx = function (a) {
-          return sectionData.biomeScale >= 1 ? a : Math.floor(a / sectionData.biomeScale) * sectionData.biomeScale
-        };
-        var icpx = Math.floor((fx(px / 16) - f.x) / sectionData.biomeScale),
-          icpy = Math.floor((fx(py / 16) - f.z) / sectionData.biomeScale),
-          b = new Uint8Array(sectionData.biomes);
-        return b[icpy * f.xL / sectionData.biomeScale + icpx]
+        function fx(a) { return tileData.biomeScale >= 1 ? a : Math.floor(a / tileData.biomeScale) * tileData.biomeScale }
+        var icpx = Math.floor((fx(px / 16) - f.x) / tileData.biomeScale),
+          icpy = Math.floor((fx(py / 16) - f.z) / tileData.biomeScale),
+          b = new Uint8Array(tileData.biomes);
+        return b[icpy * f.xL / tileData.biomeScale + icpx]
       }
       if ("biomes" !== c) {
-        if ("slimeChunks" === c && b.renderImg && sectionData.poiResults[CB3Libs.POI.SlimeChunk]) {
-          var n = sectionData.poiResults[CB3Libs.POI.SlimeChunk]
+        if ("slimeChunks" === c && b.renderImg && tileData.poiResults[CB3Libs.POI.SlimeChunk]) {
+          var n = tileData.poiResults[CB3Libs.POI.SlimeChunk]
             , o = CB3PoiConfig[CB3Libs.POI.SlimeChunk]
             , p = CTX.lineWidth;
-          CTX.lineWidth = 2,
-            n.forEach(function (b) {
-              CTX.fillStyle = "rgb(" + o.fillColor + ")";
-              var c = j(b[0], b[1])
-                , d = j(b[0] + 1, b[1] + 1);
-              CTX.fillRect(c[0], c[1], d[0] - c[0] - 1, d[1] - c[1] - 1),
-                CTX.strokeStyle = "rgb(" + o.fillColorOuter + ")",
-                CTX.strokeRect(c[0] + 1, c[1] + 1, d[0] - c[0] - 3, d[1] - c[1] - 3)
-            }),
-            CTX.lineWidth = p
-        }
-        if ("pois" === c) {
-          var q = Object.keys(sectionData.poiResults).sort(function (a, b) {
+          CTX.lineWidth = 2;
+          n.forEach(function (b) {
+            CTX.fillStyle = "rgb(" + o.fillColor + ")";
+            var c = j(b[0], b[1])
+              , d = j(b[0] + 1, b[1] + 1);
+            CTX.fillRect(c[0], c[1], d[0] - c[0] - 1, d[1] - c[1] - 1),
+              CTX.strokeStyle = "rgb(" + o.fillColorOuter + ")",
+              CTX.strokeRect(c[0] + 1, c[1] + 1, d[0] - c[0] - 3, d[1] - c[1] - 3)
+          });
+          CTX.lineWidth = p
+        } if ("pois" === c) {
+          var q = Object.keys(tileData.poiResults).sort(function (a, b) {
             return e.indexOf(a) - e.indexOf(b)
           });
-          window.__analytics_lastPois = q,
-            q.forEach(function (poiName) {
-              function doDraw(b, e) {
-                var f = i.getImg ? i.img[i.getImg(e[2])] : i.img
-                  , pos = i.getCoords ? i.getCoords(e, l.platform.cb3World) : [16 * e[0] + 8, null, 16 * e[1] + 8]
-                  , h = j(pos[0] / 16, pos[2] / 16)
-                  , m = CB3TooltipManager.isSelected(b)
-                  , n = f.width * (m ? d : 1)
-                  , o = f.height * (m ? d : 1)
-                  , p = Math.floor(h[0] - n / 2)
-                  , q = Math.floor(h[1] - o / 2)
-                  , r = CB3MapUserDataManager.isPoiMarked(l.platform, l.seed, poiName, i.getHash(e));
-                CTX.globalAlpha = r ? .45 : 1;
-                if (sectionData.biomeFilter && (sectionData.biomeFilter.indexOf(getBiomeInChunk(pos[0], pos[2])) != -1))
-                  CTX.drawImage(f, p, q, n, o),
-                    CB3TooltipManager.onPoiDrawn(poiName, b, pos, e, p, q, n, o, k);
-                else if (!sectionData.biomeFilter || !sectionData.biomes || !l.hidePoi || sectionData.biomeScale > 2)
-                  CTX.drawImage(f, p, q, n, o),
-                    CB3TooltipManager.onPoiDrawn(poiName, b, pos, e, p, q, n, o, k);
-                CTX.globalAlpha = 1;
+          window.__analytics_lastPois = q;
+          q.forEach(function (poiName) {
+            function doDraw(b, e) {
+              var f = i.getImg ? i.img[i.getImg(e[2])] : i.img
+                , pos = i.getCoords ? i.getCoords(e, l.platform.cb3World) : [16 * e[0] + 8, null, 16 * e[1] + 8]
+                , h = j(pos[0] / 16, pos[2] / 16)
+                , m = CB3TooltipManager.isSelected(b)
+                , n = f.width * (m ? d : 1)
+                , o = f.height * (m ? d : 1)
+                , p = Math.floor(h[0] - n / 2)
+                , q = Math.floor(h[1] - o / 2)
+                , r = CB3TooltipManager.isSelectMode() ?
+                  !HTSelectManager.isPoiSelected(poiName, i.getHash(e))
+                  : CB3MapUserDataManager.isPoiMarked(l.platform, l.seed, poiName, i.getHash(e));
+              CTX.globalAlpha = r ? CB3TooltipManager.isSelectMode() ? .60 : .45 : 1;
+              if (tileData.biomeFilter && (tileData.biomeFilter.indexOf(getBiomeInChunk(pos[0], pos[2])) != -1)) {
+                CTX.drawImage(f, p, q, n, o);
+                CB3TooltipManager.onPoiDrawn(poiName, b, pos, e, p, q, n, o, k)
+              } else if (!tileData.biomeFilter || !tileData.biomes || !l.hidePoi || tileData.biomeScale > 2) {
+                CTX.drawImage(f, p, q, n, o);
+                CB3TooltipManager.onPoiDrawn(poiName, b, pos, e, p, q, n, o, k)
               }
-              if (poiName !== CB3Libs.POI.SlimeChunk || !b.renderImg) {
-                var f = sectionData.poiResults[poiName]
-                  , i = CB3PoiConfig[poiName];
-                f.forEach(function (a) {
-                  if (i.img && b.renderImg) {
-                    var d = i.splitPois ? i.splitPois(a) : [a];
-                    d.forEach(function (a, b) {
-                      var d = [poiName, a[0], a[1], b].join(";");
-                      CB3TooltipManager.isSelected(d) ? m = function () {
-                        doDraw(d, a, b)
-                      }
-                        : doDraw(d, a, b)
-                    })
-                  } else
-                    h(a[0], a[1], "function" == typeof i.fillColor ? i.fillColor(a[2]) : i.fillColor)
-                })
-              }
-            })
+              CTX.globalAlpha = 1;
+            }
+            if (poiName !== CB3Libs.POI.SlimeChunk || !b.renderImg) {
+              var f = tileData.poiResults[poiName]
+                , i = CB3PoiConfig[poiName];
+              f.forEach(function (a) {
+                if (i.img && b.renderImg) {
+                  var d = i.splitPois ? i.splitPois(a) : [a];
+                  d.forEach(function (a, b) {
+                    var d = [poiName, a[0], a[1], b].join(";");
+                    CB3TooltipManager.isSelected(d) ? m = function () { doDraw(d, a, b) }
+                      : doDraw(d, a, b)
+                  })
+                } else
+                  h(a[0], a[1], "function" == typeof i.fillColor ? i.fillColor(a[2]) : i.fillColor)
+              })
+            }
+          })
         }
-      } else if (window.__analytics_lastBiomes = !!sectionData.biomeCanvas,
-        sectionData.biomeCanvas) {
+      } else if (window.__analytics_lastBiomes = !!tileData.biomeCanvas,
+        tileData.biomeCanvas) {
         var r = j(f.x, f.z)
           , s = j(f.x + f.xL, f.z + f.zL);
-        CTX.drawImage(sectionData.biomeCanvas, Math.floor(r[0]), Math.floor(r[1]), Math.floor(s[0] - r[0]), Math.floor(s[1] - r[1]))
+        CTX.drawImage(tileData.biomeCanvas, Math.floor(r[0]), Math.floor(r[1]), Math.floor(s[0] - r[0]), Math.floor(s[1] - r[1]))
       }
     },
+    /**
+     * Process biome results to canvas
+     * @param {*} a - Results
+     * @param {*} b - Tile data
+     * @returns Results with biome canvas
+     */
     processTile: function (a, b) {
       function c(a, b) {
         var c = a / 256
@@ -4355,8 +4140,8 @@ var CB3TooltipManager = function () {
             I[4 * K + 3] = 255,
             a.biomeFilter)
             if (-1 === a.biomeFilter.indexOf(L))
-              /* not the specified biome */
-              /* change the transparent to 22 */
+              /* Not the specified biome */
+              /* Change the transparent to 22 */
               I[4 * K + 3] = 22;
             else {
               var N = .9; /* Change the transparent by 0.9 */
