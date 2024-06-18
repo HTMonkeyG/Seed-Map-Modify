@@ -518,7 +518,8 @@
             a[a.V1_18 = 10180] = "V1_18",
             a[a.V1_19 = 10190] = "V1_19",
             a[a.V1_19_3 = 10193] = "V1_19_3",
-            a[a.V1_20 = 10200] = "V1_20"
+            a[a.V1_20 = 10200] = "V1_20",
+            a[a.V1_21 = 10210] = "V1_21"
         }(e || (e = {})),
         function (a) {
           a[a.V1_14 = 10140] = "V1_14",
@@ -526,7 +527,9 @@
             a[a.V1_17 = 10170] = "V1_17",
             a[a.V1_18 = 10180] = "V1_18",
             a[a.V1_19 = 10190] = "V1_19",
-            a[a.V1_20 = 10200] = "V1_20"
+            a[a.V1_20 = 10200] = "V1_20",
+            a[a.V_1_20_60 = 10206] = "V_1_20_60",
+            a[a.V1_21 = 10210] = "V1_21"
         }(f || (f = {})),
         function (a) {
           a.Overworld = "overworld",
@@ -570,6 +573,8 @@
             a.Cave = "cave",
             a.DesertWell = "desertWell",
             a.TrailRuin = "trailRuin",
+            a.TrialChamber = "trialChamber",
+            a.LavaPool = "lavaPool",
             a.HTCustomize = "htCustomize"
         }(i || (i = {}));
       var k = function (a) {

@@ -100,11 +100,12 @@
         <div class="fancy-inputs">
           <select id="platform">
             <optgroup label="最新版本">
-              <option value="java_1_20">Java 1.20</option>
-              <option value="java_1_20_lb">Java 1.20 放大化</option>
-              <option value="bedrock_1_20">Bedrock 1.20</option>
+              <option value="java_1_21">Java 1.21</option>
+              <option value="java_1_21_lb">Java 1.21 Large Biomes</option>
+              <option value="bedrock_1_21">Bedrock 1.21</option>
             </optgroup>
             <optgroup label="Java版">
+              <option value="java_1_21">Java 1.21</option>
               <option value="java_1_20">Java 1.20</option>
               <option value="java_1_19_3">Java 1.19.3 - 1.19.4</option>
               <option value="java_1_19">Java 1.19 - 1.19.2</option>
@@ -122,6 +123,7 @@
               <option value="java_1_7">Java 1.7</option>
             </optgroup>
             <optgroup label="Java版 - 放大化生物群系">
+              <option value="java_1_21_lb">Java 1.21 (LB)</option>
               <option value="java_1_20_lb">Java 1.20 (LB)</option>
               <option value="java_1_19_3_lb">Java 1.19.3 - 1.19.4 (LB)</option>
               <option value="java_1_19_lb">Java 1.19 - 1.19.2 (LB)</option>
@@ -139,7 +141,9 @@
               <option value="java_1_7_lb">Java 1.7 (LB)</option>
             </optgroup>
             <optgroup label="基岩版">
-              <option value="bedrock_1_20">Bedrock 1.20</option>
+              <option value="bedrock_1_21">Bedrock 1.21</option>
+              <option value="bedrock_1_20_60">Bedrock 1.20.60 - 1.20.81</option>
+              <option value="bedrock_1_20">Bedrock 1.20.0 - 1.20.51</option>
               <option value="bedrock_1_19">Bedrock 1.19</option>
               <option value="bedrock_1_18">Bedrock 1.18</option>
               <option value="bedrock_1_17">Bedrock 1.17</option>
@@ -180,7 +184,7 @@
         <div id="biome-height-select-box" class="fancy-box divide-fancy-box">
           <label for="biome-height-select">生物群系层次: </label>
           <select id="biome-height-select">
-            <option value="worldSurface">地表</option>
+            <option value="depth0">地表</option>
             <option value="caveDepth">地下</option>
             <option value="bottom">地底 (Y -51)</option>
           </select>
@@ -352,6 +356,14 @@
               <div class="chunk-finders-tn-trail-ruin-icon_22" role="img"></div>
               <span class="seedmap-layers-name">古迹废墟</span>
             </button>
+            <button type="button" role="checkbox" title="地下岩浆池" data-poi="lavaPool">
+              <div class="chunk-finders-tn-lava-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">岩浆池</span>
+            </button>
+            <button type="button" role="checkbox" title="试炼密室" data-poi="trialChamber">
+              <div class="chunk-finders-tn-trial-chamber-icon_22" role="img"></div>
+              <span class="seedmap-layers-name">试炼密室</span>
+            </button>
           </div>
         </div>
       </div>
@@ -363,7 +375,7 @@
       <h3>CB3++ 世界崩坏</h3>
       <p>基于Chunkbase - Seed Map修改而成<br>
         汉化 & 修改 by HTMonkeyG</p>
-      <p>最新版本: <time datetime="2023-06-14">Jun 14, 2023 </time>(MC 1.20) </p>
+      <p>最新版本: <time datetime="2024-06-13"> Jun 13, 2024 </time>(MC 1.21) </p>
       <footer>
         <p>Copyright &copy;2013-2023 chunkbase.com All Rights Reserved. <br>Not an official Minecraft product. Not
           approved by or associated with Mojang. </p>
