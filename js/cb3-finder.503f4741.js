@@ -1510,7 +1510,7 @@ $.fn.chunkMap = function (a) {
       return a += "", a.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
     }
   }, MapRenderer = function () {
-    var c, l = 0, borderColor = "#332B28", t = "#f0cccc", w = "208,227,240", isClip = !1, y = a.drawAll, z = {
+    var c, l = 0, borderColor = "#332B28", t = "#f0cccc", w = "208,227,240", loadColor = "#332B28", isClip = !1, y = a.drawAll, z = {
       formatNr: v.formatNr,
       chunkXToScreen: function (a) { return left + Math.round((a - options.startX) * options.chunkWidth) },
       chunkZToScreen: function (a) { return top + Math.round((a - options.startZ) * options.chunkWidth) },
@@ -1774,7 +1774,7 @@ $.fn.chunkMap = function (a) {
                 else if (f && a.loadingBackground) {
                   var h = mapDisp.globalCompositeOperation;
                   mapDisp.globalCompositeOperation = "destination-over",
-                    mapDisp.fillStyle = borderColor,
+                    mapDisp.fillStyle = loadColor,
                     mapDisp.fillRect(b, c, d, e),
                     mapDisp.globalCompositeOperation = h
                 }
@@ -1843,7 +1843,9 @@ $.fn.chunkMap = function (a) {
         mapDisp.fillRect(0, 0, d, e),
         a.loadingBackground && (
           BeginClip(),  // Contains B and C function
-          mapDisp.clearRect(left, top, right - left, bottom - top),
+          /*mapDisp.clearRect(left, top, right - left, bottom - top),*/
+          mapDisp.fillStyle = borderColor,
+          mapDisp.fillRect(left, top, right - left, bottom - top),
           EndClip()
         )
     }
@@ -3009,7 +3011,8 @@ $.fn.biomeSelection = function (a) {
           a !== c && (c = a,
             d.select.select2("val", []),
             //d.select.val([]).trigger("change"),
-            d.select.select2("updateResults"))
+            //d.select.select2("updateResults"))
+            d.select.trigger('change'))
         }
       };
     d.select.select2({
