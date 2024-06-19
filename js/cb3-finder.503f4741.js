@@ -59,291 +59,9 @@ function handleBedrockSeed(a) {
         f.use32BitSeed !== b.use32BitSeed && c(e, g)
     })
 }
-window.__seedMapPoisSprite = {
-  "amethyst.png": {
-    x: 134,
-    y: 0,
-    width: 26,
-    height: 25
-  },
-  "ancient-city.png": {
-    x: 0,
-    y: 177,
-    width: 16,
-    height: 26
-  },
-  "bastion-bridge.png": {
-    x: 30,
-    y: 0,
-    width: 26,
-    height: 26
-  },
-  "bastion-stables.png": {
-    x: 0,
-    y: 26,
-    width: 26,
-    height: 26
-  },
-  "bastion-treasure.png": {
-    x: 26,
-    y: 26,
-    width: 26,
-    height: 26
-  },
-  "bastion-units.png": {
-    x: 56,
-    y: 0,
-    width: 26,
-    height: 26
-  },
-  "buried-treasure.png": {
-    x: 160,
-    y: 0,
-    width: 24,
-    height: 24
-  },
-  "cave-special.png": {
-    x: 56,
-    y: 26,
-    width: 26,
-    height: 26
-  },
-  "cave.png": {
-    x: 0,
-    y: 52,
-    width: 26,
-    height: 26
-  },
-  "desert-temple.png": {
-    x: 26,
-    y: 52,
-    width: 26,
-    height: 26
-  },
-  "desert-well.png": {
-    x: 184,
-    y: 0,
-    width: 22,
-    height: 25
-  },
-  "dungeon-skeleton.png": {
-    x: 160,
-    y: 24,
-    width: 24,
-    height: 24
-  },
-  "dungeon-spider.png": {
-    x: 160,
-    y: 48,
-    width: 24,
-    height: 24
-  },
-  "dungeon-zombie.png": {
-    x: 160,
-    y: 72,
-    width: 24,
-    height: 24
-  },
-  "dungeon.png": {
-    x: 160,
-    y: 96,
-    width: 24,
-    height: 24
-  },
-  "end-city-ship.png": {
-    x: 52,
-    y: 52,
-    width: 26,
-    height: 26
-  },
-  "end-city.png": {
-    x: 82,
-    y: 0,
-    width: 26,
-    height: 26
-  },
-  "end-gateway.png": {
-    x: 82,
-    y: 26,
-    width: 26,
-    height: 26
-  },
-  "fossil.png": {
-    x: 134,
-    y: 25,
-    width: 26,
-    height: 25
-  },
-  "golden-apple.png": {
-    x: 134,
-    y: 74,
-    width: 23,
-    height: 26
-  },
-  "igloo-basement.png": {
-    x: 82,
-    y: 52,
-    width: 26,
-    height: 26
-  },
-  "igloo.png": {
-    x: 0,
-    y: 78,
-    width: 26,
-    height: 26
-  },
-  "jungle-temple.png": {
-    x: 26,
-    y: 78,
-    width: 26,
-    height: 26
-  },
-  "lava-bucket.png": {
-    x: 184,
-    y: 25,
-    width: 22,
-    height: 25
-  },
-  "lava-cave.png": {
-    x: 52,
-    y: 78,
-    width: 26,
-    height: 26
-  },
-  "mansion.png": {
-    x: 160,
-    y: 120,
-    width: 24,
-    height: 24
-  },
-  "mineshaft.png": {
-    x: 134,
-    y: 100,
-    width: 23,
-    height: 26
-  },
-  "nether-fortress.png": {
-    x: 78,
-    y: 78,
-    width: 26,
-    height: 26
-  },
-  "ocean-monument.png": {
-    x: 0,
-    y: 130,
-    width: 26,
-    height: 23
-  },
-  "ocean-ruin-special.png": {
-    x: 108,
-    y: 0,
-    width: 26,
-    height: 26
-  },
-  "ocean-ruin.png": {
-    x: 108,
-    y: 26,
-    width: 26,
-    height: 26
-  },
-  "pillager-outpost.png": {
-    x: 108,
-    y: 52,
-    width: 26,
-    height: 26
-  },
-  "ravine-special.png": {
-    x: 108,
-    y: 78,
-    width: 26,
-    height: 26
-  },
-  "ravine-underwater-special.png": {
-    x: 0,
-    y: 104,
-    width: 26,
-    height: 26
-  },
-  "ravine-underwater.png": {
-    x: 26,
-    y: 104,
-    width: 26,
-    height: 26
-  },
-  "ravine.png": {
-    x: 52,
-    y: 104,
-    width: 26,
-    height: 26
-  },
-  "raw-copper.png": {
-    x: 26,
-    y: 130,
-    width: 26,
-    height: 22
-  },
-  "raw-iron.png": {
-    x: 134,
-    y: 50,
-    width: 26,
-    height: 24
-  },
-  "ruined-portal.png": {
-    x: 78,
-    y: 104,
-    width: 26,
-    height: 26
-  },
-  "shipwreck.png": {
-    x: 184,
-    y: 128,
-    width: 21,
-    height: 24
-  },
-  "spawn.png": {
-    x: 0,
-    y: 0,
-    width: 30,
-    height: 26
-  },
-  "stronghold.png": {
-    x: 0,
-    y: 153,
-    width: 24,
-    height: 24
-  },
-  "trail-ruin.png": {
-    x: 104,
-    y: 104,
-    width: 26,
-    height: 26
-  },
-  "trial-chamber.png": {
-    x: 24,
-    y: 153,
-    width: 24,
-    height: 24
-  },
-  "village-zombie.png": {
-    x: 184,
-    y: 50,
-    width: 20,
-    height: 26
-  },
-  "village.png": {
-    x: 184,
-    y: 76,
-    width: 20,
-    height: 26
-  },
-  "witch-hut.png": {
-    x: 184,
-    y: 102,
-    width: 20,
-    height: 26
-  }
-};
+window.__seedMapPoisSprite = { "amethyst.png": { x: 134, y: 0, width: 26, height: 25 }, "ancient-city.png": { x: 0, y: 177, width: 16, height: 26 }, "bastion-bridge.png": { x: 30, y: 0, width: 26, height: 26 }, "bastion-stables.png": { x: 0, y: 26, width: 26, height: 26 }, "bastion-treasure.png": { x: 26, y: 26, width: 26, height: 26 }, "bastion-units.png": { x: 56, y: 0, width: 26, height: 26 }, "buried-treasure.png": { x: 160, y: 0, width: 24, height: 24 }, "cave-special.png": { x: 56, y: 26, width: 26, height: 26 }, "cave.png": { x: 0, y: 52, width: 26, height: 26 }, "desert-temple.png": { x: 26, y: 52, width: 26, height: 26 }, "desert-well.png": { x: 184, y: 0, width: 22, height: 25 }, "dungeon-skeleton.png": { x: 160, y: 24, width: 24, height: 24 }, "dungeon-spider.png": { x: 160, y: 48, width: 24, height: 24 }, "dungeon-zombie.png": { x: 160, y: 72, width: 24, height: 24 }, "dungeon.png": { x: 160, y: 96, width: 24, height: 24 }, "end-city-ship.png": { x: 52, y: 52, width: 26, height: 26 }, "end-city.png": { x: 82, y: 0, width: 26, height: 26 }, "end-gateway.png": { x: 82, y: 26, width: 26, height: 26 }, "fossil.png": { x: 134, y: 25, width: 26, height: 25 }, "golden-apple.png": { x: 134, y: 74, width: 23, height: 26 }, "igloo-basement.png": { x: 82, y: 52, width: 26, height: 26 }, "igloo.png": { x: 0, y: 78, width: 26, height: 26 }, "jungle-temple.png": { x: 26, y: 78, width: 26, height: 26 }, "lava-bucket.png": { x: 184, y: 25, width: 22, height: 25 }, "lava-cave.png": { x: 52, y: 78, width: 26, height: 26 }, "mansion.png": { x: 160, y: 120, width: 24, height: 24 }, "mineshaft.png": { x: 134, y: 100, width: 23, height: 26 }, "nether-fortress.png": { x: 78, y: 78, width: 26, height: 26 }, "ocean-monument.png": { x: 0, y: 130, width: 26, height: 23 }, "ocean-ruin-special.png": { x: 108, y: 0, width: 26, height: 26 }, "ocean-ruin.png": { x: 108, y: 26, width: 26, height: 26 }, "pillager-outpost.png": { x: 108, y: 52, width: 26, height: 26 }, "ravine-special.png": { x: 108, y: 78, width: 26, height: 26 }, "ravine-underwater-special.png": { x: 0, y: 104, width: 26, height: 26 }, "ravine-underwater.png": { x: 26, y: 104, width: 26, height: 26 }, "ravine.png": { x: 52, y: 104, width: 26, height: 26 }, "raw-copper.png": { x: 26, y: 130, width: 26, height: 22 }, "raw-iron.png": { x: 134, y: 50, width: 26, height: 24 }, "ruined-portal.png": { x: 78, y: 104, width: 26, height: 26 }, "shipwreck.png": { x: 184, y: 128, width: 21, height: 24 }, "spawn.png": { x: 0, y: 0, width: 30, height: 26 }, "stronghold.png": { x: 0, y: 153, width: 24, height: 24 }, "trail-ruin.png": { x: 104, y: 104, width: 26, height: 26 }, "trial-chamber.png": { x: 24, y: 153, width: 24, height: 24 }, "village-zombie.png": { x: 184, y: 50, width: 20, height: 26 }, "village.png": { x: 184, y: 76, width: 20, height: 26 }, "witch-hut.png": { x: 184, y: 102, width: 20, height: 26 } };
 window.__seedMapPoisSpriteImage = "data:image/PNG;base64,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";
+window._enableAnalytics = !1;
 
 var QuickLRU = function () {
   function a(a, c) {
@@ -475,7 +193,6 @@ var QuickLRU = function () {
   return f
 }();
 
-/* Libs end, Chunkbase code starts */
 var loadMinecraftSave = function () {
   function a(b, c, d) {
     return c = Array.isArray(c) ? c : c.split("."),
@@ -570,7 +287,7 @@ var loadMinecraftSave = function () {
   }
 };
 
-window._enableAnalytics = !1;
+
 
 var ChunkApp = {
   config: {
@@ -2543,7 +2260,7 @@ String.prototype.hashCode = function () {
       a &= a
   }
   return a
-}
+};
 
 var SeedMapTiles = function (a, b) {
   function c(a) {
