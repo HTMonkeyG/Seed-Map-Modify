@@ -1399,6 +1399,7 @@ $.fn.seedControls = function (a) {
     }, 0)
 };
 
+/** Renderer */
 $.fn.chunkMap = function (a) {
   function b() {
     window._enableAnalytics && window.gtag && t && (window.gtag("event", "CB_ChunkApp_Usage", {
@@ -1767,21 +1768,19 @@ $.fn.chunkMap = function (a) {
               R.renderNextAsync(mapDisp, function (b, c, d, e, f, g) {
                 if (L !== i)
                   return !1;
-                if (BeginClip(),
-                  g)
+                if (BeginClip(), g)
                   mapDisp.fillStyle = t,
                     mapDisp.fillRect(b, c, d, e);
                 else if (f && a.loadingBackground) {
                   var h = mapDisp.globalCompositeOperation;
-                  mapDisp.globalCompositeOperation = "destination-over",
-                    mapDisp.fillStyle = loadColor,
-                    mapDisp.fillRect(b, c, d, e),
-                    mapDisp.globalCompositeOperation = h
+                  mapDisp.globalCompositeOperation = "destination-over";
+                  mapDisp.fillStyle = loadColor;
+                  mapDisp.fillRect(b, c, d, e);
+                  mapDisp.globalCompositeOperation = h
                 }
                 return !0
               }, function () {
-                M--,
-                  L === i && h()
+                M--, L === i && h()
               }, function (a, b, c) {
                 L === i && V(a, b, 1, c)
               }, function () {
@@ -1817,7 +1816,7 @@ $.fn.chunkMap = function (a) {
         S
     }();
 
-    function BeginClip() {  // Start clip area
+    function BeginClip() {
       isClip || (
         isClip = !0,
         mapDisp.save(),
@@ -1830,7 +1829,7 @@ $.fn.chunkMap = function (a) {
         mapDisp.clip()
       )
     }
-    function EndClip() {    // End clip area
+    function EndClip() {
       isClip && (
         isClip = !1,
         mapDisp.restore()
@@ -1842,7 +1841,7 @@ $.fn.chunkMap = function (a) {
         mapDisp.fillStyle = borderColor,
         mapDisp.fillRect(0, 0, d, e),
         a.loadingBackground && (
-          BeginClip(),  // Contains B and C function
+          BeginClip(),
           /*mapDisp.clearRect(left, top, right - left, bottom - top),*/
           mapDisp.fillStyle = borderColor,
           mapDisp.fillRect(left, top, right - left, bottom - top),
@@ -2435,9 +2434,7 @@ $.fn.chunkMap = function (a) {
           /*C.touch.enabled = !C.touch.enabled,
           a.trigger("touchchange", C.touch.enabled)*/
         },
-        touchSet: function (a) {
-          C.touch.enabled = a
-        },
+        touchSet: function (a) { C.touch.enabled = a },
         drag: function (a) {
           if (C.touch.enabled && !(a.gesture.startEvent.touches.length > 1) && x.isInsideMap(a.gesture.startEvent.center.pageX - this.offsetLeft, a.gesture.startEvent.center.pageY - this.offsetTop)) {
             a.gesture.preventDefault();
@@ -2464,9 +2461,7 @@ $.fn.chunkMap = function (a) {
             C.touch.lastDragXLeftOver = 0,
             C.touch.lastDragYLeftOver = 0
         },
-        transformEnd: function () {
-          C.touch.enabled && (C.touch.lastScale = 1)
-        },
+        transformEnd: function () { C.touch.enabled && (C.touch.lastScale = 1) },
         hold: function (a) {
           C.touch.enabled && C.setPinAtScreen(a.gesture.center.pageX, a.gesture.center.pageY, this) && a.gesture.preventDefault()
         },
@@ -2492,24 +2487,26 @@ $.fn.chunkMap = function (a) {
             !0) : !1
       }
     };
-  if (k.on("mousewheel", C.mouseScrolled),
-    k.mousemove(C.mouseMoved),
-    k.dblclick(C.dblClicked),
-    k.mousedown(C.mouseDown),
-    k.on("mouseleave", C.mouseLeft),
-    k.on("mouseenter", C.mouseEntered),
-    a.on("seedapply", A.setSeed),
-    a.on("goto", A.goTo),
-    a.on("zoomsetpercent", A.setZoomPercent),
-    a.on("saverequest", A.sendMap),
-    a.on("platformchange", A.setPlatform),
-    a.on("secondarychange", A.setSecondary),
-    a.on("gridlineschange", A.setGridLines),
-    a.on("selectmodechanged", A.setSelectMode),
-    a.on("hidepoichange", A.setHidePoi),
-    a.on("redrawmap", A.redrawMap),
-    a.on("dimensionchanged", A.dimensionChanged),
-    "undefined" != typeof Hammer) {
+
+  k.on("mousewheel", C.mouseScrolled);
+  k.mousemove(C.mouseMoved);
+  k.dblclick(C.dblClicked);
+  k.mousedown(C.mouseDown);
+  k.on("mouseleave", C.mouseLeft);
+  k.on("mouseenter", C.mouseEntered);
+  a.on("seedapply", A.setSeed);
+  a.on("goto", A.goTo);
+  a.on("zoomsetpercent", A.setZoomPercent);
+  a.on("saverequest", A.sendMap);
+  a.on("platformchange", A.setPlatform);
+  a.on("secondarychange", A.setSecondary);
+  a.on("gridlineschange", A.setGridLines);
+  a.on("selectmodechanged", A.setSelectMode);
+  a.on("hidepoichange", A.setHidePoi);
+  a.on("redrawmap", A.redrawMap);
+  a.on("dimensionchanged", A.dimensionChanged);
+
+  if ("undefined" != typeof Hammer) {
     {
       Hammer(k.get(0))
         .on("hold", C.touch.hold)
@@ -2525,21 +2522,15 @@ $.fn.chunkMap = function (a) {
     k.on("touchstart", function (a) {
       C.touch.enabled && (D = x.isInsideMap(a.originalEvent.touches[0].pageX - this.offsetLeft, a.originalEvent.touches[0].pageY - this.offsetTop))
     }),
-      k.on("touchmove", function (a) {
-        C.touch.enabled && D && a.preventDefault()
-      })
+      k.on("touchmove", a => C.touch.enabled && D && a.preventDefault())
   }
-  y.setZoom(0, 0, null != a.initialChunkWidth ? y.toZoomFactor(a.initialChunkWidth) : y.zoomFactor),
-    x.setCenter(CB3Libs.Long.ZERO, CB3Libs.Long.ZERO);
+  y.setZoom(0, 0, null != a.initialChunkWidth ? y.toZoomFactor(a.initialChunkWidth) : y.zoomFactor);
+  x.setCenter(CB3Libs.Long.ZERO, CB3Libs.Long.ZERO);
   var E, F, G, H;
-  $(window).resize(function () {
-    resizeCanvas(!1)
-  }),
-    resizeCanvas(!0),
-    a.triggerHandler("canvasinit", [k.get(0)]),
-    a.on("uiloaded", function () {
-      resizeCanvas()
-    })
+  $(window).resize(x => resizeCanvas(!1));
+  resizeCanvas(!0);
+  a.triggerHandler("canvasinit", [k.get(0)]);
+  a.on("uiloaded", x => resizeCanvas())
 };
 
 String.prototype.hashCode = function () {
@@ -3038,7 +3029,7 @@ $.fn.biomeSelection = function (a) {
         }
       },
       multiple: !0,
-      placeholder: "Select Biomes",
+      placeholder: "选择生物群系",
       formatResult: function (a) {
         return '<div class="biome-square" style="background-color:rgb(' + a.rgb.join(",") + ');"></div>' + a.text
       },
@@ -3926,7 +3917,7 @@ var CB3PoiConfig = function () {
         return hashFunc.xzBlock(a[2].pos[0], a[2].pos[2])
       },
       getTooltipText: function (a) {
-        return "cave" === a[2].type ? "被岩浆淹没的洞" : "可能的地下岩浆湖"
+        return "cave" === a[2].type ? "熔岩圈层" : "可能的岩浆湖"
       },
       getTooltipAdditionalText: function () {
         return "Never dig straight down"

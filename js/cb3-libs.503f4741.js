@@ -587,7 +587,7 @@
         , n = (b({
           id: 0,
           key: "ocean",
-          name: ext_BiomeName[0],
+          name: "海洋",
           category: "ocean",
           temperature: .5,
           precipitation: "rain",
@@ -598,7 +598,7 @@
           b({
             id: 1,
             key: "plains",
-            name: ext_BiomeName[1],
+            name: "平原",
             category: "plains",
             temperature: .8,
             precipitation: "rain",
@@ -609,7 +609,7 @@
         , o = b({
           id: 2,
           key: "desert",
-          name: ext_BiomeName[2],
+          name: "沙漠",
           category: "desert",
           temperature: 2,
           precipitation: "none",
@@ -620,8 +620,8 @@
         , p = b({
           id: 3,
           key: "windswept_hills",
-          name: ext_BiomeName[3],
-          oldNames: [ext_BiomeName[3.1]],
+          name: "风袭丘陵",
+          oldNames: ["山地"],
           category: "extreme_hills",
           temperature: .2,
           precipitation: "rain",
@@ -632,7 +632,7 @@
         , q = b({
           id: 4,
           key: "forest",
-          name: ext_BiomeName[4],
+          name: "森林",
           category: "forest",
           temperature: .7,
           precipitation: "rain",
@@ -643,7 +643,7 @@
         , r = b({
           id: 5,
           key: "taiga",
-          name: ext_BiomeName[5],
+          name: "针叶林",
           category: "taiga",
           temperature: .25,
           precipitation: "rain",
@@ -654,7 +654,7 @@
         , s = b({
           id: 6,
           key: "swamp",
-          name: ext_BiomeName[6],
+          name: "沼泽",
           category: "swamp",
           temperature: .8,
           precipitation: "rain",
@@ -665,7 +665,7 @@
         , t = (b({
           id: 7,
           key: "river",
-          name: ext_BiomeName[7],
+          name: "河流",
           category: "river",
           temperature: .5,
           precipitation: "rain",
@@ -676,7 +676,7 @@
           b({
             id: 8,
             key: "nether_wastes",
-            name: ext_BiomeName[8],
+            name: "下界荒地",
             category: "nether",
             temperature: 2,
             precipitation: "none",
@@ -694,7 +694,7 @@
           b({
             id: 9,
             key: "the_end",
-            name: ext_BiomeName[9],
+            name: "末地",
             category: "the_end",
             temperature: .5,
             precipitation: "none",
@@ -705,7 +705,7 @@
           b({
             id: 10,
             key: "frozen_ocean",
-            name: ext_BiomeName[10],
+            name: "冻洋",
             category: "ocean",
             temperature: 0,
             precipitation: "snow",
@@ -716,7 +716,7 @@
           b({
             id: 11,
             key: "frozen_river",
-            name: ext_BiomeName[11],
+            name: "冻河",
             category: "river",
             temperature: 0,
             precipitation: "snow",
@@ -727,8 +727,8 @@
           b({
             id: 12,
             key: "snowy_plains",
-            name: ext_BiomeName[12],
-            oldNames: [ext_BiomeName[12.1]],
+            name: "雪原",
+            oldNames: ["积雪的冻原"],
             category: "icy",
             temperature: 0,
             precipitation: "snow",
@@ -738,7 +738,7 @@
           }))
         , u = (b({
           id: 13,
-          name: ext_BiomeName[13],
+          name: "雪山",
           category: "icy",
           temperature: 0,
           precipitation: "snow",
@@ -749,7 +749,7 @@
           b({
             id: 14,
             key: "mushroom_fields",
-            name: ext_BiomeName[14],
+            name: "蘑菇岛",
             category: "mushroom",
             temperature: .9,
             precipitation: "rain",
@@ -759,7 +759,7 @@
           }),
           b({
             id: 15,
-            name: ext_BiomeName[15],
+            name: "蘑菇岛岸",
             category: "mushroom",
             temperature: .9,
             precipitation: "rain",
@@ -770,7 +770,7 @@
           b({
             id: 16,
             key: "beach",
-            name: ext_BiomeName[16],
+            name: "沙滩",
             category: "beach",
             temperature: .8,
             precipitation: "rain",
@@ -780,7 +780,7 @@
           }),
           b({
             id: 17,
-            name: ext_BiomeName[17],
+            name: "沙漠丘陵",
             category: "desert",
             temperature: 2,
             precipitation: "none",
@@ -791,8 +791,8 @@
           b({
             id: 18,
             key: "windswept_forest",
-            name: ext_BiomeName[18],
-            oldNames: [ext_BiomeName[18.1]],
+            name: "风袭森林",
+            oldNames: ["繁茂的丘陵"],
             category: "forest",
             temperature: .7,
             precipitation: "rain",
@@ -802,7 +802,7 @@
           }),
           b({
             id: 19,
-            name: ext_BiomeName[19],
+            name: "针叶林丘陵",
             category: "taiga",
             temperature: .25,
             precipitation: "rain",
@@ -812,7 +812,7 @@
           }),
           b({
             id: 20,
-            name: ext_BiomeName[20],
+            name: "山地边缘",
             category: "extreme_hills",
             temperature: .2,
             precipitation: "rain",
@@ -823,7 +823,7 @@
           b({
             id: 21,
             key: "jungle",
-            name: ext_BiomeName[21],
+            name: "丛林",
             category: "jungle",
             temperature: .95,
             precipitation: "rain",
@@ -833,7 +833,7 @@
           }))
         , v = (b({
           id: 22,
-          name: ext_BiomeName[22],
+          name: "丛林丘陵",
           category: "jungle",
           temperature: .95,
           precipitation: "rain",
@@ -844,8 +844,8 @@
           b({
             id: 23,
             key: "sparse_jungle",
-            name: ext_BiomeName[23],
-            oldNames: [ext_BiomeName[23.1]],
+            name: "稀疏丛林",
+            oldNames: ["丛林边缘"],
             category: "jungle",
             temperature: .95,
             precipitation: "rain",
@@ -856,7 +856,7 @@
         , w = (b({
           id: 24,
           key: "deep_ocean",
-          name: ext_BiomeName[24],
+          name: "深海",
           category: "ocean",
           temperature: .5,
           precipitation: "rain",
@@ -867,8 +867,8 @@
           b({
             id: 25,
             key: "stony_shore",
-            name: ext_BiomeName[25],
-            oldNames: [ext_BiomeName[25.1]],
+            name: "石岸",
+            oldNames: ["石岸"],
             category: "none",
             temperature: .2,
             precipitation: "rain",
@@ -879,7 +879,7 @@
           b({
             id: 26,
             key: "snowy_beach",
-            name: ext_BiomeName[26],
+            name: "积雪沙滩",
             category: "beach",
             temperature: .05,
             precipitation: "snow",
@@ -890,7 +890,7 @@
           b({
             id: 27,
             key: "birch_forest",
-            name: ext_BiomeName[27],
+            name: "桦木森林",
             category: "forest",
             temperature: .6,
             precipitation: "rain",
@@ -900,7 +900,7 @@
           }))
         , x = b({
           id: 28,
-          name: ext_BiomeName[28],
+          name: "桦木森林丘陵",
           category: "forest",
           temperature: .6,
           precipitation: "rain",
@@ -911,7 +911,7 @@
         , y = b({
           id: 29,
           key: "dark_forest",
-          name: ext_BiomeName[29],
+          name: "黑森林",
           category: "forest",
           temperature: .7,
           precipitation: "rain",
@@ -922,7 +922,7 @@
         , z = b({
           id: 30,
           key: "snowy_taiga",
-          name: ext_BiomeName[30],
+          name: "积雪针叶林",
           category: "taiga",
           temperature: -.5,
           precipitation: "snow",
@@ -932,7 +932,7 @@
         })
         , A = (b({
           id: 31,
-          name: ext_BiomeName[31],
+          name: "积雪的针叶林丘陵",
           category: "taiga",
           temperature: -.5,
           precipitation: "snow",
@@ -943,8 +943,8 @@
           b({
             id: 32,
             key: "old_growth_pine_taiga",
-            name: ext_BiomeName[32],
-            oldNames: [ext_BiomeName[32.1]],
+            name: "原始松木针叶林",
+            oldNames: ["巨型针叶林"],
             category: "taiga",
             temperature: .3,
             precipitation: "rain",
@@ -954,7 +954,7 @@
           }))
         , B = b({
           id: 33,
-          name: ext_BiomeName[33],
+          name: "巨型针叶林丘陵",
           category: "taiga",
           temperature: .3,
           precipitation: "rain",
@@ -964,7 +964,7 @@
         })
         , C = b({
           id: 34,
-          name: ext_BiomeName[34],
+          name: "繁茂的山地",
           category: "extreme_hills",
           temperature: .2,
           precipitation: "rain",
@@ -975,7 +975,7 @@
         , D = b({
           id: 35,
           key: "savanna",
-          name: ext_BiomeName[35],
+          name: "热带草原",
           category: "savanna",
           temperature: 1.2,
           precipitation: "none",
@@ -986,7 +986,7 @@
         , E = b({
           id: 36,
           key: "savanna_plateau",
-          name: ext_BiomeName[36],
+          name: "热带高原",
           category: "savanna",
           temperature: 1,
           precipitation: "none",
@@ -997,7 +997,7 @@
         , F = b({
           id: 37,
           key: "badlands",
-          name: ext_BiomeName[37],
+          name: "恶地",
           category: "mesa",
           temperature: 2,
           precipitation: "none",
@@ -1008,8 +1008,8 @@
         , G = b({
           id: 38,
           key: "wooded_badlands",
-          name: ext_BiomeName[38],
-          oldNames: [ext_BiomeName[38]],
+          name: "疏林恶地",
+          oldNames: ["繁茂的恶地高原"],
           category: "mesa",
           temperature: 2,
           precipitation: "none",
@@ -1019,7 +1019,7 @@
         })
         , H = b({
           id: 39,
-          name: ext_BiomeName[39],
+          name: "恶地高原",
           category: "mesa",
           temperature: 2,
           precipitation: "none",
@@ -1030,7 +1030,7 @@
       b({
         id: 40,
         key: "small_end_islands",
-        name: ext_BiomeName[40],
+        name: "末地小型岛屿",
         category: "the_end",
         temperature: .5,
         precipitation: "none",
@@ -1041,7 +1041,7 @@
         b({
           id: 41,
           key: "end_midlands",
-          name: ext_BiomeName[41],
+          name: "末地内陆",
           category: "the_end",
           temperature: .5,
           precipitation: "none",
@@ -1052,7 +1052,7 @@
         b({
           id: 42,
           key: "end_highlands",
-          name: ext_BiomeName[42],
+          name: "末地高地",
           category: "the_end",
           temperature: .5,
           precipitation: "none",
@@ -1063,7 +1063,7 @@
         b({
           id: 43,
           key: "end_barrens",
-          name: ext_BiomeName[43],
+          name: "末地荒地",
           category: "the_end",
           temperature: .5,
           precipitation: "none",
@@ -1074,7 +1074,7 @@
         b({
           id: 44,
           key: "warm_ocean",
-          name: ext_BiomeName[44],
+          name: "暖水海洋",
           category: "ocean",
           temperature: .5,
           precipitation: "rain",
@@ -1085,7 +1085,7 @@
         b({
           id: 45,
           key: "lukewarm_ocean",
-          name: ext_BiomeName[45],
+          name: "温水海洋",
           category: "ocean",
           temperature: .5,
           precipitation: "rain",
@@ -1096,7 +1096,7 @@
         b({
           id: 46,
           key: "cold_ocean",
-          name: ext_BiomeName[46],
+          name: "冷水海洋",
           category: "ocean",
           temperature: .5,
           precipitation: "rain",
@@ -1107,7 +1107,7 @@
         b({
           id: 47,
           key: "deep_warm_ocean",
-          name: ext_BiomeName[47],
+          name: "暖水深海",
           category: "ocean",
           temperature: .5,
           precipitation: "rain",
@@ -1118,7 +1118,7 @@
         b({
           id: 48,
           key: "deep_lukewarm_ocean",
-          name: ext_BiomeName[48],
+          name: "温水深海",
           category: "ocean",
           temperature: .5,
           precipitation: "rain",
@@ -1129,7 +1129,7 @@
         b({
           id: 49,
           key: "deep_cold_ocean",
-          name: ext_BiomeName[49],
+          name: "冷水深海",
           category: "ocean",
           temperature: .5,
           precipitation: "rain",
@@ -1140,7 +1140,7 @@
         b({
           id: 50,
           key: "deep_frozen_ocean",
-          name: ext_BiomeName[50],
+          name: "冰冻深海",
           category: "ocean",
           temperature: .5,
           precipitation: "rain",
@@ -1150,7 +1150,7 @@
         }),
         b({
           id: 129,
-          name: ext_BiomeName[129],
+          name: "向日葵平原",
           key: "sunflower_plains",
           category: "plains",
           temperature: .8,
@@ -1162,7 +1162,7 @@
         }),
         b({
           id: 130,
-          name: ext_BiomeName[130],
+          name: "沙漠湖泊",
           category: "desert",
           temperature: 2,
           precipitation: "none",
@@ -1174,8 +1174,8 @@
         b({
           id: 131,
           key: "windswept_gravelly_hills",
-          name: ext_BiomeName[131],
-          oldNames: [ext_BiomeName[131.1]],
+          name: "风袭沙砾丘陵",
+          oldNames: ["沙砾山地"],
           category: "extreme_hills",
           temperature: .2,
           precipitation: "rain",
@@ -1187,7 +1187,7 @@
         b({
           id: 132,
           key: "flower_forest",
-          name: ext_BiomeName[132],
+          name: "繁花森林",
           category: "forest",
           temperature: .7,
           precipitation: "rain",
@@ -1198,7 +1198,7 @@
         }),
         b({
           id: 133,
-          name: ext_BiomeName[133],
+          name: "针叶林山地",
           category: "taiga",
           temperature: .25,
           precipitation: "rain",
@@ -1209,7 +1209,7 @@
         }),
         b({
           id: 134,
-          name: ext_BiomeName[134],
+          name: "沼泽丘陵",
           category: "swamp",
           temperature: .8,
           precipitation: "rain",
@@ -1221,7 +1221,7 @@
         b({
           id: 140,
           key: "ice_spikes",
-          name: ext_BiomeName[140],
+          name: "冰刺之地",
           category: "icy",
           temperature: 0,
           precipitation: "snow",
@@ -1232,7 +1232,7 @@
         }),
         b({
           id: 149,
-          name: ext_BiomeName[149],
+          name: "丛林变种",
           category: "jungle",
           temperature: .95,
           precipitation: "rain",
@@ -1243,7 +1243,7 @@
         }),
         b({
           id: 151,
-          name: ext_BiomeName[151],
+          name: "丛林边缘变种",
           category: "jungle",
           temperature: .95,
           precipitation: "rain",
@@ -1255,8 +1255,8 @@
         b({
           id: 155,
           key: "old_growth_birch_forest",
-          name: ext_BiomeName[155],
-          oldNames: [ext_BiomeName[155.1]],
+          name: "原始桦木森林",
+          oldNames: ["高大桦木森林"],
           category: "forest",
           temperature: .6,
           precipitation: "rain",
@@ -1267,7 +1267,7 @@
         }),
         b({
           id: 156,
-          name: ext_BiomeName[156],
+          name: "高大桦木丘陵",
           category: "forest",
           temperature: .6,
           precipitation: "rain",
@@ -1278,7 +1278,7 @@
         }),
         b({
           id: 157,
-          name: ext_BiomeName[157],
+          name: "黑森林丘陵",
           category: "forest",
           temperature: .7,
           precipitation: "rain",
@@ -1289,7 +1289,7 @@
         }),
         b({
           id: 158,
-          name: ext_BiomeName[158],
+          name: "积雪的针叶林山地",
           category: "taiga",
           temperature: -.5,
           precipitation: "snow",
@@ -1301,8 +1301,8 @@
         b({
           id: 160,
           key: "old_growth_spruce_taiga",
-          name: ext_BiomeName[160],
-          oldNames: [ext_BiomeName[160.1]],
+          name: "原始云杉针叶林",
+          oldNames: ["巨型云杉针叶林"],
           category: "taiga",
           temperature: .25,
           precipitation: "rain",
@@ -1313,7 +1313,7 @@
         }),
         b({
           id: 161,
-          name: ext_BiomeName[161],
+          name: "巨型云杉针叶林丘陵",
           category: "taiga",
           temperature: .25,
           precipitation: "rain",
@@ -1324,7 +1324,7 @@
         }),
         b({
           id: 162,
-          name: ext_BiomeName[162],
+          name: "沙砾山地+",
           category: "extreme_hills",
           temperature: .2,
           precipitation: "rain",
@@ -1336,8 +1336,8 @@
         b({
           id: 163,
           key: "windswept_savanna",
-          name: ext_BiomeName[163],
-          oldNames: [ext_BiomeName[163.1]],
+          name: "风袭热带草原",
+          oldNames: ["破碎的热带草原"],
           category: "savanna",
           temperature: 1.1,
           precipitation: "none",
@@ -1348,7 +1348,7 @@
         }),
         b({
           id: 164,
-          name: ext_BiomeName[164],
+          name: "破碎的热带高原",
           category: "savanna",
           temperature: 1,
           precipitation: "none",
@@ -1360,7 +1360,7 @@
         b({
           id: 165,
           key: "eroded_badlands",
-          name: ext_BiomeName[165],
+          name: "风蚀恶地",
           category: "mesa",
           temperature: 2,
           precipitation: "none",
@@ -1371,7 +1371,7 @@
         }),
         b({
           id: 166,
-          name: ext_BiomeName[166],
+          name: "繁茂的恶地高原变种",
           category: "mesa",
           temperature: 2,
           precipitation: "none",
@@ -1382,7 +1382,7 @@
         }),
         b({
           id: 167,
-          name: ext_BiomeName[167],
+          name: "恶地高原变种",
           category: "mesa",
           temperature: 2,
           precipitation: "none",
@@ -1394,7 +1394,7 @@
         b({
           id: 168,
           key: "bamboo_jungle",
-          name: ext_BiomeName[168],
+          name: "竹林",
           category: "jungle",
           temperature: .95,
           precipitation: "rain",
@@ -1404,7 +1404,7 @@
         }),
         b({
           id: 169,
-          name: ext_BiomeName[169],
+          name: "竹林丘陵",
           category: "jungle",
           temperature: .95,
           precipitation: "rain",
@@ -1415,7 +1415,7 @@
         b({
           id: 170,
           key: "soul_sand_valley",
-          name: ext_BiomeName[170],
+          name: "灵魂沙峡谷",
           category: "nether",
           temperature: 2,
           precipitation: "none",
@@ -1433,7 +1433,7 @@
         b({
           id: 171,
           key: "crimson_forest",
-          name: ext_BiomeName[171],
+          name: "绯红森林",
           category: "nether",
           temperature: 2,
           precipitation: "none",
@@ -1451,7 +1451,7 @@
         b({
           id: 172,
           key: "warped_forest",
-          name: ext_BiomeName[172],
+          name: "诡异森林",
           category: "nether",
           temperature: 2,
           precipitation: "none",
@@ -1469,7 +1469,7 @@
         b({
           id: 173,
           key: "basalt_deltas",
-          name: ext_BiomeName[173],
+          name: "玄武岩三角洲",
           category: "nether",
           temperature: 2,
           precipitation: "none",
@@ -1487,7 +1487,7 @@
         b({
           id: 174,
           key: "dripstone_caves",
-          name: ext_BiomeName[174],
+          name: "溶洞",
           category: "none",
           temperature: .8,
           precipitation: "rain",
@@ -1498,7 +1498,7 @@
         b({
           id: 175,
           key: "lush_caves",
-          name: ext_BiomeName[175],
+          name: "繁茂洞穴",
           category: "none",
           temperature: .5,
           precipitation: "rain",
@@ -1509,7 +1509,7 @@
         b({
           id: 177,
           key: "meadow",
-          name: ext_BiomeName[177],
+          name: "草甸",
           category: "mountain",
           temperature: .5,
           precipitation: "rain",
@@ -1520,7 +1520,7 @@
         b({
           id: 178,
           key: "grove",
-          name: ext_BiomeName[178],
+          name: "雪林",
           category: "forest",
           temperature: -.2,
           precipitation: "snow",
@@ -1531,7 +1531,7 @@
         b({
           id: 179,
           key: "snowy_slopes",
-          name: ext_BiomeName[179],
+          name: "积雪山坡",
           category: "mountain",
           temperature: -.3,
           precipitation: "snow",
@@ -1542,7 +1542,7 @@
         b({
           id: 180,
           key: "frozen_peaks",
-          name: ext_BiomeName[180],
+          name: "冰封山峰",
           category: "mountain",
           temperature: -.7,
           precipitation: "snow",
@@ -1553,7 +1553,7 @@
         b({
           id: 181,
           key: "jagged_peaks",
-          name: ext_BiomeName[181],
+          name: "尖峭山峰",
           category: "mountain",
           temperature: -.7,
           precipitation: "snow",
@@ -1564,7 +1564,7 @@
         b({
           id: 182,
           key: "stony_peaks",
-          name: ext_BiomeName[182],
+          name: "裸岩山峰",
           category: "mountain",
           temperature: 1,
           precipitation: "rain",
@@ -1575,7 +1575,7 @@
         b({
           id: 183,
           key: "deep_dark",
-          name: ext_BiomeName[183],
+          name: "深暗之域",
           category: "none",
           temperature: .8,
           precipitation: "rain",
@@ -1586,7 +1586,7 @@
         b({
           id: 184,
           key: "mangrove_swamp",
-          name: ext_BiomeName[184],
+          name: "红树林沼泽",
           category: "none",
           temperature: .8,
           precipitation: "rain",
@@ -1597,7 +1597,7 @@
         b({
           id: 185,
           key: "cherry_grove",
-          name: ext_BiomeName[185],
+          name: "樱花树林",
           category: "mountain",
           temperature: 0,
           precipitation: "none",
