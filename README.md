@@ -3,3 +3,6 @@
 
 **There is no intention of copyright infringement, and the software copyright is reserved by the respective developers**  
 **并无侵犯版权之意, 权利由各自开发者保留.**
+
+## 使用方法
+&emsp;

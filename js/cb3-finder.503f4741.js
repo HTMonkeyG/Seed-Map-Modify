@@ -1,5 +1,16 @@
 "use strict";
 Math.frac = function (a) { return a - Math.trunc(a) };
+String.prototype.hashCode = function () {
+  var a = 0;
+  if (0 == this.length)
+    return a;
+  for (var b = 0; b < this.length; b++) {
+    var c = this.charCodeAt(b);
+    a = (a << 5) - a + c,
+      a &= a
+  }
+  return a
+};
 function __CB__debounce(a, b) {
   var c;
   return function () {
@@ -62,6 +73,9 @@ function handleBedrockSeed(a) {
 window.__seedMapPoisSprite = { "amethyst.png": { x: 134, y: 0, width: 26, height: 25 }, "ancient-city.png": { x: 0, y: 177, width: 16, height: 26 }, "bastion-bridge.png": { x: 30, y: 0, width: 26, height: 26 }, "bastion-stables.png": { x: 0, y: 26, width: 26, height: 26 }, "bastion-treasure.png": { x: 26, y: 26, width: 26, height: 26 }, "bastion-units.png": { x: 56, y: 0, width: 26, height: 26 }, "buried-treasure.png": { x: 160, y: 0, width: 24, height: 24 }, "cave-special.png": { x: 56, y: 26, width: 26, height: 26 }, "cave.png": { x: 0, y: 52, width: 26, height: 26 }, "desert-temple.png": { x: 26, y: 52, width: 26, height: 26 }, "desert-well.png": { x: 184, y: 0, width: 22, height: 25 }, "dungeon-skeleton.png": { x: 160, y: 24, width: 24, height: 24 }, "dungeon-spider.png": { x: 160, y: 48, width: 24, height: 24 }, "dungeon-zombie.png": { x: 160, y: 72, width: 24, height: 24 }, "dungeon.png": { x: 160, y: 96, width: 24, height: 24 }, "end-city-ship.png": { x: 52, y: 52, width: 26, height: 26 }, "end-city.png": { x: 82, y: 0, width: 26, height: 26 }, "end-gateway.png": { x: 82, y: 26, width: 26, height: 26 }, "fossil.png": { x: 134, y: 25, width: 26, height: 25 }, "golden-apple.png": { x: 134, y: 74, width: 23, height: 26 }, "igloo-basement.png": { x: 82, y: 52, width: 26, height: 26 }, "igloo.png": { x: 0, y: 78, width: 26, height: 26 }, "jungle-temple.png": { x: 26, y: 78, width: 26, height: 26 }, "lava-bucket.png": { x: 184, y: 25, width: 22, height: 25 }, "lava-cave.png": { x: 52, y: 78, width: 26, height: 26 }, "mansion.png": { x: 160, y: 120, width: 24, height: 24 }, "mineshaft.png": { x: 134, y: 100, width: 23, height: 26 }, "nether-fortress.png": { x: 78, y: 78, width: 26, height: 26 }, "ocean-monument.png": { x: 0, y: 130, width: 26, height: 23 }, "ocean-ruin-special.png": { x: 108, y: 0, width: 26, height: 26 }, "ocean-ruin.png": { x: 108, y: 26, width: 26, height: 26 }, "pillager-outpost.png": { x: 108, y: 52, width: 26, height: 26 }, "ravine-special.png": { x: 108, y: 78, width: 26, height: 26 }, "ravine-underwater-special.png": { x: 0, y: 104, width: 26, height: 26 }, "ravine-underwater.png": { x: 26, y: 104, width: 26, height: 26 }, "ravine.png": { x: 52, y: 104, width: 26, height: 26 }, "raw-copper.png": { x: 26, y: 130, width: 26, height: 22 }, "raw-iron.png": { x: 134, y: 50, width: 26, height: 24 }, "ruined-portal.png": { x: 78, y: 104, width: 26, height: 26 }, "shipwreck.png": { x: 184, y: 128, width: 21, height: 24 }, "spawn.png": { x: 0, y: 0, width: 30, height: 26 }, "stronghold.png": { x: 0, y: 153, width: 24, height: 24 }, "trail-ruin.png": { x: 104, y: 104, width: 26, height: 26 }, "trial-chamber.png": { x: 24, y: 153, width: 24, height: 24 }, "village-zombie.png": { x: 184, y: 50, width: 20, height: 26 }, "village.png": { x: 184, y: 76, width: 20, height: 26 }, "witch-hut.png": { x: 184, y: 102, width: 20, height: 26 } };
 window.__seedMapPoisSpriteImage = "data:image/PNG;base64,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";
 window._enableAnalytics = !1;
+window.__forcedVersion = 77;
+window.__analytics_biomeRequests = 0;
+function isTouch() { return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0 }
 
 var QuickLRU = function () {
   function a(a, c) {
@@ -286,8 +300,6 @@ var loadMinecraftSave = function () {
     })
   }
 };
-
-
 
 var ChunkApp = {
   config: {
@@ -700,51 +712,46 @@ var ChunkApp = {
     } catch (b) { }
     return !1
   }
-  var b = function () {  // Error process func A
-    $("img.loader").addClass("hidden"),
-      $("#app").removeClass("hidden")
+  function b() {
+    $("img.loader").addClass("hidden");
+    $("#app").removeClass("hidden")
   }
-    , c = function (a) {
-      var c = $("body");
-      a.compassImage = new Image,
-        a.compassImage.src = "data:image/png;base64,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";
-      a.compassImage.onload = function () {
-        if (handleBedrockSeed(a),
-          "function" == typeof $.fn.seedControls) {
-          var d = c.find("#world-controls");
-          d.each(function () {
-            $(this).seedControls(a)
-          })
-        }
-        if ("function" == typeof $.fn.seedFindControls) {
-          var e = c.find("#seed-find-controls");
-          e.each(function () {
-            $(this).seedFindControls(a)
-          })
-        }
-        var f = c.find("#map-controls");
-        f.mapControls(a);
-        var g = c.find("#map-canvas");
-        g.chunkMap(a),
-          b(),
-          a.triggerHandler("uiloaded"),
-          setTimeout(function () {
-            window._enableAnalytics = !0
-          }, 5e3)
+  function c(a) {
+    var c = $("body");
+    a.compassImage = new Image,
+      a.compassImage.src = "data:image/png;base64,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";
+    a.compassImage.onload = function () {
+      if (handleBedrockSeed(a),
+        "function" == typeof $.fn.seedControls) {
+        var d = c.find("#world-controls");
+        d.each(function () {
+          $(this).seedControls(a)
+        })
       }
+      if ("function" == typeof $.fn.seedFindControls) {
+        var e = c.find("#seed-find-controls");
+        e.each(function () {
+          $(this).seedFindControls(a)
+        })
+      }
+      c.find("#map-controls").mapControls(a);
+      c.find("#map-canvas").chunkMap(a);
+      b();
+      a.triggerHandler("uiloaded");
+      setTimeout(w => window._enableAnalytics = !0, 5e3)
     }
-    , d = function () {
-      $("#app").html("This app is not supported by your browser. Please make sure your browser is up to date and try again."),
-        b()
-    }
-    , e = {};
-  return e.errorInit = function () {
-    $("#app").html("There was an error loading the app. Please try again later"),
-      window.gtag && window.gtag("event", "CB_ChunkApp_InitError"),
+  }
+  function d() {
+    $("#app").html("This app is not supported by your browser. Please make sure your browser is up to date and try again."),
       b()
   }
-    ,
-    e.init = function (b, e) {
+  var e = {
+    errorInit: function () {
+      $("#app").html("There was an error loading the app. Please try again later"),
+        window.gtag && window.gtag("event", "CB_ChunkApp_InitError"),
+        b()
+    },
+    init: function (b, e) {
       var f = !!Modernizr.canvas
         , g = !!Modernizr.canvastext
         , h = !!Modernizr.webworkers
@@ -755,8 +762,8 @@ var ChunkApp = {
           missing: [e && "app-support", !f && "canvas", !g && "canvastext", !h && "workers", !j && "wasm", !i && "promise"].filter(Boolean).join(",")
         }))
     }
-    ,
-    e
+  };
+  return e
 }();
 
 $.fn.seedControls = function (a) {
@@ -1012,14 +1019,12 @@ $.fn.seedControls = function (a) {
 }, $.fn.mapControls = function (a) {
   var b = this
     , c = {
-      slider: this.find("#map-zoom-slider"),
+      slider: $("body").find("#map-zoom-slider"),
       gotoX: $("body").find("#map-goto-x"),
       gotoZ: $("body").find("#map-goto-z"),
       gotoButton: $("body").find("#map-goto-go"),
-      hideSecondary: this.find("#map-secondary-enabled"),
-      useWorkers: this.find("#map-worker-enabled"),
-      touchEnabled: this.find("#map-touch-enabled"),
-      gridLines: this.find("#show-grid-lines")
+      touchEnabled: $("body").find("#map-touch-enabled"),
+      gridLines: $("body").find("#show-grid-lines")
     }
     , d = {
       flashRed: function (a) {
@@ -1030,9 +1035,7 @@ $.fn.seedControls = function (a) {
       }
     }
     , e = {
-      touchChanged: function () {
-        a.triggerHandler("touchset", c.touchEnabled.is(":checked"))
-      },
+      touchChanged: function () { a.triggerHandler("touchset", c.touchEnabled.is(":checked")) },
       goTo: function (b, e) {
         window.gtag && window._enableAnalytics && window.gtag("event", "CB_ChunkApp_GoTo"),
           e = e === !0;
@@ -1056,64 +1059,44 @@ $.fn.seedControls = function (a) {
           i && !e && d.flashRed(c.gotoZ),
           h || i || a.triggerHandler("goto", [f, g])
       },
-      buttonPress: function (a) {
-        13 === a.keyCode && c.gotoButton.click()
-      },
+      buttonPress: function (a) { 13 === a.keyCode && c.gotoButton.click() },
       saveMap: function () {
         window.gtag && window._enableAnalytics && window.gtag("event", "CB_ChunkApp_SaveMap"),
           a.triggerHandler("saverequest")
       },
-      secondaryChanged: function () {
-        a.triggerHandler("secondarychange", c.hideSecondary.is(":checked"))
-      },
-      gridLinesChanged: function () {
-        a.triggerHandler("gridlineschange", c.gridLines.is(":checked"))
-      },
-      workerChanged: function () {
-        var b = c.useWorkers.is(":checked");
-        a.useWorkers !== b && (a.useWorkers = b,
-          a.triggerHandler("webworkerchange", [b]))
-      }
+      secondaryChanged: function () { a.triggerHandler("secondarychange", c.hideSecondary.is(":checked")) },
+      gridLinesChanged: function () { a.triggerHandler("gridlineschange", c.gridLines.is(":checked")) }
     }
     , f = {
-      zoomChange: function (a, b, d) {
-        c.slider.slider("value", [100 * d])
-      },
-      pinChanged: function (a, b, d) {
-        c.gotoX.val(b.toString()),
-          c.gotoZ.val(d.toString())
-      },
-      touchChanged: function (a, b) {
-        c.touchEnabled.prop("checked", !!b)
-      }
+      zoomChange: function (a, b, d) { c.slider.slider("value", [100 * d]) },
+      pinChanged: function (a, b, d) { c.gotoX.val(b.toString()), c.gotoZ.val(d.toString()) },
+      touchChanged: function (a, b) { c.touchEnabled.prop("checked", !!b) }
     };
-  c.gotoButton.click(e.goTo),
-    c.gotoX.add(c.gotoZ).on("keypress", e.buttonPress),
-    c.hideSecondary.click(e.secondaryChanged),
-    c.gridLines.change(e.gridLinesChanged),
-    b.find("#map-save").on("click", e.saveMap),
-    a.on("zoomchange", f.zoomChange),
-    a.on("pinset", f.pinChanged),
-    a.initialHideSecondary = c.hideSecondary.prop("checked"),
-    a.supportsWorkers ? (c.useWorkers.click(e.workerChanged),
-      e.workerChanged()) : (b.find("#map-worker").hide(),
-        a.triggerHandler("webworkerchange", [!1])),
-    c.gridLines.prop("checked", !a.initialHideGridLines),
-    this.find("a").filter(function () {
-      return "undefined" != typeof $(this).data("scrollto")
-    }).each(function () {
-      var a = $(this);
-      a.click(function () {
-        return $(a.data("scrollto")).ScrollTo(),
-          !1
-      })
-    }),
-    "undefined" != typeof Hammer && (c.touchEnabled.change(e.touchChanged),
-      a.on("touchchange", f.touchChanged),
-      this.find("#map-touch").removeClass("hidden")),
-    setTimeout(function () {
-      c.gotoButton.trigger("click", !0)
-    }, 0)
+  c.gotoButton.click(e.goTo);
+  c.gotoX.add(c.gotoZ).on("keypress", e.buttonPress);
+  c.gridLines.change(e.gridLinesChanged);
+  b.find("#map-save").on("click", e.saveMap);
+  a.on("zoomchange", f.zoomChange);
+  a.on("pinset", f.pinChanged);
+  c.gridLines.prop("checked", !a.initialHideGridLines);
+  this.find("a").filter(function () {
+    return "undefined" != typeof $(this).data("scrollto")
+  }).each(function () {
+    var a = $(this);
+    a.click(function () {
+      $(a.data("scrollto")).ScrollTo();
+      return !1
+    })
+  });
+  "undefined" != typeof Hammer && isTouch() && (
+    c.touchEnabled.change(e.touchChanged),
+    a.on("touchchange", f.touchChanged),
+    c.touchEnabled.prop('checked', true),
+    this.find("#map-touch").removeClass("hidden")
+  );
+  setTimeout(function () {
+    c.gotoButton.trigger("click", !0)
+  }, 0)
 };
 
 /** Renderer */
@@ -1174,11 +1157,11 @@ $.fn.chunkMap = function (a) {
     , o = !a.initialHideGridLines
     , p = !1, q = 1, mapDisp = k.get(0).getContext("2d");
 
-  mapDisp.imageSmoothingEnabled = !1,
-    mapDisp.mozImageSmoothingEnabled = !1,
-    mapDisp.webkitImageSmoothingEnabled = !1,
-    mapDisp.msImageSmoothingEnabled = !1,
-    a.loadingBackground && k.css("background-color", "rgb(" + a.loadingBackground + ")");
+  mapDisp.imageSmoothingEnabled = !1;
+  mapDisp.mozImageSmoothingEnabled = !1;
+  mapDisp.webkitImageSmoothingEnabled = !1;
+  mapDisp.msImageSmoothingEnabled = !1;
+  a.loadingBackground && k.css("background-color", "rgb(" + a.loadingBackground + ")");
 
   var mapText = {
     chunkLoad: "加载区块中...",
@@ -1869,9 +1852,9 @@ $.fn.chunkMap = function (a) {
             if (b >= f && g >= b && c >= h && i >= c)
               return void x.removePin()
           }
-          window.gtag && window._enableAnalytics && window.gtag("event", "CB_ChunkApp_PinSetViaInputDevice"),
-            options.pin = d,
-            a.triggerHandler("pinset", [Math.floor(16 * options.pin[0]), Math.floor(16 * options.pin[1])])
+          window.gtag && window._enableAnalytics && window.gtag("event", "CB_ChunkApp_PinSetViaInputDevice")
+          options.pin = d;
+          a.triggerHandler("pinset", [Math.floor(16 * options.pin[0]), Math.floor(16 * options.pin[1])])
         }
       },
       removePin: function () {
@@ -2250,19 +2233,7 @@ $.fn.chunkMap = function (a) {
   a.on("uiloaded", x => resizeCanvas())
 };
 
-String.prototype.hashCode = function () {
-  var a = 0;
-  if (0 == this.length)
-    return a;
-  for (var b = 0; b < this.length; b++) {
-    var c = this.charCodeAt(b);
-    a = (a << 5) - a + c,
-      a &= a
-  }
-  return a
-};
-
-var SeedMapTiles = function (a, b) {
+function SeedMapTiles(a, b) {
   function c(a) {
     var b = -1 !== a.indexOf("biomes")
       , c = a.filter(function (a) {
@@ -2283,7 +2254,7 @@ var SeedMapTiles = function (a, b) {
           b.onParamsChanged(c, d),
           a.triggerHandler("paramschanged"),
           a.getHoverText && a.getHoverText.clear(),
-          y = [],
+          requestQueue = [],
           s = [],
           t = {},
           u = {}
@@ -2302,7 +2273,8 @@ var SeedMapTiles = function (a, b) {
           scale: d
         }
       }
-      function k(a, b, c, d) {
+      /** Split area */
+      function splitArea(a, b, c, d) {
         for (var e = params.tileSize, f = params.tileScale, g = Math.floor(a / e), h = Math.floor(b / e), i = Math.floor((a + c + 1) / e), j = Math.floor((b + d + 1) / e), k = [], l = h; j >= l; l++)
           for (var m = g; i >= m; m++)
             k.push({
@@ -2314,32 +2286,46 @@ var SeedMapTiles = function (a, b) {
             });
         return k
       }
-      function l() { for (; h > z && y.length > 0;) m(y.shift()) }
-      function m(a) {
-        a.beforeLoad() ? (z += 1,
+      function loadAll() { for (; h > pending && requestQueue.length > 0;) loadSingle(requestQueue.shift()) }
+      function loadSingle(a) {
+        // If current request is processed, 
+        // then directly load next one;
+        // else post message to a spare worker,
+        // and wait for it.
+        a.beforeLoad() ? (pending += 1,
           b.loadTile(a.params, a.tile, function (b) {
-            z -= 1;
-            setTimeout(l, 0);
+            // When worker finished the request,
+            pending -= 1;
+            setTimeout(loadAll, 0);
+            // Invoke callback to pass the data back.
             a.cb(b)
           })
-        ) : l()
+        ) : loadAll()
       }
+
       /**
        * Push a request into queue
        * @param {*} a - Tile coords
-       * @param {*} b -
-       * @param {*} c - Callback
+       * @param {Function} b - Check whether is not loaded
+       * @param {Function} c - Callback when loaded
        */
-      function n(a, b, c) {
-        y.push({
+      function pushRequest(a, b, c) {
+        requestQueue.push({
           params: params,
           tile: a,
           beforeLoad: b,
           cb: c
-        }),
-          1 > z && l()
+        });
+        1 > pending && loadAll()
       }
-      function o(a, c, d, g) {
+
+      /**
+       * @param {*} a - Tile coords
+       * @param {Function} c - Detect params change
+       * @param {Function} d 
+       * @param {Function} g - Draw
+       */
+      function getTileData(a, c, d, g) {
         var h = chunkHash(a);
         if (LRUCache.has(h))
           g(null, LRUCache.get(h))
@@ -2348,11 +2334,12 @@ var SeedMapTiles = function (a, b) {
         else {
           t[h] = g;
           u[h] = d;
-          n(a, function () {
+          pushRequest(a, function () {
             return u[h] ? u[h]() ? (delete u[h],
               delete t[h],
               !1) : !0 : !1
           }, function (d) {
+            // Data processor
             if (!c()) {
               var g = null;
               t[h] && (g = t[h],
@@ -2377,7 +2364,6 @@ var SeedMapTiles = function (a, b) {
       }
       function chunkHash(a) { return a.x + "-" + a.z }
       /**
-       * Find tiles preloaded
        * @param {*} a 
        * @param {*} b 
        * @param {*} c 
@@ -2385,8 +2371,8 @@ var SeedMapTiles = function (a, b) {
        * @param {*} e 
        * @returns {Array} 0 is data found in cache, 1 is the other
        */
-      function q(a, b, c, d, e) {
-        var f = k(a, b, c, d, e)
+      function getTilesFromCoord(a, b, c, d, e) {
+        var f = splitArea(a, b, c, d, e)
           , g = []
           , h = [];
         return f.forEach(function (a) {
@@ -2434,9 +2420,9 @@ var SeedMapTiles = function (a, b) {
         b.onCanvasClick && b.onCanvasClick(a, c, params)
       },
         a.isClickable = b.isClickable;
-      var y = []
-        , z = 0;
-      l();
+      var requestQueue = []
+        , pending = 0;
+      loadAll();
       var A = $('<span>Failed to load region. <button style="text-decoration: underline" class="retry-now unstyled-button">Try again</button></span>');
       A.find(".retry-now").click(function () {
         s.forEach(function (a) {
@@ -2457,6 +2443,16 @@ var SeedMapTiles = function (a, b) {
             i(params, b))
         },
         flushCache: function () { LRUCache.clear() },
+        /**
+         * 
+         * @param {Number} c - First chunk x to fill
+         * @param {Number} e - First chunk z to fill
+         * @param {Number} f - Width
+         * @param {Number} g - Height
+         * @param {Number} h - Chunk width
+         * @param {Function} i - Cast chunk pos to screen pos
+         * @returns 
+         */
         getRenderer: function (c, e, f, g, h, i) {
           var j = !1
             , k = !1;
@@ -2508,20 +2504,21 @@ var SeedMapTiles = function (a, b) {
 
                 if (j) throw new Error;
                 j = !0;
-                var y = q(c, e, f, g)
-                  , z = y[0]
-                  , B = y[1];
-                renderAll(z);
+                var y = getTilesFromCoord(c, e, f, g)
+                  , loaded = y[0]
+                  , unloaded = y[1];
+                renderAll(loaded);
                 var C = 0;
-                B.length < 1 && p();
-                B.forEach(function (a) {
-                  C += 1;
-                  o(a, m, function () {
+                unloaded.length < 1 && p();
+                unloaded.forEach(function (a) {
+                  C++;
+                  getTileData(a, m, function () {
                     return m() || k
                   }, function (a) {
-                    if (C -= 1, a && !k) {
+                    C--;
+                    if (a && !k) {
                       t();
-                      var b = q(c, e, f, g)[0];
+                      var b = getTilesFromCoord(c, e, f, g)[0];
                       renderAll(b)
                     }
                     1 > C && p()
@@ -2565,8 +2562,7 @@ var SeedMapTiles = function (a, b) {
         a.triggerHandler("redrawmap")
     }),
     a.on("applycustomizepoi", function () {
-      i.flushCache(),
-        a.triggerHandler("redrawmap")
+      a.triggerHandler("redrawmap")
     }),
     a.on("biomeheightchanged", function (b, c) {
       i.setParams({
@@ -3013,20 +3009,14 @@ var CB3PoiConfig = function () {
     big: SeedMapTiles.calcTileParams(2).size,
     normal: SeedMapTiles.calcTileParams(.5).size,
     small: SeedMapTiles.calcTileParams(.25).size
-  }, POIConfigs = {
-
-  }, hashFunc = {
-    chunk: function (a) {
-      return a[0] + "//" + a[1]
-    },
-    xzBlock: function (a, b) {
-      return a + "/" + b
-    },
-    xyBlockArr: function (a) {
-      return hashFunc.xzBlock(a[2][0], a[2][2])
-    }
-  };
-  return POIConfigs[CB3Libs.POI.AmethystGeode] = {
+  }
+    , POIConfigs = {}
+    , hashFunc = {
+      chunk: function (a) { return a[0] + "//" + a[1] },
+      xzBlock: function (a, b) { return a + "/" + b },
+      xyBlockArr: function (a) { return hashFunc.xzBlock(a[2][0], a[2][2]) }
+    };
+  POIConfigs[CB3Libs.POI.AmethystGeode] = {
     gaId: "Ag",
     imgSrc: "amethyst.png",
     dimension: CB3Libs.Dimension.Overworld,
@@ -3539,14 +3529,12 @@ var CB3PoiConfig = function () {
     POIConfigs[CB3Libs.POI.Village] = {
       gaId: "V",
       imgSrc: {
-        "default": "village.png",
+        default: "village.png",
         zombie: "village-zombie.png"
       },
       dimension: CB3Libs.Dimension.Overworld,
       maxTileSize: f.normal,
-      getImg: function (a) {
-        return a.zombie ? "zombie" : "default"
-      },
+      getImg: function (a) { return a.zombie ? "zombie" : "default" },
       getCoords: d,
       fillColor: function (a) {
         return a.zombie ? "200,0,190" : null == a.type ? "100,131,63" : {
@@ -3605,7 +3593,7 @@ var CB3PoiConfig = function () {
       getHash: hashFunc.chunk
     },
     POIConfigs[CB3Libs.POI.HTCustomize] = {
-      gaId: "HTMGC",
+      gaId: "HTc",
       imgSrc: "golden-apple.png",
       dimension: CB3Libs.Dimension.Overworld,
       maxTileSize: f.small,
@@ -3656,12 +3644,9 @@ var CB3PoiConfig = function () {
       },
       fillColor: "113,45,25",
       getHash: hashFunc.chunk
-    },
-    POIConfigs
+    };
+  return POIConfigs
 }();
-
-window.__forcedVersion = 77,
-  window.__analytics_biomeRequests = 0;
 
 var CB3TooltipManager = function () {
   function a(a) { return a += "", a.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") }
@@ -3961,17 +3946,23 @@ var CB3TooltipManager = function () {
       } : {}
     }
   }, f[b.chunkWidths]);
+
+  // Get avaliable worker count
   var h = null != navigator.hardwareConcurrency && navigator.hardwareConcurrency > 1 ? navigator.hardwareConcurrency - 1 : 1;
   h = Math.min(h, 6);
+
+  // Create worker
   for (var workers = [], j = 0; h > j; j++)
     workers[j] = new Worker(window.URL.createObjectURL(inlineWorker_k9bk8));
   CB3SharedTaskManagerMain.init(workers);
-  var k = [];
+  var handlers = [];
   workers.forEach(function (a, b) {
     a.addEventListener("message", function (a) {
-      "check" === a.data.type && k[b](a.data.results)
+      "check" === a.data.type && handlers[b](a.data.results)
     }, !1)
   });
+
+  // Worker for poi list when platform change
   var l = new Worker(window.URL.createObjectURL(inlineWorker_k9bk8));
   l.addEventListener("message", function (a) {
     "getSupportedPois" === a.data.type && c.triggerHandler("supportedpoischanged", [a.data.supportedPois])
@@ -3984,6 +3975,7 @@ var CB3TooltipManager = function () {
     }),
     c.initialHideGridLines = b.hideGridLines;
   var m = null;
+
   return SeedMapTiles(c, {
     defaultPlatform: ChunkApp.Platform.java,
     nrParallel: h,
@@ -4000,6 +3992,13 @@ var CB3TooltipManager = function () {
     onMapDimensionsChanged: CB3TooltipManager.onMapDimensionsChanged,
     setSelectMode: CB3TooltipManager.setSelectMode,
     isClickable: CB3TooltipManager.isClickable,
+    /**
+     * @param {*} a 
+     * @param {*} c 
+     * @param {*} d - Tile data
+     * @param {*} e - Params
+     * @returns 
+     */
     getHoverText: function (a, c, d, e) {
       if (d.hits.biomes) {
         var f = new Uint8Array(d.hits.biomes)
@@ -4041,17 +4040,22 @@ var CB3TooltipManager = function () {
      * @param {Function} d - Data handler
      */
     loadTile: function (a, c, d) {
+      // Look for a spare worker
       for (var e = null, f = 0; f < workers.length; f++)
-        if (!k[f]) {
+        if (!handlers[f]) {
           e = f;
           break
         }
+
+      // No spare worker
       if (null == e)
         throw new Error("loadTile: Only " + workers.length + " requests allowed at a time");
-      k[e] = function (a) {
-        k[e] = null,
-          d(a)
+
+      handlers[e] = function (a) {
+        handlers[e] = null;
+        d(a)
       };
+
       var g = Object.assign({}, a, {
         pois: a.pois.filter(function (b) {
           return CB3PoiConfig[b].dimension === a.dimension
@@ -4073,15 +4077,15 @@ var CB3TooltipManager = function () {
      * Paint tile to map canvas
      * @param {*} CTX - Map canvas context
      * @param {"biomes"|"slimeChunks"|"pois"} c - Operation type
-     * @param {*} f - Tile scale
+     * @param {*} f - Tile coord
      * @param {*} tileData - Tile data
      * @param {Function} h - Draw poi with no icon
      * @param {Number} i - Chunk width
-     * @param {Function} j 
+     * @param {Function} cast - Calculate screen pos from chunk pos
      * @param {Array} k - Display area pos in canvas
      * @param {*} l - Params
      */
-    paintTile: function (CTX, c, f, tileData, h, i, j, k, l) {
+    paintTile: function (CTX, c, f, tileData, h, i, cast, k, l) {
       function getBiomeInChunk(px, py) {
         function fx(a) { return tileData.biomeScale >= 1 ? a : Math.floor(a / tileData.biomeScale) * tileData.biomeScale }
         var icpx = Math.floor((fx(px / 16) - f.x) / tileData.biomeScale),
@@ -4089,6 +4093,7 @@ var CB3TooltipManager = function () {
           b = new Uint8Array(tileData.biomes);
         return b[icpy * f.xL / tileData.biomeScale + icpx]
       }
+      tileData.poiResults[CB3Libs.POI.HTCustomize] = HTPoiConfig.getPoisInRegion(f);
       if ("biomes" !== c) {
         if ("slimeChunks" === c && b.renderImg && tileData.poiResults[CB3Libs.POI.SlimeChunk]) {
           var n = tileData.poiResults[CB3Libs.POI.SlimeChunk]
@@ -4096,25 +4101,27 @@ var CB3TooltipManager = function () {
             , p = CTX.lineWidth;
           CTX.lineWidth = 2;
           n.forEach(function (b) {
+            // Fill slime chunk
             CTX.fillStyle = "rgb(" + o.fillColor + ")";
-            var c = j(b[0], b[1])
-              , d = j(b[0] + 1, b[1] + 1);
-            CTX.fillRect(c[0], c[1], d[0] - c[0] - 1, d[1] - c[1] - 1),
-              CTX.strokeStyle = "rgb(" + o.fillColorOuter + ")",
-              CTX.strokeRect(c[0] + 1, c[1] + 1, d[0] - c[0] - 3, d[1] - c[1] - 3)
+            var c = cast(b[0], b[1])
+              , d = cast(b[0] + 1, b[1] + 1);
+            CTX.fillRect(c[0], c[1], d[0] - c[0] - 1, d[1] - c[1] - 1);
+            CTX.strokeStyle = "rgb(" + o.fillColorOuter + ")";
+            CTX.strokeRect(c[0] + 1, c[1] + 1, d[0] - c[0] - 3, d[1] - c[1] - 3)
           });
           CTX.lineWidth = p
         } if ("pois" === c) {
+          // Sort pois in order of CB3PoiConfig
           var q = Object.keys(tileData.poiResults).sort(function (a, b) {
             return e.indexOf(a) - e.indexOf(b)
           });
           window.__analytics_lastPois = q;
           q.forEach(function (poiName) {
-            function doDraw(b, e) {
+            function doDraw(poiHash, e) {
               var f = i.getImg ? i.img[i.getImg(e[2])] : i.img
                 , pos = i.getCoords ? i.getCoords(e, l.platform.cb3World) : [16 * e[0] + 8, null, 16 * e[1] + 8]
-                , h = j(pos[0] / 16, pos[2] / 16)
-                , m = CB3TooltipManager.isSelected(b)
+                , h = cast(pos[0] / 16, pos[2] / 16)
+                , m = CB3TooltipManager.isSelected(poiHash)
                 , n = f.width * (m ? d : 1)
                 , o = f.height * (m ? d : 1)
                 , p = Math.floor(h[0] - n / 2)
@@ -4125,10 +4132,10 @@ var CB3TooltipManager = function () {
               CTX.globalAlpha = r ? CB3TooltipManager.isSelectMode() ? .60 : .45 : 1;
               if (tileData.biomeFilter && (tileData.biomeFilter.indexOf(getBiomeInChunk(pos[0], pos[2])) != -1)) {
                 CTX.drawImage(f, p, q, n, o);
-                CB3TooltipManager.onPoiDrawn(poiName, b, pos, e, p, q, n, o, k)
+                CB3TooltipManager.onPoiDrawn(poiName, poiHash, pos, e, p, q, n, o, k)
               } else if (!tileData.biomeFilter || !tileData.biomes || !l.hidePoi || tileData.biomeScale > 2) {
                 CTX.drawImage(f, p, q, n, o);
-                CB3TooltipManager.onPoiDrawn(poiName, b, pos, e, p, q, n, o, k)
+                CB3TooltipManager.onPoiDrawn(poiName, poiHash, pos, e, p, q, n, o, k)
               }
               CTX.globalAlpha = 1;
             }
@@ -4140,7 +4147,8 @@ var CB3TooltipManager = function () {
                   var d = i.splitPois ? i.splitPois(a) : [a];
                   d.forEach(function (a, b) {
                     var d = [poiName, a[0], a[1], b].join(";");
-                    CB3TooltipManager.isSelected(d) ? m = function () { doDraw(d, a, b) }
+                    CB3TooltipManager.isSelected(d) ?
+                      m = function () { doDraw(d, a, b) }
                       : doDraw(d, a, b)
                   })
                 } else
@@ -4151,8 +4159,8 @@ var CB3TooltipManager = function () {
         }
       } else if (window.__analytics_lastBiomes = !!tileData.biomeCanvas,
         tileData.biomeCanvas) {
-        var r = j(f.x, f.z)
-          , s = j(f.x + f.xL, f.z + f.zL);
+        var r = cast(f.x, f.z)
+          , s = cast(f.x + f.xL, f.z + f.zL);
         CTX.drawImage(tileData.biomeCanvas, Math.floor(r[0]), Math.floor(r[1]), Math.floor(s[0] - r[0]), Math.floor(s[1] - r[1]))
       }
     },
@@ -4168,7 +4176,6 @@ var CB3TooltipManager = function () {
           , d = b / 256;
         return .5 > c ? Math.min(255, Math.max(0, Math.floor(2 * c * d * 256))) : Math.min(255, Math.max(0, Math.floor(256 * (1 - 2 * (1 - c) * (1 - d)))))
       }
-      a.poiResults[CB3Libs.POI.HTCustomize] = HTPoiConfig.getPoisInRegion(b);
       if (!a.biomes)
         return a;
       var d = document.createElement("canvas");
@@ -4239,10 +4246,7 @@ var CB3TooltipManager = function () {
 }();
 
 $(document).ready(function () {
-  function isTouch() {
-    return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
-  }
-  function b(src, cb) {
+  function createImg(src, cb) {
     var img = new Image;
     img.onload = function () {
       cb(null, img)
@@ -4261,7 +4265,7 @@ $(document).ready(function () {
       c
   }
   function initPoiImg(a) {
-    b(window.__seedMapPoisSpriteImage, function (err, d) {
+    createImg(window.__seedMapPoisSpriteImage, function (err, d) {
       if (err)
         return void a(err);
       var e = !1;
@@ -4288,19 +4292,21 @@ $(document).ready(function () {
   !function () {
     var a = CB3FinderApp;
     initPoiImg(function (b) {
-      return b ? void chunkAppLoader.errorInit() : (chunkAppLoader.init(a),
+      return b ? void chunkAppLoader.errorInit() : (
+        chunkAppLoader.init(a),
         void a.on("uiloaded", function () {
           /* Init */
-          $("#biome-selection").biomeSelection(a),
-            $("#show-heights-label").heightsToggle(a),
-            $("#hide-poi-label").hidePoiToggle(a),
-            $("#biome-dimension-selection").dimensionSelection(a),
-            $(".seedmap-layers-wrapper").seedMapLayers(a),
-            $("#biome-height-select").biomHeightSelect(a),
-            $(".topnav").topNavigate(a),
-            $("#mark").markMenu(a),
-            HTPoiConfig.onInit(a);
-        }))
+          $("#biome-selection").biomeSelection(a);
+          $("#show-heights-label").heightsToggle(a);
+          $("#hide-poi-label").hidePoiToggle(a);
+          $("#biome-dimension-selection").dimensionSelection(a);
+          $(".seedmap-layers-wrapper").seedMapLayers(a);
+          $("#biome-height-select").biomHeightSelect(a);
+          $(".topnav").topNavigate(a);
+          $("#mark").markMenu(a);
+          HTPoiConfig.onInit(a)
+        })
+      )
     })
   }();
 });
