@@ -1089,9 +1089,10 @@ $.fn.seedControls = function (a) {
     })
   });
   "undefined" != typeof Hammer && isTouch() && (
-    c.touchEnabled.change(e.touchChanged),
     a.on("touchchange", f.touchChanged),
     c.touchEnabled.prop('checked', true),
+    window.setTimeout(e.touchChanged, 0),
+    c.touchEnabled.change(e.touchChanged),
     this.find("#map-touch").removeClass("hidden")
   );
   setTimeout(function () {
@@ -1161,7 +1162,7 @@ $.fn.chunkMap = function (a) {
   mapDisp.mozImageSmoothingEnabled = !1;
   mapDisp.webkitImageSmoothingEnabled = !1;
   mapDisp.msImageSmoothingEnabled = !1;
-  a.loadingBackground && k.css("background-color", "rgb(" + a.loadingBackground + ")");
+  a.loadingBackground && k.css("background-color", "rgba(" + a.loadingBackground + ",0.1)");
 
   var mapText = {
     chunkLoad: "加载区块中...",
@@ -1259,14 +1260,16 @@ $.fn.chunkMap = function (a) {
       },
       getInScreenFirstX16: function (a) {
         var b = options.interval;
-        b = Math.ceil(options.startX / b) * b,
-          b = (b - options.startX) * options.chunkWidth + left;
+        b = Math.ceil(options.startX / b) * b;
+        a && (b -= b % a);
+        b = (b - options.startX) * options.chunkWidth + left;
         return b
       },
       getInScreenFirstY16: function (a) {
         var b = options.interval;
-        b = Math.ceil(options.startZ / b) * b,
-          b = (b - options.startZ) * options.chunkWidth + top;
+        b = Math.ceil(options.startZ / b) * b;
+        a && (b -= b % a);
+        b = (b - options.startZ) * options.chunkWidth + top;
         return b
       },
       getInScreenFirstRegionX: function (a) {
@@ -1391,7 +1394,7 @@ $.fn.chunkMap = function (a) {
       function ClearLoadText() {
         EndClip();
         mapDisp.fillStyle = borderColor;
-        mapDisp.fillRect(right - 55, 0, 60, 32);
+        mapDisp.clearRect(right - 55, 0, 60, 32);
         BeginClip()
       }
       /**
@@ -1472,11 +1475,11 @@ $.fn.chunkMap = function (a) {
                   mapDisp.fillStyle = t,
                     mapDisp.fillRect(b, c, d, e);
                 else if (f && a.loadingBackground) {
-                  var h = mapDisp.globalCompositeOperation;
-                  mapDisp.globalCompositeOperation = "destination-over";
-                  mapDisp.fillStyle = loadColor;
-                  mapDisp.fillRect(b, c, d, e);
-                  mapDisp.globalCompositeOperation = h
+                  //var h = mapDisp.globalCompositeOperation;
+                  //mapDisp.globalCompositeOperation = "destination-over";
+                  //mapDisp.fillStyle = loadColor;
+                  //mapDisp.fillRect(b, c, d, e);
+                  //mapDisp.globalCompositeOperation = h
                 }
                 return !0
               }, function () {
@@ -1537,16 +1540,15 @@ $.fn.chunkMap = function (a) {
     }
     /** Fill border with specify color, clear map area */
     function Border() {
-      L = !1,
-        mapDisp.fillStyle = borderColor,
-        mapDisp.fillRect(0, 0, d, e),
-        a.loadingBackground && (
-          BeginClip(),
-          /*mapDisp.clearRect(left, top, right - left, bottom - top),*/
-          mapDisp.fillStyle = borderColor,
-          mapDisp.fillRect(left, top, right - left, bottom - top),
-          EndClip()
-        )
+      L = !1;
+      //mapDisp.fillStyle = borderColor;
+      mapDisp.clearRect(0, 0, d, e);
+      a.loadingBackground && (
+        BeginClip(),
+        //mapDisp.fillStyle = borderColor,
+        mapDisp.clearRect(left, top, right - left, bottom - top),
+        EndClip()
+      )
     }
     /** Clear entire canvas */
     function ClearMap() {
@@ -1554,7 +1556,7 @@ $.fn.chunkMap = function (a) {
       mapDisp.fillRect(0, 0, d, e)
     }
     /** Draw a grid with given params */
-    function Grid(color, lineWidth, c, d, e) {
+    function Grid(color, lineWidth, c, d, inteval) {
       var j, k;
       for (mapDisp.strokeStyle = color,
         mapDisp.lineWidth = lineWidth,
@@ -1562,21 +1564,24 @@ $.fn.chunkMap = function (a) {
         j = c; right + .5 >= j;)
         mapDisp.moveTo(Math.round(j) + .5, Math.round(top) + 2),
           mapDisp.lineTo(Math.round(j) + .5, Math.round(bottom) + 1),
-          j += e;
+          j += inteval;
       for (mapDisp.stroke(),
         mapDisp.beginPath(),
         k = d; bottom + .5 >= k;)
         mapDisp.moveTo(Math.round(left) + 2, Math.round(k) + .5),
           mapDisp.lineTo(Math.round(right) + 1, Math.round(k) + .5),
-          k += e;
+          k += inteval;
       mapDisp.stroke()
     }
     /** Draw grid lines */
     function DrawGridLine() {
       if (o) {
-        var a = options.chunkWidth, b = options.interval;
-        options.distantView || Grid("#888", 1, z.getInScreenFirstX16(!1) - b * a, z.getInScreenFirstY16(!1) - b * a, a);
-        Grid("#88C", options.distantView ? 1 : 2, z.getInScreenFirstX16(!0) - b * a, z.getInScreenFirstY16(!0) - b * a, b * a);
+        var a = options.chunkWidth
+          , b = options.interval
+          , c = options.distantView
+          , d = c ? b * a : 5 * a
+        c || Grid("#888", 1, z.getInScreenFirstX16(!1) - b * a, z.getInScreenFirstY16(!1) - b * a, a);
+        Grid("#88C", c ? 1 : 2, z.getInScreenFirstX16(!c && 5) - d, z.getInScreenFirstY16(!c && 5) - d, d);
       }
     }
     /** Put scale division */
@@ -1726,8 +1731,8 @@ $.fn.chunkMap = function (a) {
       initialDraw: function () { P.redraw() },
       clearFooter: function () {
         L = !1;
-        mapDisp.fillStyle = borderColor;
-        mapDisp.fillRect(0, bottom + 2, right, e - bottom - 1);
+        //mapDisp.fillStyle = borderColor;
+        mapDisp.clearRect(0, bottom + 2, right, e - bottom - 1);
         DelayPutText()
       },
       redrawFooter: function (a, b, c, d, e) {
@@ -1736,7 +1741,7 @@ $.fn.chunkMap = function (a) {
         PutDetailText(a, b, c, d, e)
       },
       setXBoundaries: function () { },
-      clearAll: function () { mapDisp.fillStyle = borderColor; mapDisp.fillRect(0, 0, d, e) },
+      clearAll: function () { /*mapDisp.fillStyle = borderColor;*/ mapDisp.clearRect(0, 0, d, e) },
       redraw: function () {
         b();
         c = (new Date).getTime();
@@ -3931,7 +3936,7 @@ var CB3TooltipManager = function () {
   Object.assign(c, {
     drawAll: !0,
     async: !0,
-    loadingBackground: "228,232,235",
+    loadingBackground: "51,43,40",
     drawChunkBordersPostRender: !0,
     deferredRender: !0,
     distantViewDeferredRender: !0,
