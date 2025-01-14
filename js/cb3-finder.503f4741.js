@@ -75,7 +75,7 @@ window.__seedMapPoisSpriteImage = "data:image/PNG;base64,iVBORw0KGgoAAAANSUhEUgA
 window._enableAnalytics = !1;
 window.__forcedVersion = 77;
 window.__analytics_biomeRequests = 0;
-function isTouch() { return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0 }
+function isTouch() { return "ontouchstart" in window && (navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) }
 
 var QuickLRU = function () {
   function a(a, c) {
