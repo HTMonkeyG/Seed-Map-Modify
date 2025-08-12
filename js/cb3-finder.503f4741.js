@@ -6,8 +6,8 @@ String.prototype.hashCode = function () {
     return a;
   for (var b = 0; b < this.length; b++) {
     var c = this.charCodeAt(b);
-    a = (a << 5) - a + c,
-      a &= a
+    a = (a << 5) - a + c;
+    a &= a
   }
   return a
 };
@@ -28,14 +28,13 @@ function memoizeQuickLRU(a, b) {
       if (c.has(d))
         return c.get(d);
       var e = a.apply(null, arguments);
-      return "undefined" != typeof e && c.set(d, e),
-        e
+      "undefined" != typeof e && c.set(d, e);
+      return e
     };
-  return d.clear = function () {
+  d.clear = function () {
     c.clear()
-  }
-    ,
-    d
+  };
+  return d
 }
 function handleBedrockSeed(a) {
   function b(a) {
@@ -309,6 +308,78 @@ var ChunkApp = {
     minChunkWidth: 1
   },
   Platform: {
+    java_1_21_6_lb: {
+      label: "Java 1.21.6 (LB)",
+      cb3World: {
+        edition: CB3Libs.Edition.Java,
+        javaVersion: CB3Libs.JavaVersion.V1_21_6,
+        config: {
+          largeBiomes: !0
+        }
+      }
+    },
+    java_1_21_6: {
+      label: "Java 1.21.6",
+      cb3World: {
+        edition: CB3Libs.Edition.Java,
+        javaVersion: CB3Libs.JavaVersion.V1_21_6,
+        config: {}
+      }
+    },
+    java_1_21_5_lb: {
+      label: "Java 1.21.5 (LB)",
+      cb3World: {
+        edition: CB3Libs.Edition.Java,
+        javaVersion: CB3Libs.JavaVersion.V1_21_5,
+        config: {
+          largeBiomes: !0
+        }
+      }
+    },
+    java_1_21_5: {
+      label: "Java 1.21.5",
+      cb3World: {
+        edition: CB3Libs.Edition.Java,
+        javaVersion: CB3Libs.JavaVersion.V1_21_5,
+        config: {}
+      }
+    },
+    java_1_21_4_lb: {
+      label: "Java 1.21.4 (LB)",
+      cb3World: {
+        edition: CB3Libs.Edition.Java,
+        javaVersion: CB3Libs.JavaVersion.V1_21_4,
+        config: {
+          largeBiomes: !0
+        }
+      }
+    },
+    java_1_21_4: {
+      label: "Java 1.21.4",
+      cb3World: {
+        edition: CB3Libs.Edition.Java,
+        javaVersion: CB3Libs.JavaVersion.V1_21_4,
+        config: {}
+      }
+    },
+    java_1_21_2_lb: {
+      label: "Java 1.21.2 (LB)",
+      cb3World: {
+        edition: CB3Libs.Edition.Java,
+        javaVersion: CB3Libs.JavaVersion.V1_21_2,
+        config: {
+          largeBiomes: !0
+        }
+      }
+    },
+    java_1_21_2: {
+      label: "Java 1.21.2",
+      cb3World: {
+        edition: CB3Libs.Edition.Java,
+        javaVersion: CB3Libs.JavaVersion.V1_21_2,
+        config: {}
+      }
+    },
     java_1_21_lb: {
       label: "Java 1.21 (LB)",
       cb3World: {
@@ -594,6 +665,46 @@ var ChunkApp = {
       cb3World: {
         edition: CB3Libs.Edition.Java,
         javaVersion: CB3Libs.JavaVersion.V1_7,
+        config: {}
+      }
+    },
+    bedrock_1_21_90: {
+      label: "Bedrock 1.21.90",
+      cb3World: {
+        edition: CB3Libs.Edition.Bedrock,
+        bedrockVersion: CB3Libs.BedrockVersion.V1_21_90,
+        config: {}
+      }
+    },
+    bedrock_1_21_80: {
+      label: "Bedrock 1.21.80",
+      cb3World: {
+        edition: CB3Libs.Edition.Bedrock,
+        bedrockVersion: CB3Libs.BedrockVersion.V1_21_80,
+        config: {}
+      }
+    },
+    bedrock_1_21_70: {
+      label: "Bedrock 1.21.70",
+      cb3World: {
+        edition: CB3Libs.Edition.Bedrock,
+        bedrockVersion: CB3Libs.BedrockVersion.V1_21_70,
+        config: {}
+      }
+    },
+    bedrock_1_21_60: {
+      label: "Bedrock 1.21.60",
+      cb3World: {
+        edition: CB3Libs.Edition.Bedrock,
+        bedrockVersion: CB3Libs.BedrockVersion.V1_21_60,
+        config: {}
+      }
+    },
+    bedrock_1_21_50: {
+      label: "Bedrock 1.21.50",
+      cb3World: {
+        edition: CB3Libs.Edition.Bedrock,
+        bedrockVersion: CB3Libs.BedrockVersion.V1_21_50,
         config: {}
       }
     },
