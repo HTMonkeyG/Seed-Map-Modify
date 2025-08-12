@@ -4184,8 +4184,8 @@ var CB3TooltipManager = function () {
       if (!a.biomes)
         return a;
       var d = document.createElement("canvas");
-      d.width = b.xL / a.biomeScale,
-        d.height = b.zL / a.biomeScale;
+      d.width = b.xL / a.biomeScale;
+      d.height = b.zL / a.biomeScale;
       var e, f = new Uint8Array(a.biomes), g = a.heights && new Int32Array(a.heights);
       /* Draw height */
       if (g) {
@@ -4225,17 +4225,17 @@ var CB3TooltipManager = function () {
               I[4 * K + 3] = 22;
             else {
               var N = .9; /* Change the transparent by 0.9 */
-              I[4 * K + 0] = Math.round(I[4 * K + 0] * N),
-                I[4 * K + 1] = Math.round(I[4 * K + 1] * N),
-                I[4 * K + 2] = Math.round(I[4 * K + 2] * N)
+              I[4 * K + 0] = Math.round(I[4 * K + 0] * N);
+              I[4 * K + 1] = Math.round(I[4 * K + 1] * N);
+              I[4 * K + 2] = Math.round(I[4 * K + 2] * N)
             }
           a.biomeFilter && -1 === a.biomeFilter.indexOf(L) && (I[4 * K + 3] = 32)
         }
       }
-      return G.putImageData(H, 0, 0),
-        Object.assign({}, a, {
-          biomeCanvas: d
-        })
+      G.putImageData(H, 0, 0);
+      return Object.assign({}, a, {
+        biomeCanvas: d
+      })
     },
     onCanvasClick: function (a, b, d) {
       var e = CB3TooltipManager.onCanvasClick(a, b, d);
