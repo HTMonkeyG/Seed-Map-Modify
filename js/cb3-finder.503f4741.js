@@ -4044,6 +4044,7 @@ var CB3TooltipManager = function () {
     , g = "all" === b.pois ? Object.keys(CB3PoiConfig).filter(function (a) {
       return !b.initiallyHiddenPois || -1 === b.initiallyHiddenPois.indexOf(a)
     }).concat(["biomes"]) : b.pois || [];
+
   Object.assign(c, {
     drawAll: !0,
     async: !0,
@@ -4063,11 +4064,11 @@ var CB3TooltipManager = function () {
     }
   }, f[b.chunkWidths]);
 
-  // Get avaliable worker count
+  // Get avaliable worker count.
   var h = null != navigator.hardwareConcurrency && navigator.hardwareConcurrency > 1 ? navigator.hardwareConcurrency - 1 : 1;
   h = Math.min(h, 6);
 
-  // Create worker
+  // Create worker.
   for (var workers = [], j = 0; h > j; j++)
     workers[j] = new Worker(window.URL.createObjectURL(inlineWorker_k9bk8));
   CB3SharedTaskManagerMain.init(workers);
@@ -4078,7 +4079,7 @@ var CB3TooltipManager = function () {
     }, !1)
   });
 
-  // Worker for poi list when platform change
+  // Worker for poi list when platform change.
   var l = new Worker(window.URL.createObjectURL(inlineWorker_k9bk8));
   l.addEventListener("message", function (a) {
     "getSupportedPois" === a.data.type && c.triggerHandler("supportedpoischanged", [a.data.supportedPois])
@@ -4090,7 +4091,8 @@ var CB3TooltipManager = function () {
       })
     }),
     c.initialHideGridLines = b.hideGridLines;
-  var m = null;
+
+  var delayDrawFn = null;
 
   return SeedMapTiles(c, {
     defaultPlatform: ChunkApp.Platform.java,
@@ -4111,8 +4113,8 @@ var CB3TooltipManager = function () {
     /**
      * @param {*} a 
      * @param {*} c 
-     * @param {*} d - Tile data
-     * @param {*} e - Params
+     * @param {*} d - Tile data.
+     * @param {*} e - Params.
      * @returns 
      */
     getHoverText: function (a, c, d, e) {
@@ -4190,28 +4192,36 @@ var CB3TooltipManager = function () {
       })
     },
     /**
-     * Paint tile to map canvas
-     * @param {*} CTX - Map canvas context
-     * @param {"biomes"|"slimeChunks"|"pois"} c - Operation type
-     * @param {*} f - Tile coord
-     * @param {*} tileData - Tile data
-     * @param {Function} h - Draw poi with no icon
-     * @param {Number} i - Chunk width
-     * @param {Function} cast - Calculate screen pos from chunk pos
-     * @param {Array} k - Display area pos in canvas
-     * @param {*} l - Params
+     * Paint tile to map canvas.
+     * @param {*} CTX - Map canvas context.
+     * @param {"biomes"|"slimeChunks"|"pois"} type - Operation type.
+     * @param {*} tileCoord - Tile coord.
+     * @param {*} tileData - Tile data.
+     * @param {Function} drawSimple - Draw poi with no icon.
+     * @param {number} chunkWidth - Chunk width in pixels.
+     * @param {Function} cast - Calculate screen pos from chunk pos.
+     * @param {Array} k - Display area pos in canvas.
+     * @param {object} l - Params.
      */
-    paintTile: function (CTX, c, f, tileData, h, i, cast, k, l) {
+    paintTile: function (
+      CTX, type, tileCoord, tileData, drawSimple, chunkWidth, cast, k, l
+    ) {
       function getBiomeInChunk(px, py) {
-        function fx(a) { return tileData.biomeScale >= 1 ? a : Math.floor(a / tileData.biomeScale) * tileData.biomeScale }
-        var icpx = Math.floor((fx(px / 16) - f.x) / tileData.biomeScale),
-          icpy = Math.floor((fx(py / 16) - f.z) / tileData.biomeScale),
-          b = new Uint8Array(tileData.biomes);
-        return b[icpy * f.xL / tileData.biomeScale + icpx]
+        function fx(a) {
+          return tileData.biomeScale >= 1 ? a : Math.floor(a / tileData.biomeScale) * tileData.biomeScale
+        }
+        var icpx = Math.floor((fx(px / 16) - tileCoord.x) / tileData.biomeScale)
+          , icpy = Math.floor((fx(py / 16) - tileCoord.z) / tileData.biomeScale)
+          , biomeArr = new Uint8Array(tileData.biomes);
+        return biomeArr[icpy * tileCoord.xL / tileData.biomeScale + icpx]
       }
-      tileData.poiResults[CB3Libs.POI.HTCustomize] = HTPoiConfig.getPoisInRegion(f);
-      if ("biomes" !== c) {
-        if ("slimeChunks" === c && b.renderImg && tileData.poiResults[CB3Libs.POI.SlimeChunk]) {
+
+      // Add customize pois to the canvas.
+      tileData.poiResults[CB3Libs.POI.HTCustomize] = HTPoiConfig.getPoisInRegion(tileCoord);
+
+      if ("biomes" !== type) {
+        if ("slimeChunks" === type && b.renderImg && tileData.poiResults[CB3Libs.POI.SlimeChunk]) {
+          // Render slime chunks.
           var n = tileData.poiResults[CB3Libs.POI.SlimeChunk]
             , o = CB3PoiConfig[CB3Libs.POI.SlimeChunk]
             , p = CTX.lineWidth;
@@ -4226,9 +4236,10 @@ var CB3TooltipManager = function () {
             CTX.strokeRect(c[0] + 1, c[1] + 1, d[0] - c[0] - 3, d[1] - c[1] - 3)
           });
           CTX.lineWidth = p
-        } if ("pois" === c) {
-          // Sort pois in order of CB3PoiConfig
+        } if ("pois" === type) {
+          // Render POIs.
           var q = Object.keys(tileData.poiResults).sort(function (a, b) {
+            // Sort pois in the order of CB3PoiConfig.
             return e.indexOf(a) - e.indexOf(b)
           });
           window.__analytics_lastPois = q;
@@ -4242,8 +4253,8 @@ var CB3TooltipManager = function () {
                 , o = f.height * (m ? d : 1)
                 , p = Math.floor(h[0] - n / 2)
                 , q = Math.floor(h[1] - o / 2)
-                , r = CB3TooltipManager.isSelectMode() ?
-                  !HTSelectManager.isPoiSelected(poiName, i.getHash(e))
+                , r = CB3TooltipManager.isSelectMode()
+                  ? !HTSelectManager.isPoiSelected(poiName, i.getHash(e))
                   : CB3MapUserDataManager.isPoiMarked(l.platform, l.seed, poiName, i.getHash(e));
               CTX.globalAlpha = r ? CB3TooltipManager.isSelectMode() ? .60 : .45 : 1;
               if (tileData.biomeFilter && (tileData.biomeFilter.indexOf(getBiomeInChunk(pos[0], pos[2])) != -1)) {
@@ -4263,28 +4274,34 @@ var CB3TooltipManager = function () {
                   var d = i.splitPois ? i.splitPois(a) : [a];
                   d.forEach(function (a, b) {
                     var d = [poiName, a[0], a[1], b].join(";");
-                    CB3TooltipManager.isSelected(d) ?
-                      m = function () { doDraw(d, a, b) }
+                    CB3TooltipManager.isSelected(d)
+                      ? delayDrawFn = function () { doDraw(d, a, b) }
                       : doDraw(d, a, b)
                   })
                 } else
-                  h(a[0], a[1], "function" == typeof i.fillColor ? i.fillColor(a[2]) : i.fillColor)
+                  drawSimple(a[0], a[1], "function" == typeof i.fillColor ? i.fillColor(a[2]) : i.fillColor)
               })
             }
           })
         }
       } else if (window.__analytics_lastBiomes = !!tileData.biomeCanvas,
         tileData.biomeCanvas) {
-        var r = cast(f.x, f.z)
-          , s = cast(f.x + f.xL, f.z + f.zL);
-        CTX.drawImage(tileData.biomeCanvas, Math.floor(r[0]), Math.floor(r[1]), Math.floor(s[0] - r[0]), Math.floor(s[1] - r[1]))
+        var r = cast(tileCoord.x, tileCoord.z)
+          , s = cast(tileCoord.x + tileCoord.xL, tileCoord.z + tileCoord.zL);
+        CTX.drawImage(
+          tileData.biomeCanvas,
+          Math.floor(r[0]),
+          Math.floor(r[1]),
+          Math.floor(s[0] - r[0]),
+          Math.floor(s[1] - r[1])
+        )
       }
     },
     /**
-     * Process biome results to canvas
-     * @param {*} a - Results
-     * @param {*} b - Tile data
-     * @returns Results with biome canvas
+     * Preprocess binary biome results and height values into image data.
+     * @param {*} a - Results.
+     * @param {*} b - Tile data.
+     * @returns Results with biome canvas.
      */
     processTile: function (a, b) {
       function c(a, b) {
@@ -4298,8 +4315,9 @@ var CB3TooltipManager = function () {
       d.width = b.xL / a.biomeScale;
       d.height = b.zL / a.biomeScale;
       var e, f = new Uint8Array(a.biomes), g = a.heights && new Int32Array(a.heights);
-      /* Draw height */
       if (g) {
+        // Draw heights.
+        // Pre-calculated height data.
         e = [];
         for (var h = .025, i = 1 / Math.sqrt(.5) * Math.sqrt(a.biomeScale), j = 45, k = 315, l = 1 * i, m = Math.PI * j / 180, n = Math.PI * k / 180, o = Math.cos(m), p = Math.sin(m), q = 0; q < d.height; q++)
           for (var r = Math.max(q - 1, 0), s = Math.min(q + 1, d.height - 1), t = 0; t < d.width; t++) {
@@ -4319,28 +4337,37 @@ var CB3TooltipManager = function () {
             e[q * d.width + t] = F
           }
       }
-      for (var G = d.getContext("2d"), H = G.createImageData(d.width, d.height), I = H.data, J = CB3Libs.biomeList, K = 0; K < d.width * d.height; K++) {
+
+      var G = d.getContext("2d")
+        , H = G.createImageData(d.width, d.height)
+        , I = H.data
+        , J = CB3Libs.biomeList;
+      for (var K = 0; K < d.width * d.height; K++) {
         var L = f[K];
         if (255 !== L) {
           var M = J[L].rgb;
-          if (e ? (I[4 * K + 0] = c(e[K], M[0]),
-            I[4 * K + 1] = c(e[K], M[1]),
-            I[4 * K + 2] = c(e[K], M[2])) : (I[4 * K + 0] = M[0],
-              I[4 * K + 1] = M[1],
-              I[4 * K + 2] = M[2]),
-            I[4 * K + 3] = 255,
-            a.biomeFilter)
-            if (-1 === a.biomeFilter.indexOf(L))
-              /* Not the specified biome */
-              /* Change the transparent to 22 */
-              I[4 * K + 3] = 22;
+          if (e) {
+            I[4 * K + 0] = c(e[K], M[0]);
+            I[4 * K + 1] = c(e[K], M[1]);
+            I[4 * K + 2] = c(e[K], M[2])
+          } else {
+            I[4 * K + 0] = M[0];
+            I[4 * K + 1] = M[1];
+            I[4 * K + 2] = M[2]
+          }
+          I[4 * K + 3] = 255;
+          if (a.biomeFilter) {
+            if (a.biomeFilter.indexOf(L) == -1)
+              // Change the transparent to 22 if not the specified biome.
+              I[4 * K + 3] = 48;
             else {
-              var N = .9; /* Change the transparent by 0.9 */
+              // Change the transparent by 0.9.
+              var N = .9;
               I[4 * K + 0] = Math.round(I[4 * K + 0] * N);
               I[4 * K + 1] = Math.round(I[4 * K + 1] * N);
               I[4 * K + 2] = Math.round(I[4 * K + 2] * N)
             }
-          a.biomeFilter && -1 === a.biomeFilter.indexOf(L) && (I[4 * K + 3] = 32)
+          }
         }
       }
       G.putImageData(H, 0, 0);
@@ -4354,8 +4381,8 @@ var CB3TooltipManager = function () {
     },
     beforeMapRepaint: CB3TooltipManager.beforeMapRepaint,
     onMapRepainted: function (a) {
-      m && (m(),
-        m = null),
+      delayDrawFn && (delayDrawFn(),
+        delayDrawFn = null),
         CB3TooltipManager.onMapRepainted(a)
     }
   })
@@ -4374,11 +4401,11 @@ $(document).ready(function () {
   }
   function poiImgCanvas(a, b) {
     var c = document.createElement("canvas");
-    c.width = b.width,
-      c.height = b.height;
+    c.width = b.width;
+    c.height = b.height;
     var d = c.getContext("2d");
-    return d.drawImage(a, b.x, b.y, b.width, b.height, 0, 0, b.width, b.height),
-      c
+    d.drawImage(a, b.x, b.y, b.width, b.height, 0, 0, b.width, b.height);
+    return c
   }
   function initPoiImg(a) {
     createImg(window.__seedMapPoisSpriteImage, function (err, d) {
@@ -4394,15 +4421,16 @@ $(document).ready(function () {
               return a(new Error("sprite not found: " + f)),
                 void (e = !0);
             CB3PoiConfig[b].img = poiImgCanvas(d, g)
-          } else
-            CB3PoiConfig[b].img = {},
-              Object.keys(f).forEach(function (g) {
-                var h = window.__seedMapPoisSprite[f[g]];
-                return h ? void (CB3PoiConfig[b].img[g] = poiImgCanvas(d, h)) : (a(new Error("sprite not found: " + f[g])),
-                  void (e = !0))
-              })
-      }),
-        e || a()
+          } else {
+            CB3PoiConfig[b].img = {};
+            Object.keys(f).forEach(function (g) {
+              var h = window.__seedMapPoisSprite[f[g]];
+              return h ? void (CB3PoiConfig[b].img[g] = poiImgCanvas(d, h)) : (a(new Error("sprite not found: " + f[g])),
+                void (e = !0))
+            })
+          }
+      });
+      e || a()
     })
   }
   !function () {

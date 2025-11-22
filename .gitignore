@@ -1,0 +1,7 @@
+# Folder.
+.vscode/
+disabled/
+
+# Wildcard files.
+js/worker.*.js
+test*
