@@ -872,9 +872,9 @@ var ChunkApp = {
         b()
     },
     init: function (b, e) {
-      var f = !!Modernizr.canvas
-        , g = !!Modernizr.canvastext
-        , h = !!Modernizr.webworkers
+      var f = function () { var a = document.createElement("canvas"); return !!a.getContext && !!a.getContext("2d") }()
+        , g = f && typeof document.createElement("canvas").getContext("2d").fillText === "function"
+        , h = !!window.Worker
         , i = !!window.Promise
         , j = !!a();
       !e && f && i && g && h && j ? c(b) : (d(),
@@ -1095,7 +1095,7 @@ $.fn.seedControls = function (a) {
           d.errors.find("#chunkapp-error-" + b).detach()
       }
     }
-    , k = Modernizr.draganddrop
+    , k = function () { var a = document.createElement("div"); return "draggable" in a || "ondragstart" in a && "ondrop" in a }()
     , l = !!window.FileReader;
   if (d.randomButton.click(h.randomButton),
     $(window).hashchange(h.hashChanged),
