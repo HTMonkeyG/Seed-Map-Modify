@@ -5,3 +5,8 @@ disabled/
 # Wildcard files.
 js/worker.*.js
 test*
+*.bak
+*.a
+*.o
+*.dll
+*.exe

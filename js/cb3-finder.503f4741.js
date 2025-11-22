@@ -1,5 +1,10 @@
 "use strict";
-Math.frac = function (a) { return a - Math.trunc(a) };
+
+/* Prototype extensions. */
+
+Math.frac = function (a) {
+  return a - Math.trunc(a);
+};
 String.prototype.hashCode = function () {
   var a = 0;
   if (0 == this.length)
@@ -11,6 +16,10 @@ String.prototype.hashCode = function () {
   }
   return a
 };
+Number.prototype.clamp = function (a, b) {
+  return Math.min(Math.max(this, a), b)
+};
+
 function __CB__debounce(a, b) {
   var c;
   return function () {
