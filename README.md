@@ -1,5 +1,5 @@
-# Seed Map Modifiy
-&emsp;由HTMonkeyG对[Chunkbase Seed Map](https://www.chunkbase.com/apps/seed-map)进行汉化和修改而成的版本。
+# Seed Map Modify
+&emsp;由@HTMonkeyG对[Chunkbase Seed Map](https://www.chunkbase.com/apps/seed-map)进行汉化和修改而成的版本。
 
 ## 特色功能
 - GUI大范围重写，享受移动端友好的全屏大地图与紧凑布局。
