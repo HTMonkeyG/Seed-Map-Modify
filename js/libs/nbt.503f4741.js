@@ -277,5 +277,4 @@
       else
         c(null, d.parseUncompressed(b))
     }
-}
-  .apply("undefined" != typeof exports ? exports : window.nbt = {});
+}.apply("undefined" != typeof exports ? exports : window.nbt = {});
